@@ -17,9 +17,8 @@
   <target name="Workspace.RequieredSoftware.GlassFish">
     <ifnot test="${directory::exists(GlassFish.Install.Path) and directory::exists(NetBeans.Install.Path)}" >
       <call target="GlassFish.DownloadAndInstall"/>
-
       <call target="GlassFish.Update" />
-      <call target="GlassFish.Recreate.Domain" />
+      <call target="Personal.GlassFish.Recreate.Domain" />
     </ifnot>
   </target>
 
@@ -119,7 +118,7 @@
       <ant
         target="main"
         buildfile="${Package.Workspace.Directory.Path}\Software\GlassFish\Certificates\build.xml"
-		
+
       >
         <environment refid="${Common.EnvironmentVariables.RefId}" />
         <args/>

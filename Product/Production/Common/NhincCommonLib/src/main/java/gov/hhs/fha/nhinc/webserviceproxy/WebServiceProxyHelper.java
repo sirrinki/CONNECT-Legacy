@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package gov.hhs.fha.nhinc.webserviceproxy;
 
 import gov.hhs.fha.nhinc.nhinclib.NullChecker;
@@ -19,6 +15,9 @@ public class WebServiceProxyHelper {
 
     public static final String CONFIG_FILE = "gateway";
     public static final String CONFIG_KEY_TIMEOUT = "webserviceproxy.timeout";
+    public static final String CONFIG_KEY_RETRYATTEMPTS = "webserviceproxy.retryattempts";
+    public static final String CONFIG_KEY_RETRYDELAY = "webserviceproxy.retrydelay";
+    public static final String CONFIG_KEY_EXCEPTION = "webserviceproxy.exceptionstext";
     public static final String KEY_CONNECT_TIMEOUT = "com.sun.xml.ws.connect.timeout";
     public static final String KEY_REQUEST_TIMEOUT = "com.sun.xml.ws.request.timeout";
     public static final String KEY_URL = javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY;
@@ -29,9 +28,74 @@ public class WebServiceProxyHelper {
         return new WebServiceProxyHelper();
     }
 
+    /**
+     * 
+     */
     private WebServiceProxyHelper() {
     }
 
+    /**
+     *
+     * @return String
+     */
+    public String getExceptionText() {
+        //replace with config read
+        String configValue = "";
+        try {
+            configValue = PropertyAccessor.getProperty(CONFIG_FILE, CONFIG_KEY_EXCEPTION);
+            log.debug("retrieved retry attempts from config file (" + CONFIG_FILE + "." + CONFIG_KEY_EXCEPTION + "=" + configValue + ")");
+        } catch (PropertyAccessException ex) {
+            log.warn("error occurred reading retry attempts value from config [" + ex.toString() + "]");
+        }
+        return configValue;
+    }
+
+    /**
+     *
+     * @return int
+     */
+    public int getRetryAttempts() {
+        //replace with config read
+        String configValue = "0";
+        try {
+            configValue = PropertyAccessor.getProperty(CONFIG_FILE, CONFIG_KEY_RETRYATTEMPTS);
+            log.debug("retrieved retry attempts from config file (" + CONFIG_FILE + "." + CONFIG_KEY_RETRYATTEMPTS + "=" + configValue + ")");
+        } catch (PropertyAccessException ex) {
+            log.warn("error occurred reading retry attempts value from config [" + ex.toString() + "]");
+        }
+
+        int retryAttempts = 0;
+        if (NullChecker.isNotNullish(configValue)) {
+            retryAttempts = Integer.parseInt(configValue);
+        }
+        return retryAttempts;
+    }
+
+    /**
+     *
+     * @return int
+     */
+    public int getRetryDelay() {
+        //replace with config read
+        String configValue = "0";
+        try {
+            configValue = PropertyAccessor.getProperty(CONFIG_FILE, CONFIG_KEY_RETRYDELAY);
+            log.debug("retrieved retry delay from config file (" + CONFIG_FILE + "." + CONFIG_KEY_RETRYDELAY + "=" + configValue + ")");
+        } catch (PropertyAccessException ex) {
+            log.warn("error occurred reading retry delay value from config [" + ex.toString() + "]");
+        }
+
+        int retryDelay = 0;
+        if (NullChecker.isNotNullish(configValue)) {
+            retryDelay = Integer.parseInt(configValue);
+        }
+        return retryDelay;
+    }
+
+    /**
+     *
+     * @return int
+     */
     private int getTimeout() {
         //replace with config read
         String configValue = "0";
@@ -49,6 +113,11 @@ public class WebServiceProxyHelper {
         return timeout;
     }
 
+    /**
+     * 
+     * @param port
+     * @param url
+     */
     public void initializePort(BindingProvider port, String url) {
         log.info("begin initializePort");
         if (port == null) {

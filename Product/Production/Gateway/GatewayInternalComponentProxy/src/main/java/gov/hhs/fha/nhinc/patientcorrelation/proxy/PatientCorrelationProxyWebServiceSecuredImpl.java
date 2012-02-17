@@ -15,6 +15,7 @@ import gov.hhs.fha.nhinc.nhinclib.NhincConstants;
 import gov.hhs.fha.nhinc.nhinclib.NullChecker;
 import gov.hhs.fha.nhinc.saml.extraction.SamlTokenCreator;
 import java.util.Map;
+import java.util.StringTokenizer;
 import javax.xml.ws.BindingProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,7 +47,56 @@ public class PatientCorrelationProxyWebServiceSecuredImpl implements PatientCorr
         if (NullChecker.isNotNullish(url)) {
             PatientCorrelationSecuredPortType port = getPort(url, assertion);
 
-            RetrievePatientCorrelationsSecuredResponseType securedResult = port.retrievePatientCorrelations(securedRequest);
+            RetrievePatientCorrelationsSecuredResponseType securedResult = null;
+						
+			int retryCount = gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().getRetryAttempts();
+			int retryDelay = gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().getRetryDelay();
+        String exceptionText = gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().getExceptionText();
+        javax.xml.ws.WebServiceException catchExp = null;
+        if (retryCount > 0 && retryDelay > 0 && exceptionText != null && !exceptionText.equalsIgnoreCase("")) {
+            int i = 1;
+            while (i <= retryCount) {
+                try {
+                    securedResult = port.retrievePatientCorrelations(securedRequest);
+                    break;
+                } catch (javax.xml.ws.WebServiceException e) {
+                    catchExp = e;
+                    int flag = 0;
+                    StringTokenizer st = new StringTokenizer(exceptionText, ",");
+                    while (st.hasMoreTokens()) {
+                        if (e.getMessage().contains(st.nextToken())) {
+                            flag = 1;
+                        }
+                    }
+                    if (flag == 1) {
+                        log.warn("Exception calling ... web service: " + e.getMessage());
+                        System.out.println("retrying the connection for attempt [ " + i + " ] after [ " + retryDelay + " ] seconds");
+                        log.info("retrying attempt [ " + i + " ] the connection after [ " + retryDelay + " ] seconds");
+                        i++;
+                        try {
+                            Thread.sleep(retryDelay);
+                        } catch (InterruptedException iEx) {
+                            log.error("Thread Got Interrupted while waiting on PatientCorrelationServiceSecured call :" + iEx);
+                        } catch (IllegalArgumentException iaEx) {
+                            log.error("Thread Got Interrupted while waiting on PatientCorrelationServiceSecured call :" + iaEx);
+                        }
+                        retryDelay = retryDelay + retryDelay; //This is a requirement from Customer
+                    } else {
+                        log.error("Unable to call PatientCorrelationServiceSecured Webservice due to  : " + e);
+                        throw e;
+                    }
+                }
+            }
+
+            if (i > retryCount) {
+                log.error("Unable to call PatientCorrelationServiceSecured Webservice due to  : " + catchExp);
+                throw catchExp;
+            }
+
+        } else {
+            securedResult = port.retrievePatientCorrelations(securedRequest);
+        }
+
             result.setPRPAIN201310UV02(securedResult.getPRPAIN201310UV02());
         }
 
@@ -65,7 +115,56 @@ public class PatientCorrelationProxyWebServiceSecuredImpl implements PatientCorr
         if (NullChecker.isNotNullish(url)) {
             PatientCorrelationSecuredPortType port = getPort(url, assertion);
 
-            AddPatientCorrelationSecuredResponseType securedResult = port.addPatientCorrelation(securedRequest);
+            AddPatientCorrelationSecuredResponseType securedResult = null;
+						
+			int retryCount = gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().getRetryAttempts();
+		int retryDelay = gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().getRetryDelay();
+        String exceptionText = gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().getExceptionText();
+        javax.xml.ws.WebServiceException catchExp = null;
+        if (retryCount > 0 && retryDelay > 0 && exceptionText != null && !exceptionText.equalsIgnoreCase("")) {
+            int i = 1;
+            while (i <= retryCount) {
+                try {
+                    securedResult = port.addPatientCorrelation(securedRequest);
+                    break;
+                } catch (javax.xml.ws.WebServiceException e) {
+                    catchExp = e;
+                    int flag = 0;
+                    StringTokenizer st = new StringTokenizer(exceptionText, ",");
+                    while (st.hasMoreTokens()) {
+                        if (e.getMessage().contains(st.nextToken())) {
+                            flag = 1;
+                        }
+                    }
+                    if (flag == 1) {
+                        log.warn("Exception calling ... web service: " + e.getMessage());
+                        System.out.println("retrying the connection for attempt [ " + i + " ] after [ " + retryDelay + " ] seconds");
+                        log.info("retrying attempt [ " + i + " ] the connection after [ " + retryDelay + " ] seconds");
+                        i++;
+                        try {
+                            Thread.sleep(retryDelay);
+                        } catch (InterruptedException iEx) {
+                            log.error("Thread Got Interrupted while waiting on PatientCorrelationServiceSecured call :" + iEx);
+                        } catch (IllegalArgumentException iaEx) {
+                            log.error("Thread Got Interrupted while waiting on PatientCorrelationServiceSecured call :" + iaEx);
+                        }
+                        retryDelay = retryDelay + retryDelay; //This is a requirement from Customer
+                    } else {
+                        log.error("Unable to call PatientCorrelationServiceSecured Webservice due to  : " + e);
+                        throw e;
+                    }
+                }
+            }
+
+            if (i > retryCount) {
+                log.error("Unable to call PatientCorrelationServiceSecured Webservice due to  : " + catchExp);
+                throw catchExp;
+            }
+
+        } else {
+            securedResult = port.addPatientCorrelation(securedRequest);
+        }
+		
             result.setMCCIIN000002UV01(securedResult.getMCCIIN000002UV01());
         }
 

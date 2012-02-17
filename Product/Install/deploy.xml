@@ -44,11 +44,6 @@
   -->
 
   <property name="deploy.application.list.file.path" value="${script.root.directory}/deploy.application.list.xml"/>
-  <propertyregex property="deploy.glassfish.domain.template"
-      input="${deployment.domain.template.file.path}"
-      regexp="\\"
-      replace="/"
-      casesensitive="false" />
 
   <target name="deploy.create.glassfish.password.file" unless="deploy.glassfish.password.file.path">
     <tempfile prefix="glassfish" property="deploy.glassfish.password.file.path" destdir="${java.io.tmpdir}" deleteonexit="true"/>
@@ -246,6 +241,9 @@
   </target>
 
   <target name="delete.glassfish.domain">
+    <if>
+      <available file="${deployment.glassfish.domain.home}" type="dir"/>
+      <then>
     <trycatch property="error">
       <try>
         <runtarget target="deploy.glassfish.stop.server"/>
@@ -264,9 +262,18 @@
         </delete>
       </catch>
     </trycatch>
+      </then>
+    </if>
   </target>
 
   <target name="create.glassfish.domain" depends="deploy.create.glassfish.password.file">
+    <propertyregex property="deploy.glassfish.domain.template"
+      input="${deployment.domain.template.file.path}"
+      regexp="\\"
+      replace="/"
+      casesensitive="false"
+      global="true"
+      defaultValue="${deployment.domain.template.file.path}"/>
     <sun-appserv-admin 
         explicitcommand='create-domain --template ${deploy.glassfish.domain.template} --user ${deployment.glassfish.server.username} --adminport ${deployment.glassfish.admin.port} --passwordfile "${deploy.glassfish.password.file.path}" --savemasterpassword=true ${deployment.glassfish.domain.name}'
         asinstalldir="${glassfish.home}"
@@ -303,7 +310,7 @@
   </target>
 
   <target name="deploy.nhinc.interfaces.to.glassfish">
-    <copy todir="${deployment.glassfish.domain.config.home}/META-INF" verbose="true" overwrite="true">
+    <copy todir="${deployment.glassfish.domain.config.home}/nhin" verbose="true" overwrite="true">
       <fileset dir="${deployment.interfaces.dir}"/>
     </copy>
   </target>
