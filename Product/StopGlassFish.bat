@@ -1,0 +1,1 @@
+..\Build\Tools\nAnt\bin\nant.exe -listener:NAnt.Core.XmlLogger -buildfile:Personal.Build.xml GlassFish.StopServer

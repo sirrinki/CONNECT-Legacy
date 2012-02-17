@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/CONNECT_public/!svn/ver/4922/releases/2.4.7/Build/Packages/Selenium/Selenium%20RC
+END
+selenium-server-tests.jar
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/CONNECT_public/!svn/ver/4922/releases/2.4.7/Build/Packages/Selenium/Selenium%20RC/selenium-server-tests.jar
+END
+selenium-server.jar
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/CONNECT_public/!svn/ver/4922/releases/2.4.7/Build/Packages/Selenium/Selenium%20RC/selenium-server.jar
+END
+selenium-server-sources.jar
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/CONNECT_public/!svn/ver/4922/releases/2.4.7/Build/Packages/Selenium/Selenium%20RC/selenium-server-sources.jar
+END
+StartSeleniumServer.bat
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/CONNECT_public/!svn/ver/4922/releases/2.4.7/Build/Packages/Selenium/Selenium%20RC/StartSeleniumServer.bat
+END
+selenium-server-coreless.jar
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/CONNECT_public/!svn/ver/4922/releases/2.4.7/Build/Packages/Selenium/Selenium%20RC/selenium-server-coreless.jar
+END
+selenium-server-test-sources.jar
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/CONNECT_public/!svn/ver/4922/releases/2.4.7/Build/Packages/Selenium/Selenium%20RC/selenium-server-test-sources.jar
+END
