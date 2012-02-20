@@ -8,13 +8,13 @@ package gov.hhs.fha.nhinc.docquery.passthru;
 
 import gov.hhs.fha.nhinc.async.AsyncMessageIdExtractor;
 import gov.hhs.fha.nhinc.common.nhinccommon.AssertionType;
-import javax.xml.ws.WebServiceContext;
-import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import gov.hhs.fha.nhinc.common.nhinccommonproxy.RespondingGatewayCrossGatewayQueryRequestType;
 import gov.hhs.fha.nhinc.common.nhinccommonproxy.RespondingGatewayCrossGatewayQuerySecuredRequestType;
-import gov.hhs.fha.nhinc.docquery.passthru.PassthruDocQueryOrchImpl;
 import gov.hhs.fha.nhinc.saml.extraction.SamlTokenExtractor;
-import gov.hhs.fha.nhinc.service.WebServiceHelper;
+import javax.xml.ws.WebServiceContext;
+import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -23,17 +23,17 @@ import gov.hhs.fha.nhinc.service.WebServiceHelper;
  */
 public class NhincProxyDocQueryImpl {
 
-    private static org.apache.commons.logging.Log log = org.apache.commons.logging.LogFactory.getLog(NhincProxyDocQueryImpl.class);
+    private static Log log = LogFactory.getLog(NhincProxyDocQueryImpl.class);
 
     public AdhocQueryResponse respondingGatewayCrossGatewayQuery(RespondingGatewayCrossGatewayQueryRequestType body, WebServiceContext context) {
-        AssertionType assertion = getAssertion (context, body.getAssertion());
+        log.debug("NhincProxyDocQueryImpl.respondingGatewayCrossGatewayQuery(unsecured)");
 
         return new PassthruDocQueryOrchImpl().respondingGatewayCrossGatewayQuery(body.getAdhocQueryRequest(), body.getAssertion(), body.getNhinTargetSystem());
     }
 
     public AdhocQueryResponse respondingGatewayCrossGatewayQuery(RespondingGatewayCrossGatewayQuerySecuredRequestType body, WebServiceContext context) {
-        WebServiceHelper oHelper = new WebServiceHelper();
-        AdhocQueryResponse response = new AdhocQueryResponse();
+        log.debug("NhincProxyDocQueryImpl.respondingGatewayCrossGatewayQuery(secured)");
+
         AssertionType assertion = getAssertion (context, null);
         
         return new PassthruDocQueryOrchImpl().respondingGatewayCrossGatewayQuery(body.getAdhocQueryRequest(), assertion, body.getNhinTargetSystem());
@@ -55,5 +55,4 @@ public class NhincProxyDocQueryImpl {
         return assertion;
     }
 
-    
 }

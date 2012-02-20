@@ -29,16 +29,20 @@ public class AssigningAuthorityHomeCommunityMappingHelper {
         log.info("converting homeCommunityId [" + homeCommunityId + "] to assigning authority");
         AssigningAuthorityHomeCommunityMappingDAO mappingDao = new AssigningAuthorityHomeCommunityMappingDAO();
         //this really should be a list returned, not a single value
-        String assigningAuthorityId = mappingDao.getAssigningAuthority(homeCommunityId);
-        log.info("found assigning authority? [" + assigningAuthorityId + "]");
+
+        //****************************************************************************************************
+        //String assigningAuthorityId = mappingDao.getAssigningAuthority(homeCommunityId);
+        //log.info("found assigning authority? [" + assigningAuthorityId + "]");
+        //****************************************************************************************************
 
         List<String> assigningAuthorityIds = new ArrayList<String>();
-        assigningAuthorityIds.add(assigningAuthorityId);
+        //assigningAuthorityIds.add(assigningAuthorityId);
+        assigningAuthorityIds = mappingDao.getAssigningAuthoritiesByHomeCommunity(homeCommunityId);
         return assigningAuthorityIds;
     }
 
     public static List<String> lookupAssigningAuthorities(List<String> homeCommunityIds) {
-        List<String> fullListOfAssigningAuthorities=null;
+        List<String> fullListOfAssigningAuthorities = null;
         if (NullChecker.isNotNullish(homeCommunityIds)) {
             log.info("converting homeCommunityIds [count=" + homeCommunityIds.size() + "] to assigning authorities");
             fullListOfAssigningAuthorities = new ArrayList<String>();
@@ -58,7 +62,14 @@ public class AssigningAuthorityHomeCommunityMappingHelper {
         if (a == null) {
             a = new ArrayList<String>();
         }
-        a.addAll(b);
+
+        if ((b != null) &&
+                (b.size() > 0)) {
+            a.addAll(b);
+        } else {
+            log.debug("combineLists - Assignin authorities not found for the home community");
+        }
+
         return a;
     }
 }

@@ -280,16 +280,21 @@
               linecount="24"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="46" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="172" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.async.AsyncMessageProcessHelper"
+              linecount="464"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="148" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.asyncmsgs.dao.AsyncMsgRecordDao"
-              linecount="114"
+              linecount="338"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.asyncmsgs.model.AsyncMsgRecord"
-              linecount="21"
+              linecount="57"
               linerate="80"
-              linesexecuted="0.19"/>
+              linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.asyncmsgs.persistence.HibernateUtil"
               linecount="15"
@@ -302,7 +307,7 @@
               linesexecuted="0"/>
    <threshold branchcount="88" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.auditrepository.AuditRepositoryLogger"
-              linecount="387"
+              linecount="394"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="54" branchrate="80" branchsexecuted="0"
@@ -355,9 +360,9 @@
               linecount="7"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="214" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="226" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.callback.SamlCallbackHandler"
-              linecount="527"
+              linecount="545"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -380,11 +385,11 @@
               linecount="52"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="56" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="58" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.common.connectionmanager.dao.AssigningAuthorityHomeCommunityMappingDAO"
-              linecount="120"
+              linecount="123"
               linerate="80"
-              linesexecuted="0.02"/>
+              linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.common.connectionmanager.model.AssigningAuthorityToHomeCommunityMapping"
               linecount="12"
@@ -605,6 +610,36 @@
               linecount="14"
               linerate="80"
               linesexecuted="0.14"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.connectmgr.uddi.proxy.UDDIFindBusinessException"
+              linecount="8"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.connectmgr.uddi.proxy.UDDIFindBusinessProxy"
+              linecount="24"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.connectmgr.uddi.proxy.UDDIFindBusinessProxyHPImpl"
+              linecount="15"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.connectmgr.uddi.proxy.UDDIFindBusinessProxyJuddiV3Impl"
+              linecount="21"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.connectmgr.uddi.proxy.UDDIFindBusinessProxyNoOpImpl"
+              linecount="4"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.connectmgr.uddi.proxy.UDDIFindBusinessProxyObjectFactory"
+              linecount="3"
+              linerate="80"
+              linesexecuted="0"/>
    <threshold branchcount="26" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.devtools.FindAndReplaceFile"
               linecount="59"
@@ -620,14 +655,14 @@
               linecount="54"
               linerate="80"
               linesexecuted="0.03"/>
-   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="12" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.adapter.AdapterDocQueryOrchImpl"
-              linecount="45"
+              linecount="57"
               linerate="80"
               linesexecuted="0.05"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="10" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.adapter.component.deferred.request.AdapterComponentDocQueryDeferredRequestOrchImpl"
-              linecount="6"
+              linecount="23"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -635,7 +670,7 @@
               linecount="0"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+  <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.adapter.component.deferred.request.proxy.AdapterComponentDocQueryDeferredRequestProxyJavaImpl"
               linecount="4"
               linerate="80"
@@ -655,9 +690,9 @@
               linecount="46"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="10" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.adapter.component.deferred.response.AdapterComponentDocQueryDeferredResponseOrchImpl"
-              linecount="6"
+              linecount="24"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -820,24 +855,24 @@
               linecount="49"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="10" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="14" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.entity.DocQuerySender"
-              linecount="97"
+              linecount="102"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="62" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="86" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.entity.EntityDocQueryHelper"
-              linecount="61"
+              linecount="85"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="40" branchrate="80" branchsexecuted="0"
+    <threshold branchcount="50" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.entity.EntityDocQueryOrchImpl"
-              linecount="128"
+              linecount="156"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="22" branchrate="80" branchsexecuted="0"
+    <threshold branchcount="28" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.entity.deferred.request.EntityDocQueryDeferredReqOrchImpl"
-              linecount="69"
+              linecount="92"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -870,6 +905,31 @@
               linecount="49"
               linerate="80"
               linesexecuted="0"/>
+   <threshold branchcount="18" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docquery.entity.deferred.request.queue.EntityDocQueryDeferredReqQueueOrchImpl"
+              linecount="74"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="20" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docquery.entity.deferred.request.queue.EntityDocQueryDeferredReqQueueProcessOrchImpl"
+              linecount="67"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docquery.entity.deferred.request.queue.proxy.EntityDocQueryDeferredRequestQueueProxy"
+              linecount="0"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docquery.entity.deferred.request.queue.proxy.EntityDocQueryDeferredRequestQueueProxyJavaImpl"
+              linecount="4"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docquery.entity.deferred.request.queue.proxy.EntityDocQueryDeferredRequestQueueProxyObjectFactory"
+              linecount="3"
+              linerate="80"
+              linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.entity.deferred.response.EntityDocQueryDeferredRequestOrchImpl"
               linecount="2"
@@ -877,7 +937,7 @@
               linesexecuted="0"/>
    <threshold branchcount="12" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.entity.deferred.response.EntityDocQueryDeferredResponseOrchImpl"
-              linecount="42"
+              linecount="47"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -940,14 +1000,14 @@
               linecount="45"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="6" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="10" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.nhin.NhinDocQueryOrchImpl"
-              linecount="59"
+              linecount="71"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="6" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="10" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.nhin.deferred.request.NhinDocQueryDeferredRequestOrchImpl"
-              linecount="54"
+              linecount="58"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -965,14 +1025,14 @@
               linecount="3"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="10" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="14" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.nhin.deferred.request.proxy.NhinDocQueryDeferredRequestProxyWebServiceSecuredImpl"
-              linecount="40"
+              linecount="57"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="6" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="10" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.nhin.deferred.response.NhinDocQueryDeferredResponseOrchImpl"
-              linecount="45"
+              linecount="66"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1010,21 +1070,21 @@
               linecount="3"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="14" branchrate="80" branchsexecuted="0.01"
+   <threshold branchcount="22" branchrate="80" branchsexecuted="0.01"
               class="gov.hhs.fha.nhinc.docquery.nhin.proxy.NhinDocQueryProxyWebServiceSecuredImpl"
-              linecount="45"
+              linecount="60"
               linerate="80"
               linesexecuted="0.11"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.passthru.PassthruDocQueryOrchImpl"
-              linecount="31"
+              linecount="35"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="10" branchrate="80" branchsexecuted="0.08"
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.passthru.deferred.request.PassthruDocQueryDeferredRequestOrchImpl"
-              linecount="37"
+              linecount="9"
               linerate="80"
-              linesexecuted="0.27"/>
+              linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.passthru.deferred.request.proxy.PassthruDocQueryDeferredRequestProxy"
               linecount="0"
@@ -1055,9 +1115,9 @@
               linecount="46"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="12" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.passthru.deferred.response.PassthruDocQueryDeferredResponseOrchImpl"
-              linecount="17"
+              linecount="35"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1120,9 +1180,9 @@
               linecount="45"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="232" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="234" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docregistry.adapter.AdapterComponentDocRegistryOrchImpl"
-              linecount="454"
+              linecount="460"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1148,6 +1208,11 @@
    <threshold branchcount="8" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docregistry.adapter.proxy.AdapterComponentDocRegistryProxyWebServiceUnsecuredImpl"
               linecount="45"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="124" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docrepository.DocumentProcessHelper"
+              linecount="354"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="160" branchrate="80" branchsexecuted="0"
@@ -1257,12 +1322,12 @@
               linesexecuted="0"/>
    <threshold branchcount="4" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.DocRetrieveAuditLog"
-              linecount="40"
+              linecount="43"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="24" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.DocRetrieveDeferredAuditLogger"
-              linecount="64"
+              linecount="67"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="42" branchrate="80" branchsexecuted="0"
@@ -1270,16 +1335,16 @@
               linecount="75"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="2" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.adapter.AdapterDocRetrieveOrchImpl"
-              linecount="25"
+              linecount="34"
               linerate="80"
               linesexecuted="0.04"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="6" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.adapter.component.deferred.request.AdapterComponentDocRetrieveDeferredReqOrchImpl"
-              linecount="13"
+              linecount="62"
               linerate="80"
-              linesexecuted="0"/>
+              linesexecuted="0"/>           
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.adapter.component.deferred.request.proxy.AdapterComponentDocRetrieveDeferredReqProxy"
               linecount="0"
@@ -1305,9 +1370,9 @@
               linecount="46"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.adapter.component.deferred.response.AdapterComponentDocRetrieveDeferredRespOrchImpl"
-              linecount="13"
+              linecount="24"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1382,7 +1447,7 @@
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.adapter.deferred.request.proxy.AdapterDocRetrieveDeferredReqProxyJavaImpl"
-              linecount="8"
+              linecount="9"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1477,12 +1542,12 @@
               linesexecuted="0"/>
    <threshold branchcount="18" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.entity.EntityDocRetrieveOrchImpl"
-              linecount="107"
+              linecount="112"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="28" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="34" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.request.EntityDocRetrieveDeferredReqOrchImpl"
-              linecount="84"
+              linecount="131"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1515,9 +1580,34 @@
               linecount="54"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="30" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="18" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.request.queue.EntityDocRetrieveDeferredReqQueueOrchImpl"
+              linecount="76"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="22" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.request.queue.EntityDocRetrieveDeferredReqQueueProcessOrchImpl"
+              linecount="65"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.request.queue.proxy.EntityDocRetrieveDeferredRequestQueueProxy"
+              linecount="0"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.request.queue.proxy.EntityDocRetrieveDeferredRequestQueueProxyJavaImpl"
+              linecount="4"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.request.queue.proxy.EntityDocRetrieveDeferredRequestQueueProxyObjectFactory"
+              linecount="3"
+              linerate="80"
+              linesexecuted="0"/> 
+   <threshold branchcount="20" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.response.EntityDocRetrieveDeferredRespOrchImpl"
-              linecount="58"
+              linecount="60"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1582,7 +1672,7 @@
               linesexecuted="0"/>
    <threshold branchcount="16" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.nhin.NhinDocRetrieveOrchImpl"
-              linecount="112"
+              linecount="117"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="2" branchrate="80" branchsexecuted="0"
@@ -1592,7 +1682,7 @@
               linesexecuted="0"/>
    <threshold branchcount="8" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.nhin.deferred.request.NhinDocRetrieveDeferredReqOrchImpl"
-              linecount="62"
+              linecount="63"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1612,12 +1702,12 @@
               linesexecuted="0"/>
    <threshold branchcount="8" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.nhin.deferred.request.proxy.NhinDocRetrieveDeferredReqProxyWebServiceSecuredImpl"
-              linecount="38"
+              linecount="56"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="8" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="12" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.nhin.deferred.response.NhinDocRetrieveDeferredRespOrchImpl"
-              linecount="50"
+              linecount="61"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1655,19 +1745,19 @@
               linecount="3"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="10" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="12" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.nhin.proxy.NhinDocRetrieveProxyWebServiceSecuredImpl"
-              linecount="46"
+              linecount="58"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.passthru.NhincProxyDocRetrieveOrchImpl"
-              linecount="31"
+              linecount="32"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="16" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.passthru.deferred.request.NhincProxyDocRetrieveDeferredReqOrchImpl"
-              linecount="41"
+              linecount="42"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -1702,7 +1792,7 @@
               linesexecuted="0"/>
    <threshold branchcount="16" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.passthru.deferred.response.NhincProxyDocRetrieveDeferredRespOrchImpl"
-              linecount="38"
+              linecount="39"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -2395,9 +2485,9 @@
               linecount="51"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="142" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="146" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.gateway.aggregator.document.DocQueryAggregator"
-              linecount="227"
+              linecount="235"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="174" branchrate="80" branchsexecuted="0"
@@ -3096,25 +3186,45 @@
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
-              class="gov.hhs.fha.nhinc.mpi.adapter.component.AdapterComponentMpiOrchImpl"
-              linecount="2"
+              class="gov.hhs.fha.nhinc.mpi.adapter.component.AdapterComponentMpiChecker"
+              linecount="0"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="12" branchrate="80" branchsexecuted="0.05"
+   <threshold branchcount="0" branchrate="1" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.mpi.adapter.component.AdapterComponentMpiCheckerNoOpImpl"
+              linecount="3"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="1" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.mpi.adapter.component.AdapterComponentMpiCheckerObjectFactory"
+              linecount="3"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.mpi.adapter.component.AdapterComponentMpiOrchImpl"
+              linecount="8"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="12" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.mpi.adapter.component.CommonChecks"
               linecount="4"
               linerate="80"
-              linesexecuted="0.02"/>
+              linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.mpi.adapter.component.MpiDataAccess"
               linecount="7"
               linerate="80"
               linesexecuted="0.04"/>
-   <threshold branchcount="6" branchrate="80" branchsexecuted="0.04"
+   <threshold branchcount="38" branchrate="80" branchsexecuted="0.04"
               class="gov.hhs.fha.nhinc.mpi.adapter.component.PatientChecker"
-              linecount="23"
+              linecount="39"
               linerate="80"
               linesexecuted="0.19"/>
+   <threshold branchcount="58" branchrate="0" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.mpi.adapter.component.PatientDbChecker"
+              linecount="44"
+              linerate="80"
+              linesexecuted="0"/>
    <threshold branchcount="28" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.mpi.adapter.component.PersonNameParser"
               linecount="47"
@@ -3123,6 +3233,16 @@
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.mpi.adapter.component.PersonNameParser$nameorder"
               linecount="2"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="206" branchrate="0" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.mpi.adapter.component.hl7parsers.HL7DbParser201305"
+              linecount="289"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="144" branchrate="0" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.mpi.adapter.component.hl7parsers.HL7DbParser201306"
+              linecount="289"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="94" branchrate="80" branchsexecuted="0.47"
@@ -3240,9 +3360,9 @@
               linecount="65"
               linerate="80"
               linesexecuted="0.51"/>
-   <threshold branchcount="44" branchrate="80" branchsexecuted="0.31"
+   <threshold branchcount="112" branchrate="80" branchsexecuted="0.31"
               class="gov.hhs.fha.nhinc.mpilib.PatientMatcher"
-              linecount="51"
+              linecount="124"
               linerate="80"
               linesexecuted="0.38"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -3460,9 +3580,9 @@
               linecount="77"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="6" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="48" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientcorrelation.nhinc.parsers.PRPAIN201309UV.helpers.AssigningAuthorityHomeCommunityMappingHelper"
-              linecount="22"
+              linecount="43"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -3552,17 +3672,17 @@
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientcorrelation.nhinc.parsers.helpers.SenderReceiverHelperMCCIMT000100UV01"
-              linecount="15"
+              linecount="16"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientcorrelation.nhinc.parsers.helpers.SenderReceiverHelperMCCIMT000200UV01"
-              linecount="15"
+              linecount="16"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientcorrelation.nhinc.parsers.helpers.SenderReceiverHelperMCCIMT000300UV01"
-              linecount="15"
+              linecount="16"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -3605,9 +3725,69 @@
               linecount="61"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="22" branchrate="80" branchsexecuted="0.12"
+   <threshold branchcount="26" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.dao.AddressDAO"
+              linecount="105"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="22" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.dao.IdentifierDAO"
+              linecount="85"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="156" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.dao.PatientDAO"
+              linecount="282"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="26" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.dao.PersonnameDAO"
+              linecount="105"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="26" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.dao.PhonenumberDAO"
+              linecount="105"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="2" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.model.Address"
+              linecount="24"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="6" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.model.Identifier"
+              linecount="19"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="12" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.model.Patient"
+              linecount="46"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="2" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.model.Personname"
+              linecount="24"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="2" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.model.Phonenumber"
+              linecount="12"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.persistence.HibernateUtil"
+              linecount="15"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdb.service.PatientService"
+              linecount="13"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="38" branchrate="80" branchsexecuted="0.12"
               class="gov.hhs.fha.nhinc.patientdiscovery.NhinPatientDiscoveryUtils"
-              linecount="22"
+              linecount="28"
               linerate="80"
               linesexecuted="0.07"/>
    <threshold branchcount="200" branchrate="80" branchsexecuted="0.78"
@@ -3625,9 +3805,9 @@
               linecount="32"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="16" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="26" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.PatientDiscoveryAuditLogger"
-              linecount="52"
+              linecount="82"
               linerate="80"
               linesexecuted="0.01"/>
    <threshold branchcount="58" branchrate="80" branchsexecuted="0.04"
@@ -3645,9 +3825,9 @@
               linecount="3"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.adapter.deferred.request.error.AdapterPatientDiscoveryDeferredReqErrorOrchImpl"
-              linecount="3"
+              linecount="14"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -3710,9 +3890,9 @@
               linecount="43"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="28" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.adapter.deferred.request.queue.AdapterPatientDiscoveryAsyncReqQueueProxyOrchImpl"
-              linecount="5"
+              linecount="49"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -3850,9 +4030,14 @@
               linecount="39"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="10" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="16" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.entity.deferred.request.queue.EntityPatientDiscoveryDeferredReqQueueOrchImpl"
-              linecount="34"
+              linecount="54"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="34" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdiscovery.entity.deferred.request.queue.EntityPatientDiscoveryDeferredReqQueueProcessOrchImpl"
+              linecount="67"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -3887,7 +4072,7 @@
               linesexecuted="0"/>
    <threshold branchcount="12" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.entity.deferred.response.EntityPatientDiscoveryDeferredResponseOrchImpl"
-              linecount="50"
+              linecount="54"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -3952,7 +4137,7 @@
               linesexecuted="0.4"/>
    <threshold branchcount="4" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.nhin.NhinPatientDiscoveryOrchImpl"
-              linecount="21"
+              linecount="32"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="28" branchrate="80" branchsexecuted="0"
@@ -3977,12 +4162,12 @@
               linesexecuted="0"/>
    <threshold branchcount="10" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.nhin.deferred.request.proxy.NhinPatientDiscoveryDeferredReqProxyWebServiceSecuredImpl"
-              linecount="37"
+              linecount="51"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="38" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="86" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.nhin.deferred.response.NhinPatientDiscoveryDeferredRespOrchImpl"
-              linecount="102"
+              linecount="125"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -4020,14 +4205,14 @@
               linecount="3"
               linerate="80"
               linesexecuted="0.02"/>
-   <threshold branchcount="10" branchrate="80" branchsexecuted="0.01"
+   <threshold branchcount="16" branchrate="80" branchsexecuted="0.01"
               class="gov.hhs.fha.nhinc.patientdiscovery.nhin.proxy.NhinPatientDiscoveryProxyWebServiceSecuredImpl"
-              linecount="38"
+              linecount="48"
               linerate="80"
               linesexecuted="0.11"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="6" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.passthru.NhincPatientDiscoveryOrchImpl"
-              linecount="19"
+              linecount="26"
               linerate="80"
               linesexecuted="0.1"/>
    <threshold branchcount="2" branchrate="80" branchsexecuted="0"
@@ -4065,9 +4250,9 @@
               linecount="40"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="6" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.passthru.deferred.response.PassthruPatientDiscoveryDeferredRespOrchImpl"
-              linecount="9"
+              linecount="31"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -4150,14 +4335,49 @@
               linecount="1"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="82" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="104" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.response.TrustMode"
-              linecount="70"
+              linecount="112"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="106" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="122" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.response.VerifyMode"
-              linecount="126"
+              linecount="123"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="20" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.perfrepo.PerformanceManager"
+              linecount="67"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="80" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.perfrepo.dao.PerfrepositoryDao"
+              linecount="280"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.perfrepo.model.CountData"
+              linecount="10"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.perfrepo.model.DetailData"
+              linecount="22"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.perfrepo.model.PerformanceResponse"
+              linecount="7"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.perfrepo.model.Perfrepository"
+              linecount="28"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.perfrepo.persistance.HibernateUtil"
+              linecount="15"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -4216,8 +4436,28 @@
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pap.AdapterPAPConstants"
+              linecount="1"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="6" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pap.AdapterPAPImpl"
+              linecount="58"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.AdapterPDPConstants"
+              linecount="1"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.AdapterPDPProxy"
               linecount="0"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="174" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.AdapterPDPProxyJavaImpl"
+              linecount="367"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -4251,13 +4491,63 @@
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.AttributeDesignatorType"
+              linecount="7"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.AttributeValueType"
+              linecount="7"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.EffectType"
+              linecount="11"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.ObjectFactory"
+              linecount="10"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.Policy"
+              linecount="21"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.RuleType"
+              linecount="13"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.SubjectMatchType"
+              linecount="10"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="2" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.SubjectType"
+              linecount="4"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="2" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.SubjectsType"
+              linecount="4"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.policyengine.adapter.pdp.proxy.TargetType"
+              linecount="4"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.policyengine.adapter.pep.AdapterPEPException"
               linecount="8"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="168" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="170" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.policyengine.adapter.pep.AdapterPEPImpl"
-              linecount="389"
+              linecount="422"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -4325,9 +4615,9 @@
               linecount="515"
               linerate="80"
               linesexecuted="3.66"/>
-   <threshold branchcount="222" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="266" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.policyengine.adapter.pip.PatientConsentManager"
-              linecount="291"
+              linecount="341"
               linerate="80"
               linesexecuted="0.03"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -4525,11 +4815,11 @@
               linecount="63"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="104" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="110" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.saml.extraction.SamlTokenCreator"
-              linecount="107"
+              linecount="115"
               linerate="80"
-              linesexecuted="0.01"/>
+              linesexecuted="0"/>
    <threshold branchcount="232" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.saml.extraction.SamlTokenExtractor"
               linecount="399"
@@ -4835,14 +5125,14 @@
               linecount="171"
               linerate="80"
               linesexecuted="1.04"/>
-   <threshold branchcount="58" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="88" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.transform.audit.DocumentRetrieveDeferredTransforms"
-              linecount="164"
+              linecount="178"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="48" branchrate="80" branchsexecuted="0.24"
+   <threshold branchcount="102" branchrate="80" branchsexecuted="0.24"
               class="gov.hhs.fha.nhinc.transform.audit.DocumentRetrieveTransforms"
-              linecount="103"
+              linecount="147"
               linerate="80"
               linesexecuted="0.94"/>
    <threshold branchcount="36" branchrate="80" branchsexecuted="0.18"
@@ -4855,9 +5145,9 @@
               linecount="85"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="152" branchrate="80" branchsexecuted="0.87"
+   <threshold branchcount="436" branchrate="80" branchsexecuted="0.87"
               class="gov.hhs.fha.nhinc.transform.audit.PatientDiscoveryTransforms"
-              linecount="445"
+              linecount="497"
               linerate="80"
               linesexecuted="3.47"/>
    <threshold branchcount="142" branchrate="80" branchsexecuted="0.71"
@@ -4890,6 +5180,16 @@
               linecount="441"
               linerate="80"
               linesexecuted="1.85"/>
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.transform.document.DocQueryAckTranforms"
+              linecount="14"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.transform.document.DocRetrieveAckTranforms"
+              linecount="14"
+              linerate="80"
+              linesexecuted="0"/>
    <threshold branchcount="22" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.transform.document.DocumentQueryTransform"
               linecount="58"
@@ -4925,9 +5225,9 @@
               linecount="8"
               linerate="80"
               linesexecuted="0.06"/>
-   <threshold branchcount="40" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="44" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.transform.policy.AdhocQueryTransformHelper"
-              linecount="94"
+              linecount="103"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="18" branchrate="80" branchsexecuted="0.14"
@@ -4962,7 +5262,7 @@
               linesexecuted="0"/>
    <threshold branchcount="10" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.transform.policy.DocRetrieveTransformHelper"
-              linecount="32"
+              linecount="36"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="10" branchrate="80" branchsexecuted="0"
@@ -4991,7 +5291,7 @@
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="8" branchrate="80" branchsexecuted="0"
-              class="gov.hhs.fha.nhinc.transform.policy.PurposeForUseHelper"
+              class="gov.hhs.fha.nhinc.transform.policy.PurposeOfUseHelper"
               linecount="16"
               linerate="80"
               linesexecuted="0"/>
@@ -5035,11 +5335,11 @@
               linecount="1"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="104" branchrate="80" branchsexecuted="0.49"
+   <threshold branchcount="190" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.transform.subdisc.HL7AckTransforms"
-              linecount="67"
+              linecount="101"
               linerate="80"
-              linesexecuted="0.62"/>
+              linesexecuted="0"/>
    <threshold branchcount="120" branchrate="80" branchsexecuted="0.02"
               class="gov.hhs.fha.nhinc.transform.subdisc.HL7ArrayTransforms"
               linecount="179"
@@ -5125,9 +5425,9 @@
               linecount="59"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="12" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="64" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.util.HomeCommunityMap"
-              linecount="10"
+              linecount="52"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="18" branchrate="80" branchsexecuted="0.04"
@@ -5155,6 +5455,11 @@
               linecount="40"
               linerate="80"
               linesexecuted="0.33"/>
+   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.util.format.XMLDateUtil"
+              linecount="22"
+              linerate="80"
+              linesexecuted="0"/>
    <threshold branchcount="10" branchrate="80" branchsexecuted="0.09"
               class="gov.hhs.fha.nhinc.util.hash.SHA1HashCode"
               linecount="18"

@@ -1,14 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *
  */
-
 package gov.hhs.fha.nhinc.patientdiscovery;
 
 import gov.hhs.fha.nhinc.common.connectionmanager.dao.AssigningAuthorityHomeCommunityMappingDAO;
 import gov.hhs.fha.nhinc.transform.subdisc.HL7PRPA201305Transforms;
 import gov.hhs.fha.nhinc.transform.subdisc.HL7PRPA201306Transforms;
 import gov.hhs.fha.nhinc.transform.subdisc.HL7PatientTransforms;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.JAXBElement;
 import org.apache.commons.logging.Log;
 import org.hl7.v3.COCTMT090300UV01AssignedDevice;
@@ -147,9 +150,12 @@ public class PatientDiscovery201306ProcessorTest {
                     return "hcid";
                 }
                 @Override
-                protected String getAssigningAuthority(PRPAIN201306UV02 request)
+                protected List<String> extractAAListFrom201306(PRPAIN201306UV02 request)
                 {
-                    return "aa";
+                    List<String> assigningAuthorityIds = new ArrayList<String>();
+                    assigningAuthorityIds.add("aa");
+                    return assigningAuthorityIds;
+
                 }
             };
             context.checking(new Expectations()
@@ -192,9 +198,12 @@ public class PatientDiscovery201306ProcessorTest {
                     return null;
                 }
                 @Override
-                protected String getAssigningAuthority(PRPAIN201306UV02 request)
+                protected List<String> extractAAListFrom201306(PRPAIN201306UV02 request)
                 {
-                    return "aa";
+                    List<String> assigningAuthorityIds = new ArrayList<String>();
+                    assigningAuthorityIds.add("aa");
+                    return assigningAuthorityIds;
+
                 }
             };
             context.checking(new Expectations()
@@ -238,9 +247,12 @@ public class PatientDiscovery201306ProcessorTest {
                     return "hcid";
                 }
                 @Override
-                protected String getAssigningAuthority(PRPAIN201306UV02 request)
+                protected List<String> extractAAListFrom201306(PRPAIN201306UV02 request)
                 {
-                    return null;
+                    List<String> assigningAuthorityIds = new ArrayList<String>();
+                    assigningAuthorityIds.add(null);
+                    return assigningAuthorityIds;
+
                 }
             };
             context.checking(new Expectations()
@@ -284,9 +296,12 @@ public class PatientDiscovery201306ProcessorTest {
                     return "hcid";
                 }
                 @Override
-                protected String getAssigningAuthority(PRPAIN201306UV02 request)
+                protected List<String> extractAAListFrom201306(PRPAIN201306UV02 request)
                 {
-                    return "aa";
+                    List<String> assigningAuthorityIds = new ArrayList<String>();
+                    assigningAuthorityIds.add("aa");
+                    return assigningAuthorityIds;
+
                 }
             };
             context.checking(new Expectations()
@@ -338,9 +353,12 @@ public class PatientDiscovery201306ProcessorTest {
                     return "hcid";
                 }
                 @Override
-                protected String getAssigningAuthority(PRPAIN201306UV02 request)
+                protected List<String> extractAAListFrom201306(PRPAIN201306UV02 request)
                 {
-                    return "aa";
+                    List<String> assigningAuthorityIds = new ArrayList<String>();
+                    assigningAuthorityIds.add("aa");
+                    return assigningAuthorityIds;
+
                 }
             };
             context.checking(new Expectations()
@@ -1294,7 +1312,7 @@ public class PatientDiscovery201306ProcessorTest {
         String targetCommunityId = "3.3";
         PatientDiscovery201306Processor instance = new PatientDiscovery201306Processor();
         PRPAIN201306UV02 result = instance.createNewRequest(msg, targetCommunityId);
-        
+
         assertEquals(targetCommunityId, result.getReceiver().get(0).getDevice().getAsAgent().getValue().getRepresentedOrganization().getValue().getId().get(0).getRoot());
     }
 

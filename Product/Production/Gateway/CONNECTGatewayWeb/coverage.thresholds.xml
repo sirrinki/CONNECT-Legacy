@@ -112,7 +112,7 @@
               linesexecuted="0"/>
    <threshold branchcount="6" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.entity.EntityDocQueryImpl"
-              linecount="36"
+              linecount="41"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="2" branchrate="80" branchsexecuted="0"
@@ -155,14 +155,24 @@
               linecount="2"
               linerate="80"
               linesexecuted="0"/>
-   <threshold branchcount="4" branchrate="80" branchsexecuted="0"
+   <threshold branchcount="8" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docquery.entity.deferred.response.EntityDocQueryDeferredResponseUnsecuredImpl"
+              linecount="28"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="2" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docquery.entity.deferred.request.queue.EntityDocQueryDeferredReqQueueProcess"
               linecount="8"
               linerate="80"
               linesexecuted="0"/>
+   <threshold branchcount="8" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docquery.entity.deferred.request.queue.EntityDocQueryDeferredReqQueueProcessImpl"
+              linecount="13"
+              linerate="80"
+              linesexecuted="0"/>              
    <threshold branchcount="4" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.entity.EntityDocRetreiveImpl"
-              linecount="14"
+              linecount="20"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
@@ -189,7 +199,17 @@
               class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.request.EntityDocRetrieveDeferredRequestImpl"
               linecount="19"
               linerate="80"
+              linesexecuted="0"/>              
+   <threshold branchcount="2" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.request.queue.EntityDocRetrieveDeferredReqQueueProcess"
+              linecount="8"
+              linerate="80"
               linesexecuted="0"/>
+   <threshold branchcount="8" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.request.queue.EntityDocRetrieveDeferredReqQueueProcessImpl"
+              linecount="13"
+              linerate="80"
+              linesexecuted="0"/>           
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.docretrieve.entity.deferred.response.EntityDocRetrieveDeferredResp"
               linecount="2"
@@ -378,6 +398,16 @@
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"
               class="gov.hhs.fha.nhinc.patientdiscovery.entity.deferred.request.queue.EntityPatientDiscoveryDeferredReqQueueSecured"
               linecount="2"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="14" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdiscovery.entity.deferred.request.queue.EntityPatientDiscoveryDeferredReqQueueProcess"
+              linecount="12"
+              linerate="80"
+              linesexecuted="0"/>
+   <threshold branchcount="14" branchrate="80" branchsexecuted="0"
+              class="gov.hhs.fha.nhinc.patientdiscovery.entity.deferred.request.queue.EntityPatientDiscoveryDeferredReqQueueProcessImpl"
+              linecount="13"
               linerate="80"
               linesexecuted="0"/>
    <threshold branchcount="0" branchrate="80" branchsexecuted="0"

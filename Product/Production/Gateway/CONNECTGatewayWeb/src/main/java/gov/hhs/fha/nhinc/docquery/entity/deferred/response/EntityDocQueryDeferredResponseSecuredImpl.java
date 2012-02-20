@@ -4,11 +4,6 @@
  * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
  *  
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package gov.hhs.fha.nhinc.docquery.entity.deferred.response;
 
 import gov.hhs.fha.nhinc.async.AsyncMessageIdExtractor;
@@ -25,20 +20,19 @@ import javax.xml.ws.WebServiceContext;
  * @author jhoppesc
  */
 public class EntityDocQueryDeferredResponseSecuredImpl {
+
     public DocQueryAcknowledgementType crossGatewayQueryResponse(RespondingGatewayCrossGatewayQueryResponseSecuredType body, WebServiceContext context) {
         AssertionType assertion = SamlTokenExtractor.GetAssertion(context);
 
         // Extract the message id value from the WS-Addressing Header and place it in the Assertion Class
         if (assertion != null) {
-            AsyncMessageIdExtractor msgIdExtractor = new AsyncMessageIdExtractor();
-            assertion.setMessageId(msgIdExtractor.GetAsyncMessageId(context));
-            List<String> relatesToList = msgIdExtractor.GetAsyncRelatesTo(context);
+            assertion.setMessageId(AsyncMessageIdExtractor.GetAsyncMessageId(context));
+            List<String> relatesToList = AsyncMessageIdExtractor.GetAsyncRelatesTo(context);
             if (NullChecker.isNotNullish(relatesToList)) {
-               assertion.getRelatesToList().add(msgIdExtractor.GetAsyncRelatesTo(context).get(0));
+                assertion.getRelatesToList().add(AsyncMessageIdExtractor.GetAsyncRelatesTo(context).get(0));
             }
         }
 
         return new EntityDocQueryDeferredResponseOrchImpl().respondingGatewayCrossGatewayQuery(body.getAdhocQueryResponse(), assertion, body.getNhinTargetCommunities());
     }
-
 }

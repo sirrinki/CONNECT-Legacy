@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<!-- 
+    <!-- 
 
-		OASIS takes no position regarding the validity or scope of any 
-		intellectual property or other rights that might be claimed to 
-		pertain to the implementation or use of the technology described 
-		in this document or the extent to which any license under such 
-		rights might or might not be available; neither does it represent 
-		that it has made any effort to identify any such rights. 
-		Information on OASIS's procedures with respect to rights in 
-		OASIS specifications can be found at the OASIS website. Copies 
-		of claims of rights made available for publication and any 
-		assurances of licenses to be made available, or the result of 
-		an attempt made to obtain a general license or permission for 
-		the use of such proprietary rights by implementors or users 
-		of this specification, can be obtained from the OASIS Executive 
-		Director.
-		
-		OASIS invites any interested party to bring to its attention 
-		any copyrights, patents or patent applications, or other 
-		proprietary rights which may cover technology that may be 
-		required to implement this specification. Please address the 
-		information to the OASIS Executive Director.
-		
-		Copyright (C) OASIS Open (2004-2006). All Rights Reserved.
-		
-		This document and translations of it may be copied and furnished 
-		to others, and derivative works that comment on or otherwise 
-		explain it or assist in its implementation may be prepared, 
-		copied, published and distributed, in whole or in part, without 
-		restriction of any kind, provided that the above copyright notice 
-		and this paragraph are included on all such copies and derivative 
-		works. However, this document itself may not be modified in any 
-		way, such as by removing the copyright notice or references to 
-		OASIS, except as needed for the purpose of developing OASIS 
-		specifications, in which case the procedures for copyrights 
-		defined in the OASIS Intellectual Property Rights document must 
-		be followed, or as required to translate it into languages other 
-		than English. 
-	
-		The limited permissions granted above are perpetual and will not 
-		be revoked by OASIS or its successors or assigns. 
-		
-		This document and the information contained herein is provided 
-		on an "AS IS" basis and OASIS DISCLAIMS ALL WARRANTIES, EXPRESS 
-		OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE 
-		USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR 
-		ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A 
-		PARTICULAR PURPOSE.
-	
-	-->
+        OASIS takes no position regarding the validity or scope of any 
+        intellectual property or other rights that might be claimed to 
+        pertain to the implementation or use of the technology described 
+        in this document or the extent to which any license under such 
+        rights might or might not be available; neither does it represent 
+        that it has made any effort to identify any such rights. 
+        Information on OASIS's procedures with respect to rights in 
+        OASIS specifications can be found at the OASIS website. Copies 
+        of claims of rights made available for publication and any 
+        assurances of licenses to be made available, or the result of 
+        an attempt made to obtain a general license or permission for 
+        the use of such proprietary rights by implementors or users 
+        of this specification, can be obtained from the OASIS Executive 
+        Director.
+        
+        OASIS invites any interested party to bring to its attention 
+        any copyrights, patents or patent applications, or other 
+        proprietary rights which may cover technology that may be 
+        required to implement this specification. Please address the 
+        information to the OASIS Executive Director.
+        
+        Copyright (C) OASIS Open (2004-2006). All Rights Reserved.
+        
+        This document and translations of it may be copied and furnished 
+        to others, and derivative works that comment on or otherwise 
+        explain it or assist in its implementation may be prepared, 
+        copied, published and distributed, in whole or in part, without 
+        restriction of any kind, provided that the above copyright notice 
+        and this paragraph are included on all such copies and derivative 
+        works. However, this document itself may not be modified in any 
+        way, such as by removing the copyright notice or references to 
+        OASIS, except as needed for the purpose of developing OASIS 
+        specifications, in which case the procedures for copyrights 
+        defined in the OASIS Intellectual Property Rights document must 
+        be followed, or as required to translate it into languages other 
+        than English. 
+    
+        The limited permissions granted above are perpetual and will not 
+        be revoked by OASIS or its successors or assigns. 
+        
+        This document and the information contained herein is provided 
+        on an "AS IS" basis and OASIS DISCLAIMS ALL WARRANTIES, EXPRESS 
+        OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE 
+        USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR 
+        ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A 
+        PARTICULAR PURPOSE.
+    
+    -->
 <wsdl:definitions xmlns:wsntw="http://docs.oasis-open.org/wsn/bw-2" 
    xmlns:wsnt="http://docs.oasis-open.org/wsn/b-2" 
    xmlns:wsrf-rw="http://docs.oasis-open.org/wsrf/rw-2" 
@@ -384,83 +384,83 @@
         <vprop:query>resource</vprop:query>
     </vprop:propertyAlias>
 
-  <!-- Define purposeForUseRoleCode property on each receiving message -->
-    <vprop:property name="purposeForUseRoleCode" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseRoleCode"
+  <!-- Define purposeOfUseRoleCode property on each receiving message -->
+    <vprop:property name="purposeOfUseRoleCode" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseRoleCode"
      messageType="wsntw:UnsubscribeRequest" part="UnsubscribeRequest"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseRoleCode</vprop:query>
+        <vprop:query>purposeOfUseRoleCode</vprop:query>
     </vprop:propertyAlias>
-    <vprop:property name="purposeForUseRoleCode" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseRoleCode"
+    <vprop:property name="purposeOfUseRoleCode" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseRoleCode"
      messageType="wsntw:Notify" part="Notify"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseRoleCode</vprop:query>
+        <vprop:query>purposeOfUseRoleCode</vprop:query>
     </vprop:propertyAlias>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseRoleCode"
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseRoleCode"
      messageType="wsntw:SubscribeRequest" part="SubscribeRequest"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseRoleCode</vprop:query>
+        <vprop:query>purposeOfUseRoleCode</vprop:query>
     </vprop:propertyAlias>
   
-  <!-- Define purposeForUseCodeSystem property on each receiving message -->
-    <vprop:property name="purposeForUseCodeSystem" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseCodeSystem"
+  <!-- Define purposeOfUseCodeSystem property on each receiving message -->
+    <vprop:property name="purposeOfUseCodeSystem" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseCodeSystem"
      messageType="wsntw:UnsubscribeRequest" part="UnsubscribeRequest"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseCodeSystem</vprop:query>
+        <vprop:query>purposeOfUseCodeSystem</vprop:query>
     </vprop:propertyAlias>
-    <vprop:property name="purposeForUseCodeSystem" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseCodeSystem"
+    <vprop:property name="purposeOfUseCodeSystem" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseCodeSystem"
      messageType="wsntw:Notify" part="Notify"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseCodeSystem</vprop:query>
+        <vprop:query>purposeOfUseCodeSystem</vprop:query>
     </vprop:propertyAlias>
-    <vprop:property name="purposeForUseCodeSystem" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseCodeSystem"
+    <vprop:property name="purposeOfUseCodeSystem" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseCodeSystem"
      messageType="wsntw:SubscribeRequest" part="SubscribeRequest"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseCodeSystem</vprop:query>
+        <vprop:query>purposeOfUseCodeSystem</vprop:query>
     </vprop:propertyAlias>
 
-  <!-- Define purposeForUseCodeSystemName property on each receiving message -->
-    <vprop:property name="purposeForUseCodeSystemName" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseCodeSystemName"
+  <!-- Define purposeOfUseCodeSystemName property on each receiving message -->
+    <vprop:property name="purposeOfUseCodeSystemName" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseCodeSystemName"
      messageType="wsntw:UnsubscribeRequest" part="UnsubscribeRequest"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseCodeSystemName</vprop:query>
+        <vprop:query>purposeOfUseCodeSystemName</vprop:query>
     </vprop:propertyAlias>
-    <vprop:property name="purposeForUseCodeSystemName" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseCodeSystemName"
+    <vprop:property name="purposeOfUseCodeSystemName" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseCodeSystemName"
      messageType="wsntw:Notify" part="Notify"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseCodeSystemName</vprop:query>
+        <vprop:query>purposeOfUseCodeSystemName</vprop:query>
     </vprop:propertyAlias>
-    <vprop:property name="purposeForUseCodeSystemName" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseCodeSystemName"
+    <vprop:property name="purposeOfUseCodeSystemName" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseCodeSystemName"
      messageType="wsntw:SubscribeRequest" part="SubscribeRequest"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseCodeSystemName</vprop:query>
+        <vprop:query>purposeOfUseCodeSystemName</vprop:query>
     </vprop:propertyAlias>
 
-  <!-- Define purposeForUseDisplayName property on each receiving message -->
-    <vprop:property name="purposeForUseDisplayName" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseDisplayName"
+  <!-- Define purposeOfUseDisplayName property on each receiving message -->
+    <vprop:property name="purposeOfUseDisplayName" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseDisplayName"
      messageType="wsntw:UnsubscribeRequest" part="UnsubscribeRequest"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseDisplayName</vprop:query>
+        <vprop:query>purposeOfUseDisplayName</vprop:query>
     </vprop:propertyAlias>
-    <vprop:property name="purposeForUseDisplayName" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseDisplayName"
+    <vprop:property name="purposeOfUseDisplayName" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseDisplayName"
      messageType="wsntw:Notify" part="Notify"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseDisplayName</vprop:query>
+        <vprop:query>purposeOfUseDisplayName</vprop:query>
     </vprop:propertyAlias>
-    <vprop:property name="purposeForUseDisplayName" type="xsd:string"/>
-    <vprop:propertyAlias propertyName="wsntw:purposeForUseDisplayName"
+    <vprop:property name="purposeOfUseDisplayName" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="wsntw:purposeOfUseDisplayName"
      messageType="wsntw:SubscribeRequest" part="SubscribeRequest"
      sxnmp:nmProperty="org.glassfish.openesb.outbound.custom.properties">
-        <vprop:query>purposeForUseDisplayName</vprop:query>
+        <vprop:query>purposeOfUseDisplayName</vprop:query>
     </vprop:propertyAlias>
   
   <!-- Define userFirstName property on each receiving message -->
@@ -758,7 +758,7 @@
                         <sp:IncludeTimestamp/>
                         <sp:AlgorithmSuite>
                             <wsp:Policy>
-                                <sp:Basic128/>
+                                <sp:Basic256/>
                             </wsp:Policy>
                         </sp:AlgorithmSuite>
                     </wsp:Policy>

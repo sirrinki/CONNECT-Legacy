@@ -6,6 +6,9 @@
  */
 package gov.hhs.fha.nhinc.docretrieve.entity.deferred.request;
 
+import gov.hhs.fha.nhinc.async.AsyncMessageIdCreator;
+import gov.hhs.fha.nhinc.async.AsyncMessageProcessHelper;
+import gov.hhs.fha.nhinc.asyncmsgs.dao.AsyncMsgRecordDao;
 import gov.hhs.fha.nhinc.common.eventcommon.DocRetrieveEventType;
 import gov.hhs.fha.nhinc.common.eventcommon.DocRetrieveMessageType;
 import gov.hhs.fha.nhinc.common.nhinccommon.AssertionType;
@@ -14,25 +17,29 @@ import gov.hhs.fha.nhinc.common.nhinccommon.NhinTargetCommunitiesType;
 import gov.hhs.fha.nhinc.common.nhinccommon.NhinTargetSystemType;
 import gov.hhs.fha.nhinc.common.nhinccommonadapter.CheckPolicyRequestType;
 import gov.hhs.fha.nhinc.common.nhinccommonadapter.CheckPolicyResponseType;
-import gov.hhs.fha.nhinc.common.nhinccommonproxy.RespondingGatewayCrossGatewayRetrieveSecuredRequestType;
-import gov.hhs.fha.nhinc.connectmgr.ConnectionManagerCache;
-import gov.hhs.fha.nhinc.connectmgr.ConnectionManagerException;
-import gov.hhs.fha.nhinc.connectmgr.data.CMUrlInfo;
-import gov.hhs.fha.nhinc.connectmgr.data.CMUrlInfos;
+import gov.hhs.fha.nhinc.common.nhinccommonentity.RespondingGatewayCrossGatewayRetrieveRequestType;
 import gov.hhs.fha.nhinc.docretrieve.DocRetrieveDeferredAuditLogger;
 import gov.hhs.fha.nhinc.docretrieve.passthru.deferred.request.proxy.PassthruDocRetrieveDeferredReqProxyObjectFactory;
 import gov.hhs.fha.nhinc.docretrieve.passthru.deferred.request.proxy.PassthruDocRetrieveDeferredReqProxy;
 import gov.hhs.fha.nhinc.nhinclib.NhincConstants;
+import gov.hhs.fha.nhinc.perfrepo.PerformanceManager;
 import gov.hhs.fha.nhinc.policyengine.PolicyEngineChecker;
 import gov.hhs.fha.nhinc.policyengine.adapter.proxy.PolicyEngineProxy;
 import gov.hhs.fha.nhinc.policyengine.adapter.proxy.PolicyEngineProxyObjectFactory;
+import gov.hhs.fha.nhinc.properties.PropertyAccessException;
+import gov.hhs.fha.nhinc.properties.PropertyAccessor;
+import gov.hhs.fha.nhinc.transform.document.DocRetrieveAckTranforms;
+import gov.hhs.fha.nhinc.util.HomeCommunityMap;
 import gov.hhs.healthit.nhin.DocRetrieveAcknowledgementType;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType.DocumentRequest;
-import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 
 /**
  * Implementation class for Entity Document Retrieve Deferred request message
@@ -40,104 +47,167 @@ import org.apache.commons.logging.LogFactory;
  */
 public class EntityDocRetrieveDeferredReqOrchImpl {
 
-    private Log log = null;
-    private boolean debugEnabled = false;
+    private static final Log log = LogFactory.getLog(EntityDocRetrieveDeferredReqOrchImpl.class);
 
-    /**
-     * Constructor
-     */
-    public EntityDocRetrieveDeferredReqOrchImpl() {
-        log = createLogger();
-        debugEnabled = log.isDebugEnabled();
+    protected AsyncMessageProcessHelper createAsyncProcesser() {
+        return new AsyncMessageProcessHelper();
     }
 
-    /**
-     *
-     * @return Log
-     */
-    private Log createLogger() {
-        return (log != null) ? log : LogFactory.getLog(this.getClass());
-    }
+    public DocRetrieveAcknowledgementType crossGatewayRetrieveRequest(RetrieveDocumentSetRequestType message, AssertionType assertion, NhinTargetCommunitiesType target) {
 
-    /**
-     * Entity Implementation method
-     * @param crossGatewayRetrieveRequest
-     * @return DocRetrieveAcknowledgementType
-     */
-    public DocRetrieveAcknowledgementType crossGatewayRetrieveRequest(RetrieveDocumentSetRequestType message,
-                                                                      AssertionType assertion,
-                                                                      NhinTargetCommunitiesType target) {
-        if (debugEnabled) {
-            log.debug("Begin EntityDocRetrieveDeferredRequestImpl.crossGatewayRetrieveRequest");
-        }
-        DocRetrieveAcknowledgementType nhincResponse = null;
-        String homeCommunityId = null;
+        log.debug("Begin EntityDocRetrieveDeferredRequestImpl.crossGatewayRetrieveRequest");
+
+        DocRetrieveAcknowledgementType nhincResponse = new DocRetrieveAcknowledgementType();
+        AsyncMessageProcessHelper asyncProcess = createAsyncProcesser();
+        String homeCommunityId = HomeCommunityMap.getLocalHomeCommunityId();
+        String ackMsg = "";
+        boolean bIsQueueOk = false;
+
+        // Audit incoming entity deferred document request
         DocRetrieveDeferredAuditLogger auditLog = new DocRetrieveDeferredAuditLogger();
+        auditLog.auditDocRetrieveDeferredRequest(message, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE, assertion, homeCommunityId);
+
         try {
-            if ((null != message) && (message.getDocumentRequest() != null) && (message.getDocumentRequest().size() > 0)) {
-                auditLog.auditDocRetrieveDeferredRequest(message, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE,assertion);
-                DocumentRequest docRequest = message.getDocumentRequest().get(0);
-                homeCommunityId = docRequest.getHomeCommunityId();
-                RespondingGatewayCrossGatewayRetrieveSecuredRequestType nhinDocRetrieveMsg = new RespondingGatewayCrossGatewayRetrieveSecuredRequestType();
-                // Set document request
-                RetrieveDocumentSetRequestType nhinDocRequest = new RetrieveDocumentSetRequestType();
-                nhinDocRetrieveMsg.setRetrieveDocumentSetRequest(nhinDocRequest);
-                nhinDocRequest.getDocumentRequest().add(docRequest);
-                nhinDocRetrieveMsg.setNhinTargetSystem(buildHomeCommunity(docRequest.getHomeCommunityId()));
-                CMUrlInfos urlInfoList = getEndpoints(target);
-                NhinTargetSystemType oTargetSystem = null;
-                //loop through the communities and send request if results were not null
-                if ((urlInfoList == null) || (urlInfoList.getUrlInfo().isEmpty())) {
-                    log.warn("No targets were found for the Document retrieve deferred service Request");
-                    nhincResponse = buildRegistryErrorAck();
-                } else {
-                    nhincResponse = new DocRetrieveAcknowledgementType();
-                    if (debugEnabled) {
-                                log.debug("Creating NHIN doc retrieve proxy");
-                            }
-                    PassthruDocRetrieveDeferredReqProxyObjectFactory objFactory = new PassthruDocRetrieveDeferredReqProxyObjectFactory();
-                    PassthruDocRetrieveDeferredReqProxy docRetrieveProxy = objFactory.getNhincProxyDocRetrieveDeferredReqProxy();
-                    for (CMUrlInfo urlInfo : urlInfoList.getUrlInfo()) {
-                        if (isPolicyValid(nhinDocRequest, assertion, urlInfo.getHcid())) {
-                            // Call NHIN proxy
-                            oTargetSystem = new NhinTargetSystemType();
-                            oTargetSystem.setUrl(urlInfo.getUrl());
-                            if (debugEnabled) {
-                                log.debug("Calling doc retrieve proxy");
-                            }
-                            nhincResponse = docRetrieveProxy.crossGatewayRetrieveRequest(message, assertion,
-                                                                                         oTargetSystem);
-                        } else {
-                            nhincResponse = buildRegistryErrorAck();
-                        }
+            // Log the start of the performance record
+            Timestamp starttime = new Timestamp(System.currentTimeMillis());
+            Long logId = PerformanceManager.getPerformanceManagerInstance().logPerformanceStart(starttime, "Deferred"+NhincConstants.DOC_RETRIEVE_SERVICE_NAME, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, homeCommunityId);
+
+            // instantiate NHIN doc retrieve proxy
+            PassthruDocRetrieveDeferredReqProxyObjectFactory objFactory = new PassthruDocRetrieveDeferredReqProxyObjectFactory();
+            PassthruDocRetrieveDeferredReqProxy docRetrieveProxy = objFactory.getNhincProxyDocRetrieveDeferredReqProxy();
+
+            // Retrieve the list of doc retrieve request messages
+            List<RespondingGatewayCrossGatewayRetrieveRequestType> retrieveRequestList = buildRetrieveRequestList(message, assertion);
+
+            // Process each doc retrieve request message
+            for (RespondingGatewayCrossGatewayRetrieveRequestType retrieveRequest : retrieveRequestList) {
+                log.debug("----- Processing RespondingGatewayCrossGatewayRetrieveRequestType -----");
+
+                // Create the target gateway system for the current doc retrieve request message
+                NhinTargetSystemType oTargetSystem = buildHomeCommunity(retrieveRequest.getRetrieveDocumentSetRequest().getDocumentRequest().get(0).getHomeCommunityId());
+
+                // The new request is ready for processing, add a new outbound QD entry to the local deferred queue
+                bIsQueueOk = asyncProcess.addRetrieveDocumentsRequest(retrieveRequest, AsyncMsgRecordDao.QUEUE_DIRECTION_OUTBOUND, oTargetSystem.getHomeCommunity().getHomeCommunityId());
+
+                // check for valid queue entry
+                if (bIsQueueOk) {
+
+                    if (isPolicyValid(retrieveRequest.getRetrieveDocumentSetRequest(), retrieveRequest.getAssertion(), oTargetSystem.getHomeCommunity())) {
+                        // Send the deferred doc retrieve request
+                        nhincResponse = docRetrieveProxy.crossGatewayRetrieveRequest(retrieveRequest.getRetrieveDocumentSetRequest(), retrieveRequest.getAssertion(), oTargetSystem);
+                    } else {
+                        ackMsg = "Policy Failed";
+
+                        // Set the error acknowledgement status of the deferred queue entry
+                        nhincResponse = DocRetrieveAckTranforms.createAckMessage(NhincConstants.DOC_RETRIEVE_DEFERRED_REQ_ACK_FAILURE_STATUS_MSG, NhincConstants.DOC_RETRIEVE_DEFERRED_ACK_ERROR_AUTHORIZATION, ackMsg);
+                        asyncProcess.processAck(retrieveRequest.getAssertion().getMessageId(), AsyncMsgRecordDao.QUEUE_STATUS_REQSENTERR, AsyncMsgRecordDao.QUEUE_STATUS_REQSENTERR, nhincResponse);
                     }
+                } else {
+                    ackMsg = "Deferred Retrieve Documents request processing halted; deferred queue repository error encountered";
+
+                    // Set the error acknowledgement status of the deferred queue entry
+                    nhincResponse = DocRetrieveAckTranforms.createAckMessage(NhincConstants.DOC_RETRIEVE_DEFERRED_REQ_ACK_FAILURE_STATUS_MSG, NhincConstants.DOC_RETRIEVE_DEFERRED_ACK_ERROR_INVALID, ackMsg);
+                    asyncProcess.processAck(retrieveRequest.getAssertion().getMessageId(), AsyncMsgRecordDao.QUEUE_STATUS_REQSENTERR, AsyncMsgRecordDao.QUEUE_STATUS_REQSENTERR, nhincResponse);
                 }
             }
-        } catch (Exception ex) {
-            log.error("Error sending doc retrieve deferred message..." + ex.getMessage());
-            nhincResponse = buildRegistryErrorAck();
-            log.error("Fault encountered processing internal document retrieve deferred for community " + homeCommunityId);
+
+            // Log the end of the performance record
+            Timestamp stoptime = new Timestamp(System.currentTimeMillis());
+            PerformanceManager.getPerformanceManagerInstance().logPerformanceStop(logId, starttime, stoptime);
+        } catch (Exception e) {
+            log.error("Exception processing Deferred Retrieve Documents: ", e);
+            nhincResponse = DocRetrieveAckTranforms.createAckMessage(NhincConstants.DOC_RETRIEVE_DEFERRED_REQ_ACK_FAILURE_STATUS_MSG, NhincConstants.DOC_RETRIEVE_DEFERRED_ACK_ERROR_INVALID, e.getMessage());
         }
-        if (null != nhincResponse) {
-            // Audit log - response
-            auditLog.auditDocRetrieveDeferredAckResponse(nhincResponse.getMessage(), assertion, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE);
-        }
-        if (debugEnabled) {
-            log.debug("End EntityDocRetrieveDeferredRequestImpl.crossGatewayRetrieveRequest");
-        }
+
+        // Audit final acknowledgement response
+        auditLog.auditDocRetrieveDeferredAckResponse(nhincResponse.getMessage(), message, null, assertion, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE, homeCommunityId);
+
+        log.debug("End EntityDocRetrieveDeferredRequestImpl.crossGatewayRetrieveRequest");
+
         return nhincResponse;
     }
 
     /**
-     *
-     * @return DocRetrieveAcknowledgementType
+     * Build the list of doc retrieve request messages.  The process is controlled
+     * by the gateway property deferredRetrieveDocumentsRequestProcess; valid values are
+     * <ul>
+     * <li>document - each document creates its own request and queue record</li>
+     * <li>gateway  - all documents for a target community are sent in a single request and queue record</li>
+     * </ul>
+     * 
+     * @param message Entity Retrieve Documents request
+     * @param assertion from Entity Retrieve Documents request
+     * @return
      */
-    private DocRetrieveAcknowledgementType buildRegistryErrorAck() {
-        DocRetrieveAcknowledgementType nhinResponse = new DocRetrieveAcknowledgementType();
-        RegistryResponseType registryResponse = new RegistryResponseType();
-        nhinResponse.setMessage(registryResponse);
-        registryResponse.setStatus("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure");
-        return nhinResponse;
+    private List<RespondingGatewayCrossGatewayRetrieveRequestType> buildRetrieveRequestList(RetrieveDocumentSetRequestType message, AssertionType assertion) {
+        log.debug("Begin EntityDocRetrieveDeferredRequestImpl.buildRetrieveRequestList");
+
+        List<RespondingGatewayCrossGatewayRetrieveRequestType> retrieveRequestList = new ArrayList<RespondingGatewayCrossGatewayRetrieveRequestType>();
+        AsyncMessageProcessHelper asyncProcess = createAsyncProcesser();
+
+        String process = getDeferredRetrieveDocumentsRequestProcess();
+
+        if (process != null && process.equalsIgnoreCase("document")) {
+            // One request for each document
+            for (DocumentRequest docRequest : message.getDocumentRequest()) {
+
+                // Define a cross gateway deferred request for each document for logging
+                RespondingGatewayCrossGatewayRetrieveRequestType nhinDocRetrieveMsg = new RespondingGatewayCrossGatewayRetrieveRequestType();
+                // Set document request
+                RetrieveDocumentSetRequestType nhinDocRequest = new RetrieveDocumentSetRequestType();
+                nhinDocRequest.getDocumentRequest().add(docRequest);
+                nhinDocRetrieveMsg.setRetrieveDocumentSetRequest(nhinDocRequest);
+                // Each new request must generate its own unique assertion Message ID
+                AssertionType newAssertion = asyncProcess.copyAssertionTypeObject(assertion);
+                newAssertion.setMessageId(AsyncMessageIdCreator.generateMessageId());
+                nhinDocRetrieveMsg.setAssertion(newAssertion);
+
+                retrieveRequestList.add(nhinDocRetrieveMsg);
+            }
+        } else {
+            // Consolidate all documents for each target gateway; one request per target gateway
+            HashMap<String, List<DocumentRequest>> requestMap = new HashMap<String, List<DocumentRequest>>();
+            List<DocumentRequest> gatewayDocsRequestList = null;
+
+            for (DocumentRequest docRequest : message.getDocumentRequest()) {
+                String keyValue = docRequest.getHomeCommunityId();
+
+                if (requestMap.containsKey(keyValue)) {
+                    gatewayDocsRequestList = (List<DocumentRequest>)requestMap.get(keyValue);
+                    gatewayDocsRequestList.add(docRequest);
+                } else {
+                    gatewayDocsRequestList = new ArrayList<DocumentRequest>();
+                    gatewayDocsRequestList.add(docRequest);
+                    requestMap.put(keyValue, gatewayDocsRequestList);
+                }
+            }
+
+            if (!requestMap.isEmpty()) {
+                for (Map.Entry<String,List<DocumentRequest>> entry : requestMap.entrySet()) {
+
+                    gatewayDocsRequestList = entry.getValue();
+
+                    // Define a cross gateway deferred request for each document for logging
+                    RespondingGatewayCrossGatewayRetrieveRequestType nhinDocRetrieveMsg = new RespondingGatewayCrossGatewayRetrieveRequestType();
+                    // Set document request
+                    RetrieveDocumentSetRequestType nhinDocRequest = new RetrieveDocumentSetRequestType();
+                    for (DocumentRequest docRequest : gatewayDocsRequestList) {
+                        nhinDocRequest.getDocumentRequest().add(docRequest);
+                    }
+                    nhinDocRetrieveMsg.setRetrieveDocumentSetRequest(nhinDocRequest);
+                    // Each new request must generate its own unique assertion Message ID
+                    AssertionType newAssertion = asyncProcess.copyAssertionTypeObject(assertion);
+                    newAssertion.setMessageId(AsyncMessageIdCreator.generateMessageId());
+                    nhinDocRetrieveMsg.setAssertion(newAssertion);
+
+                    retrieveRequestList.add(nhinDocRetrieveMsg);
+                }
+            }
+        }
+
+        log.debug("End EntityDocRetrieveDeferredRequestImpl.buildRetrieveRequestList");
+
+        return retrieveRequestList;
     }
 
     /**
@@ -153,14 +223,9 @@ public class EntityDocRetrieveDeferredReqOrchImpl {
         return nhinTargetSystem;
     }
 
-    /**
-     * Policy Engine check
-     * @param body
-     * @param assertion
-     * @return boolean
-     */
-    private boolean isPolicyValid(RetrieveDocumentSetRequestType oEachNhinRequest, AssertionType oAssertion, String hcId) {
+    private boolean isPolicyValid(RetrieveDocumentSetRequestType oEachNhinRequest, AssertionType oAssertion, HomeCommunityType targetCommunity) {
         boolean isValid = false;
+
         DocRetrieveEventType checkPolicy = new DocRetrieveEventType();
         DocRetrieveMessageType checkPolicyMessage = new DocRetrieveMessageType();
         checkPolicyMessage.setRetrieveDocumentSetRequest(oEachNhinRequest);
@@ -168,9 +233,7 @@ public class EntityDocRetrieveDeferredReqOrchImpl {
         checkPolicy.setMessage(checkPolicyMessage);
         checkPolicy.setDirection(NhincConstants.POLICYENGINE_OUTBOUND_DIRECTION);
         checkPolicy.setInterface(NhincConstants.AUDIT_LOG_ENTITY_INTERFACE);
-        HomeCommunityType homeCommunity = new HomeCommunityType();
-        homeCommunity.setHomeCommunityId(hcId);
-        checkPolicy.setReceivingHomeCommunity(homeCommunity);
+        checkPolicy.setReceivingHomeCommunity(targetCommunity);
         PolicyEngineChecker policyChecker = new PolicyEngineChecker();
         CheckPolicyRequestType policyReq = policyChecker.checkPolicyDocRetrieve(checkPolicy);
         PolicyEngineProxyObjectFactory policyEngFactory = new PolicyEngineProxyObjectFactory();
@@ -184,19 +247,24 @@ public class EntityDocRetrieveDeferredReqOrchImpl {
     }
 
     /**
-     *
-     * @param targetCommunities
-     * @return CMUrlInfos
+     * Return boolean performance monitor enabled indicator based on gateway property
+     * @return
      */
-    protected CMUrlInfos getEndpoints(NhinTargetCommunitiesType targetCommunities) {
-        CMUrlInfos urlInfoList = null;
-
+    private static String getDeferredRetrieveDocumentsRequestProcess() {
+        String process = "";
         try {
-            urlInfoList = ConnectionManagerCache.getEndpontURLFromNhinTargetCommunities(targetCommunities, NhincConstants.NHIN_DOCRETRIEVE_DEFERRED_REQUEST);
-        } catch (ConnectionManagerException ex) {
-            log.error("Failed to obtain target URLs", ex);
-        }
+            // Use CONNECT utility class to access gateway.properties
+            process = PropertyAccessor.getProperty(NhincConstants.GATEWAY_PROPERTY_FILE, "deferredRetrieveDocumentsRequestProcess");
 
-        return urlInfoList;
+            if (process == null || process.equals("")) {
+                process = "document";   // default is document
+            }
+        } catch (PropertyAccessException ex) {
+            process = "document";   // default is document
+            log.error("Error: Failed to retrieve deferredRetrieveDocumentsRequestProcess from property file: " + NhincConstants.GATEWAY_PROPERTY_FILE);
+            log.error(ex.getMessage());
+        }
+        return process;
     }
+
 }

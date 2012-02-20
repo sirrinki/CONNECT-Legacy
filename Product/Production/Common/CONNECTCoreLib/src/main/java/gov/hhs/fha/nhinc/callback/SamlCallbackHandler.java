@@ -24,6 +24,9 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import com.sun.xml.wss.impl.callback.*;
 import com.sun.xml.wss.saml.*;
+import gov.hhs.fha.nhinc.nhinclib.NhincConstants;
+import gov.hhs.fha.nhinc.properties.PropertyAccessException;
+import gov.hhs.fha.nhinc.properties.PropertyAccessor;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -104,6 +107,8 @@ public class SamlCallbackHandler implements CallbackHandler {
     private static Element svAssertion;
     private static Element hokAssertion20;
     private static HashMap<String, String> factoryVersionMap = new HashMap<String, String>();
+
+    private static final String PURPOSE_FOR_USE_DEPRECATED_ENABLED = "purposeForUseEnabled";
 
     static {
         //WORKAROUND NEEDED IN METRO1.4. TO BE REMOVED LATER.
@@ -233,19 +238,23 @@ public class SamlCallbackHandler implements CallbackHandler {
             // name id of the issuer - For now just use default
             NameID issueId = null;
 
-            if (tokenVals.containsKey(SamlConstants.EVIDENCE_ISSUER_FORMAT_PROP) &&
-                    tokenVals.containsKey(SamlConstants.EVIDENCE_ISSUER_PROP)) {
-               String format = tokenVals.get(SamlConstants.EVIDENCE_ISSUER_FORMAT_PROP).toString();
-               if (VALID_NAME_LIST.contains(format.trim())) {
-                   log.debug("Setting Assertion Issuer format to: " + format);
-                   String issuer = tokenVals.get(SamlConstants.EVIDENCE_ISSUER_PROP).toString();
-                   log.debug("Setting Assertion Issuer to: " + issuer);
-                   issueId = factory.createNameID(issuer, null, format);
-               }
-               else {
-                   issueId = create509NameID(factory, DEFAULT_NAME);
-               }
+            if (tokenVals.containsKey(SamlConstants.ASSERTION_ISSUER_FORMAT_PROP) &&
+                    tokenVals.containsKey(SamlConstants.ASSERTION_ISSUER_PROP)) {
+                log.debug(SamlConstants.ASSERTION_ISSUER_PROP + " = " + tokenVals.get(SamlConstants.ASSERTION_ISSUER_PROP));
+                log.debug(SamlConstants.ASSERTION_ISSUER_FORMAT_PROP + " = " + tokenVals.get(SamlConstants.ASSERTION_ISSUER_FORMAT_PROP));
+
+                String format = tokenVals.get(SamlConstants.ASSERTION_ISSUER_FORMAT_PROP).toString();
+                if (VALID_NAME_LIST.contains(format.trim())) {
+                    log.debug("Setting Assertion Issuer format to: " + format);
+                    String issuer = tokenVals.get(SamlConstants.ASSERTION_ISSUER_PROP).toString();
+                    log.debug("Setting Assertion Issuer to: " + issuer);
+                    issueId = factory.createNameID(issuer, null, format);
+                } else {
+                    log.debug("Not in valid listing of formats: Use default issuer");
+                    issueId = create509NameID(factory, DEFAULT_NAME);
+                }
             } else {
+                log.debug("Assertion issuer not defined: Use default issuer");
                 issueId = create509NameID(factory, DEFAULT_NAME);
             }
 
@@ -393,9 +402,7 @@ public class SamlCallbackHandler implements CallbackHandler {
             log.debug("Create Subject Locality as " + inetAddr + " in domain: " + dnsName);
             subjLoc = factory.createSubjectLocality(inetAddr, dnsName);
         } else {
-            //default to empty locality
-            log.debug("Create default Subject Locality");
-            subjLoc = factory.createSubjectLocality();
+            log.debug("Values for Subject Locality are not provided. This element will not be generated.");
         }
 
         AuthnContext authnContext = null;
@@ -455,54 +462,62 @@ public class SamlCallbackHandler implements CallbackHandler {
 
         statements.addAll(addAssertStatements(factory));
 
-        // Create resource for Authentication Decision Statement
-        String resource = null;
-        if (tokenVals.containsKey(SamlConstants.RESOURCE_PROP) &&
-                tokenVals.get(SamlConstants.RESOURCE_PROP) != null) {
-            resource = tokenVals.get(SamlConstants.RESOURCE_PROP).toString();
-            log.debug("Setting Authentication Decision Resource to: " + resource);
-        } else {
-            log.debug("Default Authentication Decision Resource is: " + resource);
-        }
-
-        // Options are Permit, Deny and Indeterminate
-        String decision = AUTHZ_DECISION_PERMIT;
-        if (tokenVals.containsKey(SamlConstants.AUTHZ_DECISION_PROP) &&
-                tokenVals.get(SamlConstants.AUTHZ_DECISION_PROP) != null) {
-            String requestedDecision = tokenVals.get(SamlConstants.AUTHZ_DECISION_PROP).toString().trim();
-            if (VALID_AUTHZ_DECISION_LIST.contains(requestedDecision)) {
-                log.debug("Setting Authentication Decision to: " + requestedDecision);
-                decision = requestedDecision;
+        // The authorization Decision Statement is optional
+        if (tokenVals.containsKey(SamlConstants.AUTHZ_STATEMENT_EXISTS_PROP) &&
+                tokenVals.get(SamlConstants.AUTHZ_STATEMENT_EXISTS_PROP) != null &&
+                "true".equalsIgnoreCase(tokenVals.get(SamlConstants.AUTHZ_STATEMENT_EXISTS_PROP).toString()))
+        {
+            // Create resource for Authentication Decision Statement
+            String resource = null;
+            if (tokenVals.containsKey(SamlConstants.RESOURCE_PROP) &&
+                    tokenVals.get(SamlConstants.RESOURCE_PROP) != null) {
+                resource = tokenVals.get(SamlConstants.RESOURCE_PROP).toString();
+                log.debug("Setting Authentication Decision Resource to: " + resource);
             } else {
-                log.debug(requestedDecision + " is not recognized as valid, " +
-                        "create default Authentication Decision as: " + AUTHZ_DECISION_PERMIT);
-                log.debug("Should be one of: " + VALID_AUTHZ_DECISION_LIST);
+                log.debug("Default Authentication Decision Resource is: " + resource);
+            }
+
+            // Options are Permit, Deny and Indeterminate
+            String decision = AUTHZ_DECISION_PERMIT;
+            if (tokenVals.containsKey(SamlConstants.AUTHZ_DECISION_PROP) &&
+                    tokenVals.get(SamlConstants.AUTHZ_DECISION_PROP) != null) {
+                String requestedDecision = tokenVals.get(SamlConstants.AUTHZ_DECISION_PROP).toString().trim();
+                if (VALID_AUTHZ_DECISION_LIST.contains(requestedDecision)) {
+                    log.debug("Setting Authentication Decision to: " + requestedDecision);
+                    decision = requestedDecision;
+                } else {
+                    log.debug(requestedDecision + " is not recognized as valid, " +
+                            "create default Authentication Decision as: " + AUTHZ_DECISION_PERMIT);
+                    log.debug("Should be one of: " + VALID_AUTHZ_DECISION_LIST);
+                }
+            } else {
+                log.debug("Create default Authentication Decision as: " + AUTHZ_DECISION_PERMIT);
+            }
+
+            // As of Authorization Framework Spec 2.2 Action is a hard-coded value
+            // Therefore the value of the ACTION_PROP is no longer used
+            List actions = new ArrayList();
+            String actionAttr = AUTHZ_DECISION_ACTION_EXECUTE;
+            log.debug("Setting Authentication Decision Action to: " + actionAttr);
+            try {
+                final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+                final Element elemURAttr = document.createElementNS("urn:oasis:names:tc:SAML:2.0:assertion", "Action");
+                elemURAttr.setAttribute("Namespace", AUTHZ_DECISION_ACTION_NS);
+                elemURAttr.setTextContent(actionAttr);
+                actions.add(elemURAttr);
+            } catch (ParserConfigurationException ex) {
+                actions.add(actionAttr);
+            }
+
+            // Evidence Assertion generation
+            Evidence evidence = createEvidence();
+
+            AuthnDecisionStatement authDecState = factory.createAuthnDecisionStatement(resource, decision, actions, evidence);
+            if (authDecState != null) {
+                statements.add(authDecState);
             }
         } else {
-            log.debug("Create default Authentication Decision as: " + AUTHZ_DECISION_PERMIT);
-        }
-
-        // As of Authorization Framework Spec 2.2 Action is a hard-coded value
-        // Therefore the value of the ACTION_PROP is no longer used
-        List actions = new ArrayList();
-        String actionAttr = AUTHZ_DECISION_ACTION_EXECUTE;
-        log.debug("Setting Authentication Decision Action to: " + actionAttr);
-        try {
-            final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            final Element elemURAttr = document.createElementNS("urn:oasis:names:tc:SAML:2.0:assertion", "Action");
-            elemURAttr.setAttribute("Namespace", AUTHZ_DECISION_ACTION_NS);
-            elemURAttr.setTextContent(actionAttr);
-            actions.add(elemURAttr);
-        } catch (ParserConfigurationException ex) {
-            actions.add(actionAttr);
-        }
-
-        // Evidence Assertion generation
-        Evidence evidence = createEvidence();
-
-        AuthnDecisionStatement authDecState = factory.createAuthnDecisionStatement(resource, decision, actions, evidence);
-        if (authDecState != null) {
-            statements.add(authDecState);
+            log.info("Authorization Decision statement is not specified");
         }
 
         log.debug("SamlCallbackHandler.createAuthnStatements() -- End");
@@ -511,7 +526,7 @@ public class SamlCallbackHandler implements CallbackHandler {
 
     /**
      * Creates the Attribute statements for UserName, UserOrganization,
-     * UserRole, and PurposeForUse
+     * UserRole, and PurposeOfUse
      * @param factory The factory object used to assist in the construction of
      * the SAML Assertion token
      * @return The listing of all Attribute statements
@@ -627,11 +642,20 @@ public class SamlCallbackHandler implements CallbackHandler {
         }
 
         try {
-            // Add the PurposeForUse Attribute
+            /*
+             * Gateway-347 - Support for both values will remain until NHIN Specs updated
+             * Determine whether to use PurposeOfUse or PuposeForUse
+             */
+            String purposeAttributeValueName = "hl7:PurposeOfUse";
+            if (isPurposeForUseEnabled()) {
+                purposeAttributeValueName = "hl7:PurposeForUse";
+            }
+
+            // Add the Purpose Of/For Use Attribute Value
             List attributeValues4 = new ArrayList();
             final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             final Element elemPFUAttr = document.createElementNS("urn:oasis:names:tc:SAML:2.0:assertion", "AttibuteValue");
-            final Element purpose = document.createElementNS(HL7_NS, "hl7:PurposeForUse");
+            final Element purpose = document.createElementNS(HL7_NS, purposeAttributeValueName);
             elemPFUAttr.appendChild(purpose);
 
             purpose.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:type", "hl7:CE");
@@ -680,6 +704,25 @@ public class SamlCallbackHandler implements CallbackHandler {
         log.debug("SamlCallbackHandler.addAssertStatements() -- End");
         return statements;
 
+    }
+
+    /**
+     * Returns boolean condition on whether PurposeForUse is enabled
+     * @return The PurposeForUse enabled setting
+     */
+    private boolean isPurposeForUseEnabled() {
+        boolean match = false;
+        try {
+            // Use CONNECT utility class to access gateway.properties
+            String purposeForUseEnabled = PropertyAccessor.getProperty(NhincConstants.GATEWAY_PROPERTY_FILE, PURPOSE_FOR_USE_DEPRECATED_ENABLED);
+            if (purposeForUseEnabled != null && purposeForUseEnabled.equalsIgnoreCase("true")) {
+                match = true;
+            }
+        } catch (PropertyAccessException ex) {
+            log.error("Error: Failed to retrieve " + PURPOSE_FOR_USE_DEPRECATED_ENABLED + " from property file: " + NhincConstants.GATEWAY_PROPERTY_FILE);
+            log.error(ex.getMessage());
+        }
+        return match;
     }
 
     /**

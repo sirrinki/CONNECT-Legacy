@@ -40,7 +40,9 @@
   </loadpackages>
 
   <target name="test">
-    <call target="rebuild-setups"/>
+    <property name="GlassFish.Domain.Templates.File.Path" value="${property::value(test1)}"/>
+    <property name="GlassFish.NonFIPS.Domain.Templates.File.Path"      value="${Common.Directory.Install.Path}/GlassFish/templates/connect/domain.xml.template" overwrite="false"/>
+    <echo message="${GlassFish.Domain.Templates.File.Path}"/>
   </target>
 
   <target name="rebuild-setups">

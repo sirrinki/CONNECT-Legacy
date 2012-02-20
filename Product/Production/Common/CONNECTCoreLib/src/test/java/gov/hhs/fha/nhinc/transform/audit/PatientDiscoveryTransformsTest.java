@@ -1,6 +1,8 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *
  */
 package gov.hhs.fha.nhinc.transform.audit;
 
@@ -106,7 +108,7 @@ public class PatientDiscoveryTransformsTest {
             }
         });
 
-        testSubject.transformEntityPRPAIN201305RequestToAuditMsg(null, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE);
+        testSubject.transformEntityPRPAIN201305RequestToAuditMsg(null, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
         context.assertIsSatisfied();
     }
 
@@ -130,7 +132,7 @@ public class PatientDiscoveryTransformsTest {
             }
         });
 
-        testSubject.transformNhinPRPAIN201305RequestToAuditMsg(null, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE);
+        testSubject.transformNhinPRPAIN201305RequestToAuditMsg(null, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
         context.assertIsSatisfied();
     }
 
@@ -154,7 +156,7 @@ public class PatientDiscoveryTransformsTest {
             }
         });
 
-        testSubject.transformAdapterPRPAIN201305RequestToAuditMsg(null, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ADAPTER_INTERFACE);
+        testSubject.transformAdapterPRPAIN201305RequestToAuditMsg(null, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ADAPTER_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
         context.assertIsSatisfied();
     }
 
@@ -179,7 +181,7 @@ public class PatientDiscoveryTransformsTest {
         });
 
         RespondingGatewayPRPAIN201305UV02RequestType oPatientDiscoveryRequest = new RespondingGatewayPRPAIN201305UV02RequestType();
-        testSubject.transformEntityPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE);
+        testSubject.transformEntityPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
         context.assertIsSatisfied();
     }
 
@@ -204,7 +206,7 @@ public class PatientDiscoveryTransformsTest {
         });
 
         PRPAIN201305UV02 oPatientDiscoveryRequest = new PRPAIN201305UV02();
-        testSubject.transformNhinPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE);
+        testSubject.transformNhinPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
         context.assertIsSatisfied();
     }
 
@@ -229,7 +231,7 @@ public class PatientDiscoveryTransformsTest {
         });
 
         PRPAIN201305UV02 oPatientDiscoveryRequest = new PRPAIN201305UV02();
-        testSubject.transformAdapterPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ADAPTER_INTERFACE);
+        testSubject.transformAdapterPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, null, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ADAPTER_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
         context.assertIsSatisfied();
     }
 
@@ -260,7 +262,7 @@ public class PatientDiscoveryTransformsTest {
         RespondingGatewayPRPAIN201305UV02RequestType oPatientDiscoveryRequest = new RespondingGatewayPRPAIN201305UV02RequestType();
         AssertionType oAssertion = new AssertionType();
 
-        testSubject.transformEntityPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, oAssertion, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE);
+        testSubject.transformEntityPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, oAssertion, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
 
         context.assertIsSatisfied();
     }
@@ -293,16 +295,19 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
+            @Override
             protected boolean areRequired201305fieldsNull(PRPAIN201305UV02 oPatientDiscoveryRequestMessage, AssertionType oAssertion)
             {
                 return false;
             }
 
+            @Override
             protected boolean areRequiredUserTypeFieldsNull(AssertionType oAssertion)
             {
                 return false;
             }
 
+            @Override
             protected II getHL7IdentifiersFromRequest(PRPAIN201305UV02 oPatientDiscoveryRequestMessage)
             {
                 return mockListII.get(0);
@@ -318,7 +323,7 @@ public class PatientDiscoveryTransformsTest {
             }
         });
 
-        final LogEventRequestType expected = testSubject.transformEntityPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, oAssertionType, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE);
+        final LogEventRequestType expected = testSubject.transformEntityPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, oAssertionType, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
         context.assertIsSatisfied();
 
         Assert.assertNotNull(expected);
@@ -352,16 +357,19 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
+            @Override
             protected boolean areRequired201305fieldsNull(PRPAIN201305UV02 oPatientDiscoveryRequestMessage, AssertionType oAssertion)
             {
                 return false;
             }
 
+            @Override
             protected boolean areRequiredUserTypeFieldsNull(AssertionType oAssertion)
             {
                 return false;
             }
 
+            @Override
             protected II getHL7IdentifiersFromRequest(PRPAIN201305UV02 oPatientDiscoveryRequestMessage)
             {
                 return mockListII.get(0);
@@ -378,7 +386,7 @@ public class PatientDiscoveryTransformsTest {
             }
         });
 
-        final LogEventRequestType expected = testSubject.transformNhinPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, oAssertionType, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE);
+        final LogEventRequestType expected = testSubject.transformNhinPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, oAssertionType, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
         context.assertIsSatisfied();
 
         Assert.assertNotNull(expected);
@@ -412,16 +420,19 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
+            @Override
             protected boolean areRequired201305fieldsNull(PRPAIN201305UV02 oPatientDiscoveryRequestMessage, AssertionType oAssertion)
             {
                 return false;
             }
 
+            @Override
             protected boolean areRequiredUserTypeFieldsNull(AssertionType oAssertion)
             {
                 return false;
             }
 
+            @Override
             protected II getHL7IdentifiersFromRequest(PRPAIN201305UV02 oPatientDiscoveryRequestMessage)
             {
                 return mockListII.get(0);
@@ -437,7 +448,7 @@ public class PatientDiscoveryTransformsTest {
             }
         });
 
-        final LogEventRequestType expected = testSubject.transformAdapterPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, oAssertionType, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ADAPTER_INTERFACE);
+        final LogEventRequestType expected = testSubject.transformAdapterPRPAIN201305RequestToAuditMsg(oPatientDiscoveryRequest, oAssertionType, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ADAPTER_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE, NhincConstants.AUDIT_LOG_REQUEST_PROCESS);
         context.assertIsSatisfied();
 
         Assert.assertNotNull(expected);
@@ -470,7 +481,7 @@ public class PatientDiscoveryTransformsTest {
 
         RespondingGatewayPRPAIN201306UV02ResponseType requestType = null;
 
-        testSubject.transformEntityPRPAIN201306ResponseToAuditMsg(requestType, null, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE);
+        testSubject.transformEntityPRPAIN201306ResponseToAuditMsg(requestType, null, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE);
         context.assertIsSatisfied();
     }
 
@@ -510,16 +521,19 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
-            protected II getHL7IdentitiersFromResponse(PRPAIN201306UV02 oPatientDiscoveryResponseMessage)
+            @Override
+            protected List<II> getHL7IdentitiersFromResponse(PRPAIN201306UV02 oPatientDiscoveryResponseMessage)
             {
-                return mockListII.get(0);
+                return mockListII;
             }
 
+            @Override
             protected boolean areRequiredUserTypeFieldsNull(AssertionType oAssertion)
             {
                 return false;
             }
 
+            @Override
             protected boolean areRequired201306fieldsNull(PRPAIN201306UV02 oPatientDiscoveryResponseMessage, AssertionType oAssertion)
             {
                 return false;
@@ -535,7 +549,7 @@ public class PatientDiscoveryTransformsTest {
             }
         });
 
-        LogEventRequestType expectedResult = testSubject.transformEntityPRPAIN201306ResponseToAuditMsg(oPatientDiscoveryResponse, oAssertion, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE);
+        LogEventRequestType expectedResult = testSubject.transformEntityPRPAIN201306ResponseToAuditMsg(oPatientDiscoveryResponse, oAssertion, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_ENTITY_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE);
 
         context.assertIsSatisfied();
 
@@ -562,16 +576,19 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
-            protected II getHL7IdentitiersFromResponse(PRPAIN201306UV02 oPatientDiscoveryResponseMessage)
+            @Override
+            protected List<II> getHL7IdentitiersFromResponse(PRPAIN201306UV02 oPatientDiscoveryResponseMessage)
             {
-                return mockListII.get(0);
+                return mockListII;
             }
 
+            @Override
             protected boolean areRequiredUserTypeFieldsNull(AssertionType oAssertion)
             {
                 return false;
             }
 
+            @Override
             protected boolean areRequired201306fieldsNull(PRPAIN201306UV02 oPatientDiscoveryResponseMessage, AssertionType oAssertion)
             {
                 return false;
@@ -595,7 +612,7 @@ public class PatientDiscoveryTransformsTest {
 
         pRPAIN201306UV.setControlActProcess(pRPAIN201306UVMFMIMT700711UV01ControlActProcess);
 
-        LogEventRequestType expectedResult = testSubject.transformPRPAIN201306ResponseToAuditMsg(pRPAIN201306UV, oAssertionType, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE);
+        LogEventRequestType expectedResult = testSubject.transformPRPAIN201306ResponseToAuditMsg(pRPAIN201306UV, oAssertionType, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE);
 
         context.assertIsSatisfied();
 
@@ -620,6 +637,7 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
+            @Override
             protected boolean areRequired201306fieldsNull(PRPAIN201306UV02 oPatientDiscoveryResponseMessage, AssertionType oAssertion)
             {
                 return true;
@@ -643,7 +661,7 @@ public class PatientDiscoveryTransformsTest {
 
         final PRPAIN201306UV02 pRPAIN201306UV = new PRPAIN201306UV02();
 
-        LogEventRequestType expectedResult = testSubject.transformPRPAIN201306ResponseToAuditMsg(pRPAIN201306UV, oAssertionType, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE);
+        LogEventRequestType expectedResult = testSubject.transformPRPAIN201306ResponseToAuditMsg(pRPAIN201306UV, oAssertionType, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, NhincConstants.AUDIT_LOG_NHIN_INTERFACE, NhincConstants.AUDIT_LOG_SYNC_TYPE);
 
         context.assertIsSatisfied();
 
@@ -710,7 +728,7 @@ public class PatientDiscoveryTransformsTest {
             {
                 allowing(mockLogger).debug(with(any(String.class)));
                 one(mockLogger).info("Unable to extract patient identifiers from the response message's ControlActProcess object due to a null value.");
-                one(mockLogger).info("The response message's II object required for translating to the audit request messasge's AuditSourceIdentification object was null.");
+                //one(mockLogger).info("The response message's II object required for translating to the audit request messasge's AuditSourceIdentification object was null.");
             }
         });
 
@@ -723,7 +741,7 @@ public class PatientDiscoveryTransformsTest {
         boolean bExpectedResult = testSubject.areRequired201306fieldsNull(oPatientDiscoveryResponseMessage, oAssertionType);
 
         context.assertIsSatisfied();
-        Assert.assertTrue(bExpectedResult);
+        Assert.assertFalse(bExpectedResult);
 
     }
 
@@ -743,9 +761,10 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
-            protected II getHL7IdentitiersFromResponse(PRPAIN201306UV02 oPatientDiscoveryResponseMessage)
+            @Override
+            protected List<II> getHL7IdentitiersFromResponse(PRPAIN201306UV02 oPatientDiscoveryResponseMessage)
             {
-                return mockListII.get(0);
+                return mockListII;
             }
 
         };
@@ -787,9 +806,10 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
-            protected II getHL7IdentitiersFromResponse(PRPAIN201306UV02 oPatientDiscoveryResponseMessage)
+            @Override
+            protected List<II> getHL7IdentitiersFromResponse(PRPAIN201306UV02 oPatientDiscoveryResponseMessage)
             {
-                return mockListII.get(0);
+                return mockListII;
             }
 
         };
@@ -923,7 +943,7 @@ public class PatientDiscoveryTransformsTest {
         };
         context.checking(oExpectation);
 
-        II oExpectedResult = testSubject.getHL7IdentitiersFromResponse(null);
+        List<II> oExpectedResult = testSubject.getHL7IdentitiersFromResponse(null);
 
         context.assertIsSatisfied();
         Assert.assertNull(oExpectedResult);
@@ -952,7 +972,7 @@ public class PatientDiscoveryTransformsTest {
         context.checking(oExpectation);
 
         final PRPAIN201306UV02 oPRPAIN201306UV = new PRPAIN201306UV02();
-        II oExpectedResult = testSubject.getHL7IdentitiersFromResponse(oPRPAIN201306UV);
+        List<II> oExpectedResult = testSubject.getHL7IdentitiersFromResponse(oPRPAIN201306UV);
 
         context.assertIsSatisfied();
         Assert.assertNull(oExpectedResult);
@@ -984,7 +1004,7 @@ public class PatientDiscoveryTransformsTest {
         final PRPAIN201306UV02MFMIMT700711UV01ControlActProcess oPRPAIN201306UVMFMIMT700711UV01ControlActProcess = new PRPAIN201306UV02MFMIMT700711UV01ControlActProcess();
         oPRPAIN201306UV.setControlActProcess(oPRPAIN201306UVMFMIMT700711UV01ControlActProcess);
 
-        II oExpectedResult = testSubject.getHL7IdentitiersFromResponse(oPRPAIN201306UV);
+        List<II> oExpectedResult = testSubject.getHL7IdentitiersFromResponse(oPRPAIN201306UV);
 
         context.assertIsSatisfied();
         Assert.assertNull(oExpectedResult);
@@ -1205,6 +1225,7 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
+            @Override
             protected boolean areRequiredUserTypeFieldsNull(AssertionType oAssertion)
             {
                 return true;
@@ -1255,7 +1276,7 @@ public class PatientDiscoveryTransformsTest {
         II msgId = new II();
         msgId.setExtension("12345");
         msgId.setRoot("2.2");
-        MCCIIN000002UV01 ackMsg = HL7AckTransforms.createAckMessage("1.1.1", msgId, "Success", "1.1", "2.2");
+        MCCIIN000002UV01 ackMsg = HL7AckTransforms.createAckMessage("1.1.1", msgId, "CA", "Success", "1.1", "2.2");
         AssertionType assertion = new AssertionType();
         UserType userInfo = getTestUserType();
         assertion.setUserInfo(userInfo);
@@ -1321,14 +1342,17 @@ public class PatientDiscoveryTransformsTest {
                 return mockLogger;
             }
 
+            @Override
             protected CodedValueType getCodedValueTypeFor201305UV() {
                 return new CodedValueType();
             }
 
+            @Override
             protected CodedValueType getCodedValueTypeFor201306UV() {
                 return new CodedValueType();
             }
 
+            @Override
             protected EventIdentificationType getEventIdentificationType(CodedValueType eventID) {
                 return new EventIdentificationType();
             }
@@ -1336,18 +1360,22 @@ public class PatientDiscoveryTransformsTest {
             protected void marshalPatientDiscoveryMessage(ByteArrayOutputStream baOutStrm, PRPAIN201305UV02 oPatientDiscoveryRequestMessage) throws RuntimeException {
             }
 
+            @Override
             protected ActiveParticipant getActiveParticipant(UserType oUserInfo) {
                 return new ActiveParticipant();
             }
 
+            @Override
             protected String getCompositePatientId(String sCommunityId, String sPatientId) {
                 return sPatientId + "^^^&" + sCommunityId + "&ISO";
             }
 
+            @Override
             protected AuditSourceIdentificationType getAuditSourceIdentificationType(String sCommunityId, String sCommunityName) {
                 return new AuditSourceIdentificationType();
             }
 
+            @Override
             protected ParticipantObjectIdentificationType getParticipantObjectIdentificationType(String sPatientId) {
                 return new ParticipantObjectIdentificationType();
             }

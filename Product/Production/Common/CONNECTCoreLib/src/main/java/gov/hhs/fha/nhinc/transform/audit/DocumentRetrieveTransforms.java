@@ -4,11 +4,6 @@
  * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
  *  
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package gov.hhs.fha.nhinc.transform.audit;
 
 import org.apache.commons.logging.Log;
@@ -31,7 +26,9 @@ import gov.hhs.fha.nhinc.common.auditlog.LogDocRetrieveResultRequestType;
 import gov.hhs.fha.nhinc.common.auditlog.LogEventRequestType;
 
 import gov.hhs.fha.nhinc.transform.marshallers.JAXBContextHandler;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType.DocumentRequest;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType.DocumentResponse;
+import java.util.List;
 /**
  *
  * @author MFLYNN02
@@ -39,7 +36,21 @@ import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 public class DocumentRetrieveTransforms {
     private static Log log = LogFactory.getLog(DocumentRetrieveTransforms.class);
 
+    /**
+     * 
+     * @param message
+     * @return <code>LogEventRequestType</code>
+     */
     public static LogEventRequestType transformDocRetrieveReq2AuditMsg(LogDocRetrieveRequestType message) {
+        return transformDocRetrieveReq2AuditMsg(message, null);
+    }
+    /**
+     *
+     * @param message
+     * @param responseCommunityID
+     * @return <code>LogEventRequestType</code>
+     */
+    public static LogEventRequestType transformDocRetrieveReq2AuditMsg(LogDocRetrieveRequestType message, String responseCommunityID) {
         AuditMessageType auditMsg = new AuditMessageType();
         LogEventRequestType response = new LogEventRequestType();
         response.setDirection(message.getDirection());
@@ -74,30 +85,48 @@ public class DocumentRetrieveTransforms {
             auditMsg.getActiveParticipant().add(participant);
         }
 
+        String uniquePatientId = "";
+        if (message != null &&
+                message.getMessage() != null &&
+                message.getMessage().getAssertion() != null &&
+                message.getMessage().getAssertion().getUniquePatientId() != null &&
+                message.getMessage().getAssertion().getUniquePatientId().size() > 0) {
+            uniquePatientId = message.getMessage().getAssertion().getUniquePatientId().get(0);
+            log.debug("=====>>>>> Create Audit Source Identification Section --> Assertion Unique Patient Id is [" + uniquePatientId + "]");
+        }
+
         // Create Audit Source Identification Section
-        AuditSourceIdentificationType auditSrcId = AuditDataTransformHelper.createAuditSourceIdentificationFromUser(userInfo);
+        AuditSourceIdentificationType auditSrcId = null;
+        if (responseCommunityID != null) {
+            auditSrcId = AuditDataTransformHelper.createAuditSourceIdentification(responseCommunityID, responseCommunityID);
+        } else {
+            auditSrcId = AuditDataTransformHelper.createAuditSourceIdentificationFromUser(userInfo);
+        }
         auditMsg.getAuditSourceIdentification().add(auditSrcId);
 
         // Create Audit Source Identification Section
-        String communityId = null;
-           if (message.getMessage() != null &&
+        String documentId = null;
+       if (message.getMessage() != null &&
                 message.getMessage().getRetrieveDocumentSetRequest() != null &&
                 message.getMessage().getRetrieveDocumentSetRequest().getDocumentRequest() != null &&
                 message.getMessage().getRetrieveDocumentSetRequest().getDocumentRequest().size() > 0) {
-            communityId = message.getMessage().getRetrieveDocumentSetRequest().getDocumentRequest().get(0).getHomeCommunityId();
-        }
+            documentId = message.getMessage().getRetrieveDocumentSetRequest().getDocumentRequest().get(0).getDocumentUniqueId();
 
-        /**
-         * TODO: Patient ID in Doc Retrieve -- Not sure where this is. Currently leaving null
-         */
-        String patientId = new String();
+            List<DocumentRequest> documentRequestList = message.getMessage().getRetrieveDocumentSetRequest().getDocumentRequest();
+            for (DocumentRequest documentRequest : documentRequestList) {
+                if (documentRequest != null) {
+                    log.debug("=====>>>>> Create Audit Source Identification Section --> DocumentRequest.documentUniqueId is [" + documentRequest.getDocumentUniqueId() + "]");
+                    log.debug("=====>>>>> Create Audit Source Identification Section --> DocumentRequest.homeCommunityId is [" + documentRequest.getHomeCommunityId() + "]");
+                }
+            }
+        }
 
         // Create Participation Object Identification Section
         ParticipantObjectIdentificationType partObjId = new ParticipantObjectIdentificationType();
-        if (userInfo != null) {
-            partObjId = AuditDataTransformHelper.createParticipantObjectIdentification(patientId);
-            patientId = partObjId.getParticipantObjectID();
-            partObjId.setParticipantObjectID(AuditDataTransformHelper.createCompositePatientId(communityId, patientId));
+        if (uniquePatientId != null && !uniquePatientId.isEmpty()) {
+            partObjId = AuditDataTransformHelper.createParticipantObjectIdentification(uniquePatientId);
+        } else if (documentId != null && !documentId.isEmpty()) {
+            partObjId = AuditDataTransformHelper.createDocumentParticipantObjectIdentification(documentId);
         }
 
         // Fill in the message field with the contents of the event message
@@ -127,8 +156,22 @@ public class DocumentRetrieveTransforms {
         response.setAuditMessage(auditMsg);
         return response;
     }
-    
-    public static LogEventRequestType transformDocRetrieveResp2AuditMsg(LogDocRetrieveResultRequestType message) {
+
+    /**
+     * 
+     * @param message
+     * @return <code>LogEventRequestType</code>
+     */
+     public static LogEventRequestType transformDocRetrieveResp2AuditMsg(LogDocRetrieveResultRequestType message) {
+         return transformDocRetrieveResp2AuditMsg(message, null);
+     }
+    /**
+     *
+     * @param message
+     * @param  requestCommunityID
+     * @return <code>LogEventRequestType</code>
+     */
+    public static LogEventRequestType transformDocRetrieveResp2AuditMsg(LogDocRetrieveResultRequestType message, String requestCommunityID) {
         AuditMessageType auditMsg = new AuditMessageType();
         LogEventRequestType response = new LogEventRequestType();
         response.setDirection(message.getDirection());
@@ -163,36 +206,49 @@ public class DocumentRetrieveTransforms {
             auditMsg.getActiveParticipant().add(participant);
         }
 
+        String uniquePatientId = "";
+        if (message != null &&
+                message.getMessage() != null &&
+                message.getMessage().getAssertion() != null &&
+                message.getMessage().getAssertion().getUniquePatientId() != null &&
+                message.getMessage().getAssertion().getUniquePatientId().size() > 0) {
+            uniquePatientId = message.getMessage().getAssertion().getUniquePatientId().get(0);
+            log.debug("=====>>>>> Create Audit Source Identification Section --> Assertion Unique Patient Id is [" + uniquePatientId + "]");
+        }
+
         // Create Audit Source Identification Section
-        AuditSourceIdentificationType auditSrcId = AuditDataTransformHelper.createAuditSourceIdentificationFromUser(userInfo);
+        AuditSourceIdentificationType auditSrcId = null;
+        if (requestCommunityID != null) {
+            auditSrcId = AuditDataTransformHelper.createAuditSourceIdentification(requestCommunityID, requestCommunityID);
+        } else {
+            auditSrcId = AuditDataTransformHelper.createAuditSourceIdentificationFromUser(userInfo);
+        }
         auditMsg.getAuditSourceIdentification().add(auditSrcId);
 
         // Create Audit Source Identification Section
-        String communityId = null;
+        String documentId = null;
         if (message.getMessage() != null &&
                 message.getMessage().getRetrieveDocumentSetResponse() != null &&
                 message.getMessage().getRetrieveDocumentSetResponse().getDocumentResponse() != null &&
                 message.getMessage().getRetrieveDocumentSetResponse().getDocumentResponse().size() > 0) {
-            communityId = message.getMessage().getRetrieveDocumentSetResponse().getDocumentResponse().get(0).getHomeCommunityId();
+
+            documentId = message.getMessage().getRetrieveDocumentSetResponse().getDocumentResponse().get(0).getDocumentUniqueId();
+
+            List<DocumentResponse> documentResponseList = message.getMessage().getRetrieveDocumentSetResponse().getDocumentResponse();
+            for (DocumentResponse documentResponse : documentResponseList) {
+                if (documentResponse != null) {
+                    log.debug("=====>>>>> Create Audit Source Identification Section --> DocumentResponse.documentUniqueId is [" + documentResponse.getDocumentUniqueId() + "]");
+                    log.debug("=====>>>>> Create Audit Source Identification Section --> DocumentResponse.homeCommunityId is [" + documentResponse.getHomeCommunityId() + "]");
+                }
+            }
         }
       
-        /**
-         * TODO: Patient ID in Doc Retrieve -- Not sure where this is. Currently extracting
-         * from DocumentUniqueId
-         */
-        String patientId = new String();
-        if (message.getMessage() != null &&
-                message.getMessage().getRetrieveDocumentSetResponse() != null &&
-                message.getMessage().getRetrieveDocumentSetResponse().getRegistryResponse() != null &&
-                message.getMessage().getRetrieveDocumentSetResponse().getRegistryResponse().getRequestId() != null) {
-            patientId = message.getMessage().getRetrieveDocumentSetResponse().getRegistryResponse().getRequestId();
-        }
         // Create Participation Object Identification Section
         ParticipantObjectIdentificationType partObjId = new ParticipantObjectIdentificationType();
-        partObjId = AuditDataTransformHelper.createParticipantObjectIdentification(patientId);
-        if (patientId != null) {
-             patientId = partObjId.getParticipantObjectID();
-            partObjId.setParticipantObjectID(AuditDataTransformHelper.createCompositePatientId(communityId, patientId));
+        if (documentId != null && !documentId.isEmpty()) {
+            partObjId = AuditDataTransformHelper.createDocumentParticipantObjectIdentification(documentId);
+        } else if (uniquePatientId != null && !uniquePatientId.isEmpty()) {
+            partObjId = AuditDataTransformHelper.createParticipantObjectIdentification(uniquePatientId);
         }
 
         // Fill in the message field with the contents of the event message

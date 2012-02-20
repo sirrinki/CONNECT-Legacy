@@ -7,6 +7,7 @@
 package gov.hhs.fha.nhinc.patientdiscovery.entity;
 
 import gov.hhs.fha.nhinc.common.nhinccommon.AssertionType;
+import gov.hhs.fha.nhinc.common.nhinccommon.HomeCommunityType;
 import gov.hhs.fha.nhinc.common.nhinccommon.NhinTargetCommunitiesType;
 import gov.hhs.fha.nhinc.common.nhinccommon.NhinTargetSystemType;
 import gov.hhs.fha.nhinc.connectmgr.ConnectionManagerCache;
@@ -81,10 +82,6 @@ public class EntityPatientDiscoveryOrchImpl {
         return urlInfoList;
     }
 
-    protected PatientDiscovery201305Processor getPatientDiscovery201305Processor() {
-        return new PatientDiscovery201305Processor();
-    }
-
     protected RespondingGatewayPRPAIN201305UV02RequestType createNewRequest(RespondingGatewayPRPAIN201305UV02RequestType request, AssertionType assertion, CMUrlInfo urlInfo) {
         RespondingGatewayPRPAIN201305UV02RequestType newRequest = new RespondingGatewayPRPAIN201305UV02RequestType();
         PRPAIN201305UV02 new201305 = getPatientDiscovery201305Processor().createNewRequest(request.getPRPAIN201305UV02(), urlInfo.getHcid());
@@ -99,68 +96,15 @@ public class EntityPatientDiscoveryOrchImpl {
         return new ResponseFactory();
     }
 
-//    protected PRPAIN201306UV02 sendToNhinProxy(RespondingGatewayPRPAIN201305UV02RequestType newRequest, AssertionType assertion, String url) {
-//        PRPAIN201306UV02 resultFromNhin = null;
-//
-//        if (newRequest == null) {
-//            log.warn("RespondingGatewayPRPAIN201305UV02RequestType was null.");
-//        } else if (assertion == null) {
-//            log.warn("AssertionType was null.");
-//        } else if (url == null) {
-//            log.warn("URL was null.");
-//        } else {
-//            NhinTargetSystemType oTargetSystemType = new NhinTargetSystemType();
-//            oTargetSystemType.setUrl(url);
-//
-//            //format request for nhincProxyPatientDiscoveryImpl call
-//            ProxyPRPAIN201305UVProxySecuredRequestType oProxyPRPAIN201305UVProxySecuredRequestType =
-//                    new ProxyPRPAIN201305UVProxySecuredRequestType();
-//            oProxyPRPAIN201305UVProxySecuredRequestType.setPRPAIN201305UV02(newRequest.getPRPAIN201305UV02());
-//            oProxyPRPAIN201305UVProxySecuredRequestType.setNhinTargetSystem(oTargetSystemType);
-//
-//            resultFromNhin = sendPRPAIN201305UV02(oProxyPRPAIN201305UVProxySecuredRequestType, assertion, oTargetSystemType);
-//
-//            //process the response
-//            ResponseParams params = new ResponseParams();
-//            params.assertion = assertion;
-//            params.origRequest = oProxyPRPAIN201305UVProxySecuredRequestType;
-//            params.response = resultFromNhin;
-//
-//            try {
-//                resultFromNhin = getResponseFactory().getResponseMode().processResponse(params);
-//            } catch (Exception ex) {
-//                log.error("Error processing NHIN proxy response: " + ex.getMessage(), ex);
-//                resultFromNhin = new PRPAIN201306UV02();
-//            }
-//        }
-//
-//        return resultFromNhin;
-//    }
-
-//    protected PRPAIN201306UV02 sendPRPAIN201305UV02(ProxyPRPAIN201305UVProxySecuredRequestType oProxyPRPAIN201305UVProxySecuredRequestType, AssertionType assertion, NhinTargetSystemType oTargetSystemType)
-//    {
-//        PRPAIN201306UV02 response = null;
-//
-//        // Audit the Patient Discovery Request Message sent on the Nhin Interface
-//        PatientDiscoveryAuditLogger auditLog = new PatientDiscoveryAuditLogger();
-//        auditLog.auditNhin201305(oProxyPRPAIN201305UVProxySecuredRequestType.getPRPAIN201305UV02(), assertion, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION);
-//
-//        NhincPatientDiscoveryProxyObjectFactory patientDiscoveryFactory = new NhincPatientDiscoveryProxyObjectFactory();
-//        NhincPatientDiscoveryProxy proxy = patientDiscoveryFactory.getNhincPatientDiscoveryProxy();
-//
-//        response = proxy.PRPAIN201305UV(oProxyPRPAIN201305UVProxySecuredRequestType.getPRPAIN201305UV02(), assertion, oProxyPRPAIN201305UVProxySecuredRequestType.getNhinTargetSystem());
-//
-//        // Audit the Patient Discovery Response Message received on the Nhin Interface
-//        auditLog.auditNhin201306(response, assertion, NhincConstants.AUDIT_LOG_INBOUND_DIRECTION);
-//        return response;
-//    }
-
     protected RespondingGatewayPRPAIN201306UV02ResponseType getResponseFromCommunities(RespondingGatewayPRPAIN201305UV02RequestType request, AssertionType assertion) {
         log.debug("Entering getResponseFromCommunities");
         RespondingGatewayPRPAIN201306UV02ResponseType response = null;
         PRPAIN201306UV02 resultFromNhin = null;
         PassthruPatientDiscoveryProxyObjectFactory patientDiscoveryFactory = new PassthruPatientDiscoveryProxyObjectFactory();
         PassthruPatientDiscoveryProxy proxy = patientDiscoveryFactory.getNhincPatientDiscoveryProxy();
+
+        // Process local unique patient id and home community id to create local aa to hcid mapping
+        getPatientDiscovery201305Processor().storeLocalMapping(request);
 
         CMUrlInfos urlInfoList = getEndpoints(request.getNhinTargetCommunities());
 
@@ -182,6 +126,9 @@ public class EntityPatientDiscoveryOrchImpl {
 
                     NhinTargetSystemType oTargetSystemType = new NhinTargetSystemType();
                     oTargetSystemType.setUrl(urlInfo.getUrl());
+                    HomeCommunityType homeCommunity = new HomeCommunityType();
+                    homeCommunity.setHomeCommunityId(urlInfo.getHcid());
+                    oTargetSystemType.setHomeCommunity(homeCommunity);
 
                     //format request for nhincProxyPatientDiscoveryImpl call
                     ProxyPRPAIN201305UVProxySecuredRequestType oProxyPRPAIN201305UVProxySecuredRequestType =
@@ -219,6 +166,10 @@ public class EntityPatientDiscoveryOrchImpl {
 
         log.debug("Exiting getResponseFromCommunities");
         return response;
+    }
+
+    protected PatientDiscovery201305Processor getPatientDiscovery201305Processor() {
+        return new PatientDiscovery201305Processor();
     }
 
     protected PatientDiscovery201306Processor getPatientDiscovery201306Processor() {

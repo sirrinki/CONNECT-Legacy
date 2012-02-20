@@ -16,6 +16,8 @@ import gov.hhs.fha.nhinc.common.nhinccommon.AssertionType;
 import gov.hhs.fha.nhinc.common.nhinccommon.UserType;
 import gov.hhs.fha.nhinc.transform.marshallers.JAXBContextHandler;
 import gov.hhs.healthit.nhin.DocRetrieveAcknowledgementType;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 import java.io.ByteArrayOutputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -55,7 +57,7 @@ public class DocumentRetrieveDeferredTransforms {
      * @param _interface
      * @return LogEventRequestType
      */
-    public LogEventRequestType transformAckResponseToAuditMsg(RegistryResponseType response, AssertionType assertion, String direction, String _interface) {
+    public LogEventRequestType transformAckResponseToAuditMsg(RegistryResponseType response, RetrieveDocumentSetRequestType retrieveRequest, RetrieveDocumentSetResponseType retrieveResponse, AssertionType assertion, String direction, String _interface, String requestCommunityId) {
         LogEventRequestType result = null;
         AuditMessageType auditMsg = null;
 
@@ -97,11 +99,36 @@ public class DocumentRetrieveDeferredTransforms {
         }
 
         /* Assign ParticipationObjectIdentification */
-        String patientId = new String();
+        String uniquePatientId = "";
+        if (assertion != null &&
+                assertion.getUniquePatientId() != null &&
+                assertion.getUniquePatientId().size() > 0) {
+            uniquePatientId = assertion.getUniquePatientId().get(0);
+            log.debug("=====>>>>> Create Audit Source Identification Section --> Assertion Unique Patient Id is [" + uniquePatientId + "]");
+        }
+
+        // The acknowledgement does not contain the patient or document ids, so we will extract the first document id from the original request
+        String documentId = "";
+        if (retrieveRequest != null &&
+                retrieveRequest.getDocumentRequest() != null &&
+                retrieveRequest.getDocumentRequest().size() > 0 &&
+                retrieveRequest.getDocumentRequest().get(0) != null) {
+            documentId = retrieveRequest.getDocumentRequest().get(0).getDocumentUniqueId();
+        } else if (retrieveResponse != null &&
+                retrieveResponse.getDocumentResponse() != null &&
+                retrieveResponse.getDocumentResponse().size() > 0 &&
+                retrieveResponse.getDocumentResponse().get(0) != null) {
+            documentId = retrieveResponse.getDocumentResponse().get(0).getDocumentUniqueId();
+        } else
+        log.debug("=====>>>>> Create Audit Source Identification Section --> Sent/Received Document Id is [" + documentId + "]");
+
+
         // Create Participation Object Identification Section
         ParticipantObjectIdentificationType partObjId = new ParticipantObjectIdentificationType();
-        if (assertion.getUserInfo() != null) {
-            partObjId = AuditDataTransformHelper.createParticipantObjectIdentification(patientId);
+        if (documentId != null && !documentId.isEmpty()) {
+            partObjId = AuditDataTransformHelper.createDocumentParticipantObjectIdentification(documentId);
+        } else if (uniquePatientId != null && !uniquePatientId.isEmpty()) {
+            partObjId = AuditDataTransformHelper.createParticipantObjectIdentification(uniquePatientId);
         }
 
         // Put the contents of the actual message into the Audit Log Message
@@ -112,15 +139,19 @@ public class DocumentRetrieveDeferredTransforms {
         auditMsg.getParticipantObjectIdentification().add(partObjId);
 
         /* Create the AuditSourceIdentifierType object */
-        AuditSourceIdentificationType auditSource = getAuditSourceIdentificationType(assertion.getUserInfo());
-        auditMsg.getAuditSourceIdentification().add(auditSource);
+        AuditSourceIdentificationType auditSrcId = null;
+        if (requestCommunityId != null) {
+            auditSrcId = AuditDataTransformHelper.createAuditSourceIdentification(requestCommunityId, requestCommunityId);
+        } else {
+            auditSrcId = AuditDataTransformHelper.createAuditSourceIdentificationFromUser(assertion.getUserInfo());
+        }
+        auditMsg.getAuditSourceIdentification().add(auditSrcId);
 
         result.setAuditMessage(auditMsg);
         result.setDirection(direction);
         result.setInterface(_interface);
 
         return result;
-
     }
 
     /**

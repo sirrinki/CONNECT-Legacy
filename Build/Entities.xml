@@ -1,5 +1,5 @@
-<!ENTITY HostName                              'build31.connectopensource.org'>
-<!ENTITY Integration.Server.Host.Name          'inttest31.connectopensource.org'>
+<!ENTITY HostName                              'build.connectopensource.org'>
+<!ENTITY Integration.Server.Host.Name          'inttest1.connectopensource.org'>
 <!ENTITY Integration2.Server.Host.Name         'inttest2.connectopensource.org'>
 <!ENTITY Integration3.Server.Host.Name         'inttest3.connectopensource.org'>
 <!ENTITY ConnectBlue.Server.Host.Name          'ConnectBlue31.fedsconnect.org'>
@@ -10,7 +10,7 @@
 <!ENTITY EmailHost                             '172.16.50.25'>
 
 <!ENTITY ProjectName                           'NHINC'>
-<!ENTITY ProjectCodeLineName                   '3.1'>
+<!ENTITY ProjectCodeLineName                   'Current'>
 <!ENTITY ProjectFullName                       'NHIN_CONNECT'>
 
 <!ENTITY Common.Directory.Product.Name         'Product'>
@@ -40,7 +40,7 @@
 <!ENTITY Common.Directory.Transient.Path       '&Common.Directory.Build.Path;\&Common.Directory.Transient.Name;'>
 <!ENTITY Common.Directory.Tools.Path           '&Common.Directory.Build.Path;\&Common.Directory.Tools.Name;'>
 
-<!ENTITY CCNet.LabelPrefix                     '3.1.0.'>
+<!ENTITY CCNet.LabelPrefix                     '3.2.0.'>
 <!ENTITY CCNet.Server.Remoting.Port            '21524'>
 <!ENTITY CCNet.Server.Remoting.Url             'tcp://&HostName;:&CCNet.Server.Remoting.Port;/CruiseManager.rem'>
 <!ENTITY CCNet.Server.Rest.Port                '21525'>

@@ -4,11 +4,6 @@
  * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
  *  
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package gov.hhs.fha.nhinc.docregistry.adapter;
 
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
@@ -152,7 +147,8 @@ public class AdapterComponentDocRegistryOrchImpl {
     }
 
     public AdhocQueryResponse registryStoredQuery(AdhocQueryRequest request) {
-        //getLogger().debug("Begin DocumentRegistryHelper.documentRegistryRegistryStoredQuery(...)");
+        log.debug("Begin AdapterComponentDocRegistryOrchImpl.registryStoredQuery(...)");
+
         oasis.names.tc.ebxml_regrep.xsd.query._3.ObjectFactory queryObjFact = new oasis.names.tc.ebxml_regrep.xsd.query._3.ObjectFactory();
         oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse response = queryObjFact.createAdhocQueryResponse();
 
@@ -219,9 +215,16 @@ public class AdapterComponentDocRegistryOrchImpl {
         DocumentService service = getDocumentService();
         List<Document> docs = service.documentQuery(params);
 
+        if(docs != null){
+            log.debug("registryStoredQuery- docs.size: " + docs.size());
+        }else{
+            log.debug("registryStoredQuery- docs.size: is null");
+        }
+
         // Create response
         loadResponseMessage(response, docs);
-        //getLogger().debug("End DocumentRegistryHelper.documentRegistryRegistryStoredQuery(...)");
+
+        log.debug("End AdapterComponentDocRegistryOrchImpl.registryStoredQuery(...)");
         return response;
     }
 
@@ -261,7 +264,9 @@ public class AdapterComponentDocRegistryOrchImpl {
         if((slotValues != null) && (!slotValues.isEmpty()))
         {
             String formattedPatientId = slotValues.get(0);
-            patientId = PatientIdFormatUtil.parsePatientId(formattedPatientId);
+            //patientId = PatientIdFormatUtil.parsePatientId(formattedPatientId);
+            patientId = PatientIdFormatUtil.stripQuotesFromPatientId(formattedPatientId);
+            log.debug("extractPatientIdentifier - patientId: " + patientId);
         }
         return patientId;
     }
@@ -446,17 +451,19 @@ public class AdapterComponentDocRegistryOrchImpl {
         return classCodes;
     }
 
-    private void loadResponseMessage(oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse response, List<Document> docs)
+    public void loadResponseMessage(oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse response, List<Document> docs)
     {
         RegistryObjectListType regObjList = new RegistryObjectListType();
         response.setRegistryObjectList(regObjList);
 
         if(NullChecker.isNullish(docs))
         {
-            response.setStatus(XDS_QUERY_RESPONSE_STATUS_FAILURE);
+            log.debug("loadResponseMessage - docs size: null");
+            response.setStatus(XDS_QUERY_RESPONSE_STATUS_SUCCESS);
         }
         else
         {
+            log.debug("loadResponseMessage - docs size: " + docs.size());
             response.setStatus(XDS_QUERY_RESPONSE_STATUS_SUCCESS);
 
             oasis.names.tc.ebxml_regrep.xsd.rim._3.ObjectFactory oRimObjectFactory = new oasis.names.tc.ebxml_regrep.xsd.rim._3.ObjectFactory();
@@ -708,7 +715,9 @@ public class AdapterComponentDocRegistryOrchImpl {
                 //-----------
                 if(NullChecker.isNotNullish(doc.getPatientId()))
                 {
-                    String formattedPatientId = PatientIdFormatUtil.hl7EncodePatientId(doc.getPatientId(), homeCommunityId);
+                    //Commented call to apply HL7 Encoding to the patient id as Doc Repo now stores the patient id in HL7 Encoded format
+                    //String formattedPatientId = PatientIdFormatUtil.hl7EncodePatientId(doc.getPatientId(), homeCommunityId);
+                    String formattedPatientId = doc.getPatientId();
                     ExternalIdentifierType oExtId = new ExternalIdentifierType();
                     oExtId.setId("");
                     oExtId.setIdentificationScheme(EBXML_RESPONSE_PATIENTID_IDENTIFICATION_SCHEME);

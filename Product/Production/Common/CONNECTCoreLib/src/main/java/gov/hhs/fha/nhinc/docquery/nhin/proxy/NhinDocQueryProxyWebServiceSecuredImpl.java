@@ -8,10 +8,14 @@ package gov.hhs.fha.nhinc.docquery.nhin.proxy;
 
 import gov.hhs.fha.nhinc.common.nhinccommon.AssertionType;
 import gov.hhs.fha.nhinc.common.nhinccommon.NhinTargetSystemType;
+import gov.hhs.fha.nhinc.docrepository.DocumentProcessHelper;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import gov.hhs.fha.nhinc.nhinclib.NhincConstants;
+import gov.hhs.fha.nhinc.perfrepo.PerformanceManager;
+import gov.hhs.fha.nhinc.util.HomeCommunityMap;
 import gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper;
 import ihe.iti.xds_b._2007.RespondingGatewayQueryPortType;
+import java.sql.Timestamp;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
@@ -46,6 +50,10 @@ public class NhinDocQueryProxyWebServiceSecuredImpl implements NhinDocQueryProxy
 
     protected WebServiceProxyHelper createWebServiceProxyHelper() {
         return new WebServiceProxyHelper();
+    }
+
+    protected DocumentProcessHelper getDocumentProcessHelper() {
+        return new DocumentProcessHelper();
     }
 
     /**
@@ -108,7 +116,34 @@ public class NhinDocQueryProxyWebServiceSecuredImpl implements NhinDocQueryProxy
             } else if (port == null) {
                 log.error("port was null");
             } else {
+                String uniquePatientId = "";
+                if (assertion != null &&
+                        assertion.getUniquePatientId() != null &&
+                        assertion.getUniquePatientId().size() > 0) {
+                    uniquePatientId = assertion.getUniquePatientId().get(0);
+                }
+
+                // Log the start of the performance record
+                String targetHomeCommunityId = HomeCommunityMap.getCommunityIdFromTargetSystem(target);
+                Timestamp starttime = new Timestamp(System.currentTimeMillis());
+                Long logId = PerformanceManager.getPerformanceManagerInstance().logPerformanceStart(starttime, NhincConstants.DOC_QUERY_SERVICE_NAME, NhincConstants.AUDIT_LOG_NHIN_INTERFACE, NhincConstants.AUDIT_LOG_OUTBOUND_DIRECTION, targetHomeCommunityId);
+
                 response = (AdhocQueryResponse) oProxyHelper.invokePort(port, RespondingGatewayQueryPortType.class, "respondingGatewayCrossGatewayQuery", request);
+
+                // Check for Demo Mode
+                if (DocumentProcessHelper.isDemoOperationModeEnabled()) {
+                    log.debug("CONNECT Demo Operation Mode Enabled");
+                    DocumentProcessHelper documentProcessHelper = getDocumentProcessHelper();
+
+                    // Demo mode enabled, process AdhocQueryResponse to save document metadata to the CONNECT default document repository
+                    documentProcessHelper.documentRepositoryProvideAndRegisterDocumentSet(response, uniquePatientId);
+                } else {
+                    log.debug("CONNECT Demo Operation Mode Disabled");
+                }
+
+                // Log the end of the performance record
+                Timestamp stoptime = new Timestamp(System.currentTimeMillis());
+                PerformanceManager.getPerformanceManagerInstance().logPerformanceStop(logId, starttime, stoptime);
             }
         } catch (Exception ex) {
             log.error("Error calling respondingGatewayCrossGatewayQuery: " + ex.getMessage(), ex);

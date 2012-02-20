@@ -1,8 +1,8 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
- *  
+ *
  * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
- *  
+ *
  */
 /*
  * To change this template, choose Tools | Templates
@@ -27,13 +27,16 @@ public class NhincConstants {
     public static final String ADAPTER_PROPERTY_FILE_NAME = "adapter";
     public static final String XDS_HOME_COMMUNITY_ID_PROPERTY = "XDSbHomeCommunityId";
 
+    // CONNECT Operation
+    public static final String CONNECT_DEMO_OPERATION_MODE_PROP = "connectDemoOperationMode";
+
     // SAML Constants
     public static final String ACTION_PROP = "action";
     public static final String RESOURCE_PROP = "resource";
-    public static final String PURPOSE_CODE_PROP = "purposeForUseRoleCode";
-    public static final String PURPOSE_SYST_PROP = "purposeForUseCodeSystem";
-    public static final String PURPOSE_SYST_NAME_PROP = "purposeForUseCodeSystemName";
-    public static final String PURPOSE_DISPLAY_PROP = "purposeForUseDisplayName";
+    public static final String PURPOSE_CODE_PROP = "purposeOfUseRoleCode";
+    public static final String PURPOSE_SYST_PROP = "purposeOfUseCodeSystem";
+    public static final String PURPOSE_SYST_NAME_PROP = "purposeOfUseCodeSystemName";
+    public static final String PURPOSE_DISPLAY_PROP = "purposeOfUseDisplayName";
     public static final String USER_FIRST_PROP = "userFirstName";
     public static final String USER_MIDDLE_PROP = "userMiddleName";
     public static final String USER_LAST_PROP = "userLastName";
@@ -52,6 +55,9 @@ public class NhincConstants {
     public static final String SUBJECT_LOCALITY_ADDR_PROP = "subjectLocalityAddress";
     public static final String SUBJECT_LOCALITY_DNS_PROP = "subjectLocalityDNS";
     public static final String AUTHZ_DECISION_PROP = "authzDecision";
+    public static final String AUTHZ_STATEMENT_EXISTS_PROP = "authzStatementExists";
+    public static final String ASSERTION_ISSUER_PROP = "assertionIssuer";
+    public static final String ASSERTION_ISSUER_FORMAT_PROP = "assertionIssuerFormat";
     public static final String EVIDENCE_ID_PROP = "evidenceAssertionId";
     public static final String EVIDENCE_INSTANT_PROP = "evidenceAssertionInstant";
     public static final String EVIDENCE_VERSION_PROP = "evidenceAssertionVersion";
@@ -128,6 +134,10 @@ public class NhincConstants {
     public static final String AUDIT_LOG_ENTITY_INTERFACE = "Entity";
     public static final String AUDIT_LOG_NHIN_INTERFACE = "Nhin";
     public static final String AUDIT_LOG_ADAPTER_INTERFACE = "Adapter";
+    public static final String AUDIT_LOG_DEFERRED_TYPE = "Deferred";
+    public static final String AUDIT_LOG_SYNC_TYPE = "Synchronous";
+    public static final String AUDIT_LOG_REQUEST_PROCESS = "Request";
+    public static final String AUDIT_LOG_RESPONSE_PROCESS = "Response";
     public static final String AUDIT_LOG_SERVICE_PROPERTY = "serviceAuditRepository";
     public static final String AUDIT_LOG_SERVICE_PASSTHRU_PROPERTY = "auditRepositoryPassthrough";
     public static final String AUDIT_DISABLED_ACK_MSG = "Audit Service is not enabled";
@@ -239,11 +249,17 @@ public class NhincConstants {
     public static final String ENTITY_DOCUMENT_QUERY_DEFERRED_REQ_SECURED_SERVICE_NAME = "entitydocquerydeferredrequestsecured";
     public static final String ENTITY_DOCUMENT_QUERY_DEFERRED_RESP_SERVICE_NAME = "entitydocquerydeferredresponse";
     public static final String ENTITY_DOCUMENT_QUERY_DEFERRED_RESP_SECURED_SERVICE_NAME = "entitydocquerydeferredresponsesecured";
+    public static final String ENTITY_DOCUMENT_QUERY_DEFERRED_REQ_QUEUE_PROCESS_SERVICE_NAME = "entitydocquerydeferredreqqueueprocess";
 
     public static final String DOC_QUERY_DEFERRED_REQ_ACK_STATUS_MSG = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:RequestAccepted";
     public static final String DOC_QUERY_DEFERRED_RESP_ACK_STATUS_MSG = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:ResponseAccepted";
     public static final String DOC_QUERY_DEFERRED_REQ_ACK_FAILURE_STATUS_MSG = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure";
     public static final String DOC_QUERY_DEFERRED_RESP_ACK_FAILURE_STATUS_MSG = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure";
+    public static final String DOC_QUERY_DEFERRED_ACK_ERROR_AUTHORIZATION = "AuthorizationException";
+    public static final String DOC_QUERY_DEFERRED_ACK_ERROR_INVALID = "InvalidRequestException";
+    public static final String DOC_QUERY_DEFERRED_ACK_ERROR_SIGNATURE = "SignatureValidationException";
+    public static final String DOC_QUERY_DEFERRED_ACK_ERROR_TIMEOUT = "TimeoutException";
+    public static final String DOC_QUERY_DEFERRED_ACK_ERROR_UNSUPPORTED = "UnsupportedCapabilityException";
 
     //Document Retrieve Constants
     public static final String ADAPTER_DOC_RETRIEVE_SERVICE_NAME = "adapterdocretrieve";
@@ -258,11 +274,17 @@ public class NhincConstants {
     public static final String DOC_RETRIEVE_SERVICE_NAME = "RetrieveDocument";
     public static final String NHINC_DOCUMENT_RETRIEVE_SERVICE_KEY = "serviceDocumentRetrieve";
     public static final String NHINC_DOCUMENT_RETRIEVE_SERVICE_PASSTHRU_PROPERTY = "documentRetrievePassthrough";
+    public static final String ENTITY_DOC_RETRIEVE_DEFERRED_REQ_QUEUE_PROCESS_SERVICE_NAME = "entitydocretrievedeferredreqqueueprocess";
 
     public static final String DOC_RETRIEVE_DEFERRED_REQ_ACK_STATUS_MSG = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:RequestAccepted";
     public static final String DOC_RETRIEVE_DEFERRED_RESP_ACK_STATUS_MSG = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:ResponseAccepted";
     public static final String DOC_RETRIEVE_DEFERRED_REQ_ACK_FAILURE_STATUS_MSG = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure";
     public static final String DOC_RETRIEVE_DEFERRED_RESP_ACK_FAILURE_STATUS_MSG = "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure";
+    public static final String DOC_RETRIEVE_DEFERRED_ACK_ERROR_AUTHORIZATION = "AuthorizationException";
+    public static final String DOC_RETRIEVE_DEFERRED_ACK_ERROR_INVALID = "InvalidRequestException";
+    public static final String DOC_RETRIEVE_DEFERRED_ACK_ERROR_SIGNATURE = "SignatureValidationException";
+    public static final String DOC_RETRIEVE_DEFERRED_ACK_ERROR_TIMEOUT = "TimeoutException";
+    public static final String DOC_RETRIEVE_DEFERRED_ACK_ERROR_UNSUPPORTED = "UnsupportedCapabilityException";
 
     //Patient Correlation Constants
     public static final String PATIENT_CORRELATION_SERVICE_NAME = "patientcorrelation";
@@ -314,9 +336,19 @@ public class NhincConstants {
     public static final String PATIENT_DISCOVERY_ENTITY_SECURED_ASYNC_REQ_SERVICE_NAME = "entitypatientdiscoverysecuredasyncreq";
     public static final String PATIENT_DISCOVERY_ENTITY_ASYNC_RESP_SERVICE_NAME = "entitypatientdiscoveryasyncresp";
     public static final String PATIENT_DISCOVERY_ENTITY_SECURED_ASYNC_RESP_SERVICE_NAME = "entitypatientdiscoverysecuredasyncresp";
+    public static final String PATIENT_DISCOVERY_ENTITY_ASYNC_REQ_QUEUE_PROCESS_SERVICE_NAME = "entitypatientdiscoverydeferredreqqueueprocess";
 
     // Patient Discovery Error Constants
     public static final String PATIENT_DISCOVERY_ANSWER_NOT_AVAIL_ERR_CODE = "AnswerNotAvailable";
+    public static final String PATIENT_DISCOVERY_RESPONDER_BUSY_ERR_CODE = "ResponderBusy";
+    public static final String PATIENT_DISCOVERY_GENDER_MORE_CODE = "LivingSubjectAdministrativeGenderRequested";
+    public static final String PATIENT_DISCOVERY_ADDRESS_MORE_CODE = "PatientAdressRequested";
+    public static final String PATIENT_DISCOVERY_TELCOM_MORE_CODE = "PatientTelecomRequested";
+    public static final String PATIENT_DISCOVERY_BIRTH_PLACE_NAME_MORE_CODE = "LivingSubjectBirthPlaceNameRequested";
+    public static final String PATIENT_DISCOVERY_BIRTH_PLACE_ADDRESS_MORE_CODE = "LivingSubjectBirthPlaceAddressRequested";
+    public static final String PATIENT_DISCOVERY_MOTHERS_MAIDEN_NAME_MORE_CODE = "MothersMaidenNameRequested";
+    public static final String PATIENT_DISCOVERY_SSN_MORE_CODE = "SSNRequested";
+
     // XDR Constants
     public static final String ENTITY_XDR_SECURED_SERVICE_NAME = "entityxdrsecured";
     public static final String ENTITY_XDR_SERVICE_NAME = "entityxdr";
@@ -375,6 +407,9 @@ public class NhincConstants {
     public static final String HIBERNATE_DOCUMENT_REPOSITORY = "docrepo.hibernate.cfg.xml";
     public static final String HIBERNATE_ASYNCMSGS_REPOSITORY = "AsyncMsgs.hibernate.cfg.xml";
     public static final String HIBERNATE_LIFTMESSAGE_REPOSITORY = "GatewayLiftMsg.hibernate.cfg.xml";
+    public static final String HIBERNATE_PATIENTDB_REPOSITORY = "patientdb.hibernate.cfg.xml";
+    public static final String HIBERNATE_PERFREPO_REPOSITORY = "perfrepo.hibernate.cfg.xml";
+
     //LiFT Constants
     public static final String LIFT_MANAGER_SERVICE_NAME = "nhincliftmanager";
     public static final String LIFT_ENABLED_PROPERTY_NAME = "liftEnabled";

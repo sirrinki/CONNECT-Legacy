@@ -1,11 +1,13 @@
 package gov.hhs.fha.nhinc.patientdiscovery.entity.deferred.request;
 
+import gov.hhs.fha.nhinc.async.AsyncMessageProcessHelper;
 import gov.hhs.fha.nhinc.common.nhinccommon.AcknowledgementType;
 import gov.hhs.fha.nhinc.patientdiscovery.testhelper.TestHelper;
 import gov.hhs.fha.nhinc.common.nhinccommon.AssertionType;
 import gov.hhs.fha.nhinc.common.nhinccommon.NhinTargetCommunitiesType;
 import gov.hhs.fha.nhinc.connectmgr.data.CMUrlInfo;
 import gov.hhs.fha.nhinc.connectmgr.data.CMUrlInfos;
+import gov.hhs.fha.nhinc.patientdiscovery.PatientDiscovery201305Processor;
 import gov.hhs.fha.nhinc.patientdiscovery.PatientDiscoveryAuditLogger;
 import gov.hhs.fha.nhinc.transform.subdisc.HL7AckTransforms;
 import gov.hhs.fha.nhinc.transform.subdisc.HL7PRPA201305Transforms;
@@ -16,7 +18,6 @@ import org.hl7.v3.PRPAIN201305UV02;
 import org.hl7.v3.PRPAMT201301UV02Patient;
 import org.hl7.v3.PRPAMT201301UV02Person;
 import org.hl7.v3.RespondingGatewayPRPAIN201305UV02RequestType;
-import org.hl7.v3.RespondingGatewayPRPAIN201305UV02SecuredRequestType;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -82,15 +83,9 @@ public class EntityPatientDiscoverDeferredRequestImplTest
             }
 
             @Override
-            protected MCCIIN000002UV01 sendToProxy(RespondingGatewayPRPAIN201305UV02RequestType request, CMUrlInfo urlInfo)
+            protected MCCIIN000002UV01 sendToProxy(PRPAIN201305UV02 request, AssertionType newAssertion, CMUrlInfo urlInfo)
             {
-                return HL7AckTransforms.createAckFrom201305(request.getPRPAIN201305UV02(), "Success");
-            }
-
-            @Override
-            protected void addEntryToDatabase(RespondingGatewayPRPAIN201305UV02RequestType request)
-            {
-                return;
+                return HL7AckTransforms.createAckFrom201305(request, "Success");
             }
 
             @Override
@@ -112,6 +107,42 @@ public class EntityPatientDiscoverDeferredRequestImplTest
                     }
                 };
                 return auditLogger;
+            }
+
+            @Override
+            protected AsyncMessageProcessHelper createAsyncProcesser()
+            {
+                AsyncMessageProcessHelper processHelper = new AsyncMessageProcessHelper()
+                {
+
+                    @Override
+                    public boolean addPatientDiscoveryRequest(RespondingGatewayPRPAIN201305UV02RequestType request, String direction)
+                    {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean processAck(String messageId, String newStatus, String errorStatus, MCCIIN000002UV01 ack)
+                    {
+                        return true;
+                    }
+                };
+                return processHelper;
+            }
+
+            @Override
+            protected PatientDiscovery201305Processor getPatientDiscovery201305Processor()
+            {
+                PatientDiscovery201305Processor processHelper = new PatientDiscovery201305Processor()
+                {
+
+                    @Override
+                    public void storeLocalMapping(RespondingGatewayPRPAIN201305UV02RequestType request)
+                    {
+                        return;
+                    }
+                };
+                return processHelper;
             }
         };
 
@@ -155,15 +186,9 @@ public class EntityPatientDiscoverDeferredRequestImplTest
             }
 
             @Override
-            protected MCCIIN000002UV01 sendToProxy(RespondingGatewayPRPAIN201305UV02RequestType request, CMUrlInfo urlInfo)
+            protected MCCIIN000002UV01 sendToProxy(PRPAIN201305UV02 request, AssertionType newAssertion, CMUrlInfo urlInfo)
             {
-                return HL7AckTransforms.createAckFrom201305(request.getPRPAIN201305UV02(), "Success");
-            }
-
-            @Override
-            protected void addEntryToDatabase(RespondingGatewayPRPAIN201305UV02RequestType request)
-            {
-                return;
+                return HL7AckTransforms.createAckFrom201305(request, "Success");
             }
 
             @Override
@@ -186,6 +211,42 @@ public class EntityPatientDiscoverDeferredRequestImplTest
                 };
                 return auditLogger;
             }
+
+            @Override
+            protected AsyncMessageProcessHelper createAsyncProcesser()
+            {
+                AsyncMessageProcessHelper processHelper = new AsyncMessageProcessHelper()
+                {
+
+                    @Override
+                    public boolean addPatientDiscoveryRequest(RespondingGatewayPRPAIN201305UV02RequestType request, String direction)
+                    {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean processAck(String messageId, String newStatus, String errorStatus, MCCIIN000002UV01 ack)
+                    {
+                        return true;
+                    }
+                };
+                return processHelper;
+            }
+
+            @Override
+            protected PatientDiscovery201305Processor getPatientDiscovery201305Processor()
+            {
+                PatientDiscovery201305Processor processHelper = new PatientDiscovery201305Processor()
+                {
+
+                    @Override
+                    public void storeLocalMapping(RespondingGatewayPRPAIN201305UV02RequestType request)
+                    {
+                        return;
+                    }
+                };
+                return processHelper;
+            }
         };
 
         AssertionType assertion = new AssertionType();
@@ -198,7 +259,7 @@ public class EntityPatientDiscoverDeferredRequestImplTest
         MCCIIN000002UV01 result = instance.processPatientDiscoveryAsyncReq(msg, assertion, targets);
 
         assertNotNull(result);
-        TestHelper.assertAckMsgEquals("No Targets Found", result);
+        TestHelper.assertAckMsgEquals("No targets were found for the Patient Discovery Request", result);
         TestHelper.assertReceiverEquals("1.1", result);
         TestHelper.assertSenderEquals("2.2", result);
         TestHelper.assertAckMsgIdEquals(msg.getId(), result);
@@ -235,15 +296,9 @@ public class EntityPatientDiscoverDeferredRequestImplTest
             }
 
             @Override
-            protected MCCIIN000002UV01 sendToProxy(RespondingGatewayPRPAIN201305UV02RequestType request, CMUrlInfo urlInfo)
+            protected MCCIIN000002UV01 sendToProxy(PRPAIN201305UV02 request, AssertionType newAssertion, CMUrlInfo urlInfo)
             {
-                return HL7AckTransforms.createAckFrom201305(request.getPRPAIN201305UV02(), "Success");
-            }
-
-            @Override
-            protected void addEntryToDatabase(RespondingGatewayPRPAIN201305UV02RequestType request)
-            {
-                return;
+                return HL7AckTransforms.createAckFrom201305(request, "Success");
             }
 
             @Override
@@ -265,6 +320,42 @@ public class EntityPatientDiscoverDeferredRequestImplTest
                     }
                 };
                 return auditLogger;
+            }
+
+            @Override
+            protected AsyncMessageProcessHelper createAsyncProcesser()
+            {
+                AsyncMessageProcessHelper processHelper = new AsyncMessageProcessHelper()
+                {
+
+                    @Override
+                    public boolean addPatientDiscoveryRequest(RespondingGatewayPRPAIN201305UV02RequestType request, String direction)
+                    {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean processAck(String messageId, String newStatus, String errorStatus, MCCIIN000002UV01 ack)
+                    {
+                        return true;
+                    }
+                };
+                return processHelper;
+            }
+
+            @Override
+            protected PatientDiscovery201305Processor getPatientDiscovery201305Processor()
+            {
+                PatientDiscovery201305Processor processHelper = new PatientDiscovery201305Processor()
+                {
+
+                    @Override
+                    public void storeLocalMapping(RespondingGatewayPRPAIN201305UV02RequestType request)
+                    {
+                        return;
+                    }
+                };
+                return processHelper;
             }
         };
 

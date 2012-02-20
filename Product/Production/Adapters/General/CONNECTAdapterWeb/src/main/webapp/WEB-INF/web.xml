@@ -402,12 +402,31 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>DeferredQueueManager</servlet-name>
+        <servlet-class>gov.hhs.fha.nhinc.adapter.deferred.queue.DeferredQueueManager</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeferredQueueManager</servlet-name>
+        <url-pattern>/DeferredQueueManager</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>EntityAuditQuery</servlet-name>
         <servlet-class>gov.hhs.fha.nhinc.auditquery.entity.EntityAuditQuery</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EntityAuditQuery</servlet-name>
         <url-pattern>/EntityAuditQuery</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EntityPerformanceLogQuery</servlet-name>
+        <servlet-class>gov.hhs.fha.nhinc.performancequery.entity.EntityPerformanceLogQuery</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EntityPerformanceLogQuery</servlet-name>
+        <url-pattern>/EntityPerformanceLogQuery</url-pattern>
     </servlet-mapping>
 
     <servlet>
