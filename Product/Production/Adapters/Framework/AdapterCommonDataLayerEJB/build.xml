@@ -1,54 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- You may freely edit this file. See commented blocks below for -->
-<!-- some examples of how to customize the build. -->
-<!-- (If you delete it and reopen the project it will be recreated.) -->
-<!-- By default, only the Clean and Build commands use this build script. -->
-<!-- Commands such as Run, Debug, and Test only use this build script if -->
-<!-- the Compile on Save feature is turned off for the project. -->
-<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
-<!-- in the project's Project Properties dialog box.-->
-<project name="AdapterCommonDataLayerEJB" default="default" basedir="." xmlns:ejbjarproject="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
-  <description>Builds, tests, and runs the project AdapterCommonDataLayerEJB.</description>
-  <import file="../../../../build.lib.xml" />
+<?xml version="1.0" encoding="utf-8"?>
+<project basedir="." default="package.create" name="AdapterCommonDataLayerEJB">
 
-  <property name="deploy.type" value="ejb" />
-  <property name="deploy.isDeployable" value="false"/>
+	<property name="dist.type" value="jar" />
+	<property name="webtest.hasTests" value="false" />
+	<property name="unittest.hasTests" value="true" />
+	<property name="deploy.isDeployable" value="false"/>
+	<property name="deploy.type" value="ejb" />
+	<property name="copy.wsdl.to.webinf" value="true" />
 
-  <import file="nbproject/build-impl.xml"/>
+	<!-- Please make sure that this goes up to the correct directory -->
+	<import file="../../../../build/build.targets.xml" />
 
-  <target name="build">
-    <property name="target-to-call" value="dist" />
-    <antcall target="call-target-in-isolation-if-out-of-date" />
-  </target>
-  <target name="clean-build" depends="clean,build" />
-  <target name="clean-test" depends="clean-build,test" />
-  <target name="build-test" depends="build,test" />
+	<path id="build.classpath">
+		<fileset refid="classpath.compile" />
+		<fileset refid="classpath.runtime" />
 
-  <target name="wsimport-client-DODConnector" depends="wsimport-init">
-    <copy todir="${basedir}/${meta.inf}/wsdl/DODConnector">
-      <fileset dir="${basedir}/${meta.inf}/xml-resources/web-service-references/DODConnector/wsdl/"/>
-    </copy>
-    <copy todir="${basedir}/${meta.inf}/wsdl/schemas">
-      <fileset dir="${basedir}/${meta.inf}/xml-resources/web-service-references/DODConnector/schemas/"/>
-    </copy>
-  </target>
-  
-  <target name="wsimport-service-AdapterCommonDataLayer" depends="wsimport-init">
-    <property name="targetLocation-AdapterCommonDataLayer" location="${meta.inf}/wsdl/AdapterCommonDataLayer"/>
-    <property name="sourceLocation-AdapterCommonDataLayer" location="${meta.inf}/xml-resources/web-services/AdapterCommonDataLayer/wsdl/"/>
-    <copy todir="${targetLocation-AdapterCommonDataLayer}">
-      <fileset dir="${sourceLocation-AdapterCommonDataLayer}"/>
-    </copy>
-  </target>
-  
-  <target depends="init" if="netbeans.home" name="undeploy-clean" unless="from.commandline">
-    <nbundeploy failOnError="false" startServer="false"/>
-  </target>
+		<!-- Add classes from other projects like so...-->
+		<pathelement path="${project.CONNECTCommonTypesLib.build.classes.dir}" />
+		<pathelement path="${project.CONNECTCoreLib.build.classes.dir}" />
+	</path>
 
-  <target depends="init,compile-test,-pre-test-run,-do-test-run" if="have.tests" name="-post-test-run">
-    <copy todir="${nhin.project.home}\UnitTestResults">
-      <fileset dir="${build.test.results.dir}"/>
-    </copy>
-    <fail if="tests.failed" unless="ignore.failing.tests">Some tests failed; see details above.</fail>
-  </target>    
+	<!-- Add project dependencies here, these projects will be built first... -->
+	<path id="build.project.dependencies">
+		<filelist dir="${root.project.directory.path}"/>    
+	</path>
+
+	<path id="jar.libs">
+		<fileset refid="classpath.runtime" /> 
+	</path>  
 </project>

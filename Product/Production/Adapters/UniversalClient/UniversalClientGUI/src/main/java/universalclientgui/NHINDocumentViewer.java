@@ -1077,7 +1077,8 @@ public class NHINDocumentViewer extends AbstractPageBean {
             String DV_SERVICE_ENDPOINT = getApplicationBean1().getDocViewerRequestService();
             gov.hhs.fha.nhinc.universalclient.ws.DocViewerRequestServicesService dvservice = new gov.hhs.fha.nhinc.universalclient.ws.DocViewerRequestServicesService();
             gov.hhs.fha.nhinc.universalclient.ws.DocViewerRequestServicesPortType port = dvservice.getDocViewerRequestServicesPort();
-			gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().initializePort((javax.xml.ws.BindingProvider) port, DV_SERVICE_ENDPOINT);
+            ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, DV_SERVICE_ENDPOINT);
+
             org.netbeans.xml.schema.docviewer.DocViewerStatusRequestType request = new org.netbeans.xml.schema.docviewer.DocViewerStatusRequestType();
             request.setPatientId(getSessionBean1().getPatientId());
             request.setUserId(getSessionBean1().getProviderId());
@@ -1176,7 +1177,8 @@ public class NHINDocumentViewer extends AbstractPageBean {
         try {
             ihe.iti.xds_b._2007.DocumentManagerService dmservice = new ihe.iti.xds_b._2007.DocumentManagerService();
             ihe.iti.xds_b._2007.DocumentManagerPortType port = dmservice.getDocumentManagerPortSoap();
-			gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().initializePort((javax.xml.ws.BindingProvider) port,getApplicationBean1().getDocumentManagerService());
+            ((javax.xml.ws.BindingProvider)port).getRequestContext().put(javax.xml.ws.BindingProvider.ENDPOINT_ADDRESS_PROPERTY, getApplicationBean1().getDocumentManagerService());
+
             RetrieveDocumentSetResponseType res = port.documentManagerRetrieveInboundDocument(request);
             byte[] rawxml = res.getDocumentResponse().get(0).getDocument();
             getSessionBean1().setSelectedNHINDocument(new String(rawxml));

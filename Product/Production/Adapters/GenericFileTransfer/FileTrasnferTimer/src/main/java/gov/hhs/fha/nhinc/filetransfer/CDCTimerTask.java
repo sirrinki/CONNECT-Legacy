@@ -1,4 +1,10 @@
 /*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
+ */
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -130,10 +136,12 @@ public class CDCTimerTask {
         log.debug("Begin - CDCFileTransferAdapter.sendNotification() - End");
         try { // Call Web Service Operation
             EntityNotificationConsumer service = new EntityNotificationConsumer();
-            EntityNotificationConsumerPortType port = service.getEntityNotificationConsumerPortSoap11();
+            EntityNotificationConsumerPortType port = service.getEntityNotificationConsumerPortSoap();
             //Create End point Dynamically
             String endpointURL = PropertyAccessor.getProperty("adapter", "EntityNotificationConsumerURL");
-			gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().initializePort((javax.xml.ws.BindingProvider) port,endpointURL);
+            log.info("EntityNotificationConsumerURL :" + endpointURL);
+            ((BindingProvider) port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointURL);
+
             NotifyRequestType notifyRequest = new NotifyRequestType();
 
             //build Set Assertion

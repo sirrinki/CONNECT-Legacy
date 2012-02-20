@@ -1,8 +1,15 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
+ */
 package gov.hhs.fha.nhinc.adapterdocumentregistry.soap12;
 
 import gov.hhs.fha.nhinc.adapterdocregistry.AdapterDocRegistry2Soap12Client;
 import ihe.iti.xds_b._2007.DocumentRegistryPortType;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -13,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Anand Sastry
  */
 @WebService(serviceName = "DocumentRegistry_Service", portName = "DocumentRegistry_Port_Soap", endpointInterface = "ihe.iti.xds_b._2007.DocumentRegistryPortType", targetNamespace = "urn:ihe:iti:xds-b:2007", wsdlLocation = "WEB-INF/wsdl/AdapterDocRegistry2Soap12Service/AdapterComponentDocRegistry.wsdl")
+@BindingType(value = javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 public class AdapterDocRegistry2Soap12Service implements DocumentRegistryPortType {
 
     private static Log log = LogFactory.getLog(AdapterDocRegistry2Soap12Service.class);

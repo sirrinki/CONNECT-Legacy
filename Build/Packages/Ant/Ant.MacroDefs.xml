@@ -13,7 +13,7 @@
       <elementgroup name="args" type="NAnt.Core.Types.Argument" elementname="arg"/>
     </elementgroups>
     <elements>
-      <element name="environment" type="NAnt.Core.Types.EnvironmentSet"/>
+      <element name="environment" type="NAnt.Core.Types.EnvironmentSet" require="True"/>
     </elements>
     <sequential>
       <ifthenelse test="${property::exists('logfile')}">
@@ -27,10 +27,16 @@
           <property name="Ant.LogParams" value='' overwrite="true"/>
         </else>
       </ifthenelse>
+
+      <addenvironmentvariable refid="${Common.EnvironmentVariables.RefId}">
+        <variable name="XPFunk" value="yes" if="${version::compare(operating-system::get-version(environment::get-operating-system()), version::parse('5.2.0.0')) &lt; 0}"/>
+      </addenvironmentvariable>
+
       <setenv>
         <element name="environment"/>
       </setenv>
-      <exec program="${antbat}" failonerror="true" verbose="true">
+
+      <exec program="${antbat}" failonerror="true" verbose="true" workingdir="${path::get-directory-name(buildfile)}">
         <arg line='${target} -buildfile "${buildfile}"' />
         <arg line='${Ant.LogParams}' />
         <arg line='-Dprogress-filepath="${listenerFile}"' />
@@ -55,7 +61,7 @@
       <elementgroup name="args" type="NAnt.Core.Types.Argument" elementname="arg"/>
     </elementgroups>
     <elements>
-      <element name="environment" type="NAnt.Core.Types.EnvironmentSet"/>
+      <element name="environment" type="NAnt.Core.Types.EnvironmentSet" require="True"/>
     </elements>
     <sequential>
       <ifthenelse test="${property::exists('logfile')}">
@@ -70,6 +76,10 @@
         </else>
       </ifthenelse>
 
+      <addenvironmentvariable refid="${Common.EnvironmentVariables.RefId}">
+        <variable name="XPFunk" value="yes" if="${version::compare(operating-system::get-version(environment::get-operating-system()), version::parse('5.2.0.0')) &lt; 0}"/>
+      </addenvironmentvariable>
+
       <setenv>
         <element name="environment"/>
       </setenv>
@@ -80,9 +90,10 @@
         useshellexecute="true"
         waitforexit="true"
         taskname="${taskname}"
-        program="${antbat}" 
-        failonerror="true" 
+        program="${antbat}"
+        failonerror="true"
         verbose="true"
+        workingdir="${path::get-directory-name(buildfile)}"
       >
         <arg line='${target} -buildfile "${buildfile}"' />
         <arg line='${Ant.LogParams}' />
@@ -94,5 +105,4 @@
       </asyncexec>
     </sequential>
   </macrodef>
-  
 </project>

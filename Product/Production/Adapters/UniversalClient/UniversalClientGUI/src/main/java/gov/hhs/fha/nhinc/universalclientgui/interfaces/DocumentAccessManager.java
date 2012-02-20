@@ -1,3 +1,8 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package gov.hhs.fha.nhinc.universalclientgui.interfaces;
 
 import gov.hhs.fha.nhinc.adapter.commondatalayer.DoDConnectorPortType;
@@ -122,7 +127,8 @@ public class DocumentAccessManager extends Thread {
         try { // Call Web Service Operation
             gov.hhs.fha.nhinc.universalclient.ws.DocViewerRequestServicesService service = new gov.hhs.fha.nhinc.universalclient.ws.DocViewerRequestServicesService();
             gov.hhs.fha.nhinc.universalclient.ws.DocViewerRequestServicesPortType port = service.getDocViewerRequestServicesPort();
-			gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().initializePort((javax.xml.ws.BindingProvider) port, app.getDocViewerRequestService());
+            ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, app.getDocViewerRequestService());
+
             org.netbeans.xml.schema.docviewer.DocViewerRequestType docRequest = new org.netbeans.xml.schema.docviewer.DocViewerRequestType();
             docRequest.setAdhocQueryRequest(query);
             docRequest.setAssertion(assertion);

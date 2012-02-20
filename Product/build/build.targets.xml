@@ -60,7 +60,8 @@ layer of abstraction
   </target>
 
   <target name="just.deploy" description="Deploy the project, does not call dependent targets...">
-    <call target="deploy.to.development" if="${deploy.isDeployable}"/>
+    <property name="just.deploy" value="true"/>
+    <call target="deploy.to.production" if="${deploy.isDeployable}"/>
   </target>
 
   <target name="undeploy">
@@ -153,20 +154,26 @@ layer of abstraction
     <if>
       <istrue value="${unittest.hasTests}"/>
       <then>
-        <var name="need.to.update.root.coverage.failure.file" value="true"/>
+        <var name="just.unittest.run.is.outofdate" value="false"/>
         <run.if.unit.tests.are.out.of.date>
+          <extra-source>
+            <fileset dir="${project.dir}">
+              <include name="coverage.thresholds.xml" />
+            </fileset>
+          </extra-source>
           <do>
             <call target="coverage.prepfortests" />
             <call target="-unittest.run"/>
             
             <call target="-coverage.check.project" />
-            <var name="need.to.update.root.coverage.failure.file" value="false"/>
+            <var name="just.unittest.run.is.outofdate" value="true"/>
           </do>
         </run.if.unit.tests.are.out.of.date>
         <if>
-          <istrue value="${need.to.update.root.coverage.failure.file}"/>
+          <isfalse value="${just.unittest.run.is.outofdate}"/>
           <then>
             <call target="-coverage.update.failure.file" />
+            <call target="-unittest.update.failure.file" />
           </then>
         </if>
       </then>

@@ -1,67 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- You may freely edit this file. See commented blocks below for -->
-<!-- some examples of how to customize the build. -->
-<!-- (If you delete it and reopen the project it will be recreated.) -->
-<!-- By default, only the Clean and Build commands use this build script. -->
-<!-- Commands such as Run, Debug, and Test only use this build script if -->
-<!-- the Compile on Save feature is turned off for the project. -->
-<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
-<!-- in the project's Project Properties dialog box.-->
-<project name="AdapterDocumentAssemblyProxyEJB" default="default" basedir="." xmlns:ejbjarproject="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
-  <description>Builds, tests, and runs the project AdapterDocumentAssemblyProxyEJB.</description>
-  <import file="nbproject/build-impl.xml"/>
+<?xml version="1.0" encoding="utf-8"?>
+<project basedir="." default="package.create" name="AdapterDocumentAssemblyProxyEJB">
 
-  <import file="../../../../build.lib.xml"/>
+	<property name="dist.type" value="jar" />
+	<property name="webtest.hasTests" value="false" />
+	<property name="unittest.hasTests" value="true" />
+	<property name="deploy.isDeployable" value="false"/>
+	<property name="deploy.type" value="ejb" />
+	<property name="copy.wsdl.to.webinf" value="true" />  
 
-  <property name="deploy.type" value="ejb" />
-  <property name="deploy.isDeployable" value="false"/>
+	<!-- Please make sure that this goes up to the correct directory -->
+	<import file="../../../../build/build.targets.xml" />
 
-  <target name="build">
-    <property name="target-to-call" value="dist" />
-    <antcall target="call-target-in-isolation-if-out-of-date" />
-  </target>
-  <target name="clean-build" depends="clean,build" />
-  <target name="clean-test" depends="clean-build,test" />
-  <target name="build-test" depends="build,test" />
+	<path id="build.classpath">
+		<fileset refid="classpath.compile" />
+		<fileset refid="classpath.runtime" />
 
-  <target depends="init" if="netbeans.home" name="undeploy-clean" unless="from.commandline">
-    <nbundeploy failOnError="false" startServer="false"/>
-  </target>
+		<!-- Add classes from other projects like so...-->
+		<pathelement path="${project.CONNECTCommonTypesLib.build.classes.dir}" />
+		<pathelement path="${project.CONNECTCoreLib.build.classes.dir}" />
+		<pathelement path="${project.TemplateManager.build.classes.dir}" />
+		<pathelement path="${project.DocumentAssemblyManagerEJB.build.classes.dir}" />
 
-  <target name="wsimport-client-DocumentManager" depends="wsimport-init">
-    <property name="targetLocation-DocumentManager" location="${meta.inf}/wsdl/DocumentManager"/>
-    <property name="sourceLocation-DocumentManager" location="${meta.inf}/xml-resources/web-service-references/DocumentManager/wsdl"/>
-    <copy todir="${targetLocation-DocumentManager}">
-      <fileset dir="${sourceLocation-DocumentManager}">
-      </fileset>
-    </copy>
-    <property name="targetLocation-DocumentManager-schemas" location="${meta.inf}/wsdl/schemas"/>
-    <property name="sourceLocation-DocumentManager-schemas" location="${meta.inf}/xml-resources/web-service-references/DocumentManager/schemas"/>
-    <copy todir="${targetLocation-DocumentManager-schemas}">
-      <fileset dir="${sourceLocation-DocumentManager-schemas}">
-      </fileset>
-    </copy>
-  </target>
-  
-  <target name="wsimport-service-AdapterDocumentAssembly" depends="wsimport-init">
-    <property name="targetLocation-AdapterDocumentAssembly" location="${meta.inf}/wsdl/AdapterDocumentAssembly"/>
-    <property name="sourceLocation-AdapterDocumentAssembly" location="${meta.inf}/xml-resources/web-services/AdapterDocumentAssembly/wsdl/"/>
-    <copy todir="${targetLocation-AdapterDocumentAssembly}">
-      <fileset dir="${sourceLocation-AdapterDocumentAssembly}">
-      </fileset>
-    </copy>
-    <property name="targetLocation-AdapterDocumentAssembly-schemas" location="${meta.inf}/wsdl/schemas"/>
-    <property name="sourceLocation-AdapterDocumentAssembly-schemas" location="${meta.inf}/xml-resources/web-services/AdapterDocumentAssembly/schemas"/>
-    <copy todir="${targetLocation-AdapterDocumentAssembly-schemas}">
-      <fileset dir="${sourceLocation-AdapterDocumentAssembly-schemas}">
-      </fileset>
-    </copy>
-  </target>
+	</path>
 
-  <target depends="init,compile-test,-pre-test-run,-do-test-run" if="have.tests" name="-post-test-run">
-    <copy todir="${nhin.project.home}\UnitTestResults">
-      <fileset dir="${build.test.results.dir}"/>
-    </copy>
-    <fail if="tests.failed" unless="ignore.failing.tests">Some tests failed; see details above.</fail>
-  </target>    
+	<!-- Add project dependencies here, these projects will be built first... -->
+	<path id="build.project.dependencies">
+		<filelist dir="${root.project.directory.path}"/>
+	</path>
+
+	<path id="jar.libs">
+		<filelist dir="${root.project.directory.path}">
+                        <file name="${project.CONNECTCommonTypesLib.dist.file}" />
+                        <file name="${project.CONNECTCoreLib.dist.file}" />
+			<file name="${project.DocumentAssemblyManagerEJB.dist.file}" />
+			<file name="${project.TemplateManager.dist.file}" />
+		</filelist>
+
+		<fileset refid="classpath.runtime" /> 
+	</path>  
 </project>

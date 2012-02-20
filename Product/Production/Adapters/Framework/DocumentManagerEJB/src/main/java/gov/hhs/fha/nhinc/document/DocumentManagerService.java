@@ -1,19 +1,22 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
  */
-
 package gov.hhs.fha.nhinc.document;
 
 import ihe.iti.xds_b._2007.DocumentManagerPortType;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 /**
  *
  * @author cmatser
  */
 @WebService(serviceName = "DocumentManager_Service", portName = "DocumentManager_Port_Soap", endpointInterface = "ihe.iti.xds_b._2007.DocumentManagerPortType", targetNamespace = "urn:ihe:iti:xds-b:2007", wsdlLocation = "META-INF/wsdl/DocumentManagerService/DocumentManager.wsdl")
+@BindingType(value = javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 @Stateless
 public class DocumentManagerService implements DocumentManagerPortType {
 

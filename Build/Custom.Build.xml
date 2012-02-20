@@ -4,9 +4,11 @@
   <target name="Build.PublishZips">
     <call target="Build.PublishZip.Release.Installer"/>
     <call target="Build.PublishZip.Release.Interfaces"/>
-    <call target="Build.Bundle.ESCs.Installers"/>
-    <call target="Build.Bundle.SoapUI"/>
-    <call target="Build.Bundle.Release.Properties"/>
+    <call target="Build.PublishZip.ESCs"/>
+    <call target="Build.PublishZip.SoapUI.Validation.Tests"/>
+    <call target="Build.PublishZip.Release.Properties"/>
+    <call target="Build.PublishZip.AdapterPEPWS"/>
+    <call target="Build.PublishZip.LiFT.ManualTest"/>
   </target>
 
   <target name="Build.PublishZip.Release.Installer">
@@ -56,93 +58,65 @@
     <call target="Publish.Link" />
   </target>
 
-  <target name="Build.Bundle.Release.Properties">
-    <property name="Properties.Properties.Directory" value="Blue"/>
-    <property name="Properties.Zip.FileName" value="${ProjectFullName}_Properties_${Properties.Properties.Directory}_${CCNetLabel}.zip"/>
-    <property name="Properties.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${Properties.Zip.FileName}"/>
+  <target name="Build.PublishZip.Release.Properties">
+    <property name="Properties.Base.Dir" value="${Common.Directory.Production.Path}\Common\Properties\"/>
 
-    <zip zipfile="${Properties.Zip.FilePath}">
-      <fileset basedir="${Common.Directory.Production.Path}\Common\Properties\" >
-        <include name="${Properties.Properties.Directory}\**" />
-      </fileset>
-    </zip>
+    <foreach item="Folder" property="Properties.Dir">
+      <in>
+        <items basedir="${Properties.Base.Dir}">
+          <include name="*"/>
+          <exclude name="${Properties.Base.Dir}"/>
+        </items>
+      </in>
+      <do>
+        <echo message="${Properties.Dir}"/>
+        <property name="Properties.Dir.Name" value="${path::get-file-name-without-extension(Properties.Dir)}"/>
+        <property name="Properties.Zip.FileName" value="${ProjectFullName}_Properties_${Properties.Dir.Name}_${CCNetLabel}.zip"/>
+        <property name="Properties.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${Properties.Zip.FileName}"/>
 
-    <property name="Publish.Web.File.Name" value="${Properties.Zip.FileName}"/>
-    <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
+        <zip zipfile="${Properties.Zip.FilePath}">
+          <fileset basedir="${Properties.Base.Dir}\${Properties.Dir.Name}\" >
+            <include name="*\**" />
+          </fileset>
+        </zip>
 
-    <call target="Publish.Link" />
+        <property name="Publish.Web.File.Name" value="${Properties.Zip.FileName}"/>
+        <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
 
-    <property name="Properties.Properties.Directory" value="Green"/>
-    <property name="Properties.Zip.FileName" value="${ProjectFullName}_Properties_${Properties.Properties.Directory}_${CCNetLabel}.zip"/>
-    <property name="Properties.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${Properties.Zip.FileName}"/>
-
-    <zip zipfile="${Properties.Zip.FilePath}">
-      <fileset basedir="${Common.Directory.Production.Path}\Common\Properties\" >
-        <include name="${Properties.Properties.Directory}\**" />
-      </fileset>
-    </zip>
-
-    <property name="Publish.Web.File.Name" value="${Properties.Zip.FileName}"/>
-    <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
-
-    <call target="Publish.Link" />
-
-    <property name="Properties.Properties.Directory" value="Red"/>
-    <property name="Properties.Zip.FileName" value="${ProjectFullName}_Properties_${Properties.Properties.Directory}_${CCNetLabel}.zip"/>
-    <property name="Properties.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${Properties.Zip.FileName}"/>
-
-    <zip zipfile="${Properties.Zip.FilePath}">
-      <fileset basedir="${Common.Directory.Production.Path}\Common\Properties\" >
-        <include name="${Properties.Properties.Directory}\**" />
-      </fileset>
-    </zip>
-
-    <property name="Publish.Web.File.Name" value="${Properties.Zip.FileName}"/>
-    <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
-
-    <call target="Publish.Link" />
-
-    <property name="Properties.Properties.Directory" value="Orange"/>
-    <property name="Properties.Zip.FileName" value="${ProjectFullName}_Properties_${Properties.Properties.Directory}_${CCNetLabel}.zip"/>
-    <property name="Properties.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${Properties.Zip.FileName}"/>
-
-    <zip zipfile="${Properties.Zip.FilePath}">
-      <fileset basedir="${Common.Directory.Production.Path}\Common\Properties\" >
-        <include name="${Properties.Properties.Directory}\**" />
-      </fileset>
-    </zip>
-
-    <property name="Publish.Web.File.Name" value="${Properties.Zip.FileName}"/>
-    <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
-
-    <call target="Publish.Link" />
-
+        <call target="Publish.Link" />
+      </do>
+    </foreach>
   </target>
 
-  <target name="Build.Bundle.ESCs.Installers">
+  <target name="Build.PublishZip.ESCs">
+    <call target="Build.PublishZip.ESCs.DynamicDocuments"/>
+    <call target="Build.PublishZip.ESCs.FTA"/>
+  </target>
+
+  <target name="Build.PublishZip.ESCs.DynamicDocuments">
     <property name="ESC.Zip.FileName" value="${ProjectFullName}_DynamicDocuments_${CCNetLabel}.zip"/>
     <property name="ESC.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${ESC.Zip.FileName}"/>
 
     <zip zipfile="${ESC.Zip.FilePath}">
-      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\AdapterCommonDataLayerEJB\dist\" prefix="bin" failonempty="true">
+      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\AdapterCommonDataLayerEJB\dist\debug\" prefix="bin" failonempty="true">
         <include name="AdapterCommonDataLayerEJB.jar"/>
       </fileset>
-      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\AdapterDocumentAssemblyProxyEJB\dist\" prefix="bin" failonempty="true">
+      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\AdapterDocumentAssemblyProxyEJB\dist\debug\" prefix="bin" failonempty="true">
         <include name="AdapterDocumentAssemblyProxyEJB.jar"/>
       </fileset>
-      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\AdapterDocumentRepositoryEJB\dist\" prefix="bin" failonempty="true">
+      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\AdapterDocumentRepositoryEJB\dist\debug\" prefix="bin" failonempty="true">
         <include name="AdapterDocumentRepositoryEJB.jar"/>
       </fileset>
-      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\DocumentManagerEJB\dist\" prefix="bin" failonempty="true">
+      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\DocumentManagerEJB\dist\debug\" prefix="bin" failonempty="true">
         <include name="DocumentManagerEJB.jar"/>
       </fileset>
-      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\NHINAdapterServiceEJB\dist\" prefix="bin" failonempty="true">
+      <fileset basedir="${Common.Directory.Production.Path}\Adapters\Framework\NHINAdapterServiceEJB\dist\debug\" prefix="bin" failonempty="true">
         <include name="NHINAdapterServiceEJB.jar"/>
       </fileset>
-      <fileset basedir="${Common.Directory.Product.Path}\IntegrationTest\" prefix="SelfTest\DynamicDocumentTest" failonempty="true">
+      <fileset basedir="${Common.Directory.Product.Path}\SoapUI_Test\ManualSuite\" prefix="SelfTest\DynamicDocumentTest" failonempty="true">
         <include name="DynamicDocumentTest-Internal-soapui-project.*"/>
       </fileset>
-      <fileset basedir="${Common.Directory.Product.Path}\IntegrationTest\" prefix="SelfTest\DynamicDocumentTest" failonempty="true">
+      <fileset basedir="${Common.Directory.Product.Path}\SoapUI_Test\ManualSuite\" prefix="SelfTest\DynamicDocumentTest" failonempty="true">
         <include name="DynamicDocumentTest-EndtoEnd-soapui-project.*"/>
       </fileset>
     </zip>
@@ -151,34 +125,22 @@
     <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
 
     <call target="Publish.Link" />
-
-  </target>
-
-  <target name="Build.Bundle.SoapUI">
+  </target>  
+  
+  <target name="Build.PublishZip.SoapUI.Validation.Tests">
     <property name="SoapUI.Zip.FileName" value="${ProjectFullName}_Validation_Tests_${CCNetLabel}.zip"/>
     <property name="SoapUI.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${SoapUI.Zip.FileName}"/>
 
     <zip zipfile="${SoapUI.Zip.FilePath}">
-      <fileset basedir="${Common.Directory.Product.Path}\IntegrationTest\" prefix="SelfTest\EndToEndSelfTest" failonempty="true">
-        <include name="EndToEndSelfTest-soapui-project.*"/>
+      <fileset basedir="${Common.Directory.Product.Path}\SoapUI_Test\ValidationSuite" prefix="ValidationSuite" failonempty="true">
+        <include name="*.*"/>
+        <exclude name="build.xml"/>
       </fileset>
-      <fileset basedir="${Common.Directory.Product.Path}\IntegrationTest\" prefix="SelfTest\InternalSelfTest" failonempty="true">
-        <include name="InternalSelfTest-soapui-project.*"/>
+      <fileset basedir="${Common.Directory.Product.Path}\Production\Common\Properties\Dev" prefix="ValidationSuite" failonempty="true">
+        <include name="mpi.xml"/>
+        <include name="reidentification.xml"/>
       </fileset>
-      <fileset basedir="${Common.Directory.Product.Path}\IntegrationTest\" prefix="SelfTest\OutboundSelfTest" failonempty="true">
-        <include name="OutboundSelfTest-soapui-project.*"/>
-      </fileset>
-      <fileset basedir="${Common.Directory.Product.Path}\IntegrationTest\" prefix="SelfTest\PatientDiscovery" failonempty="true">
-        <include name="PatientDiscovery-soapui-project.*"/>
-      </fileset>
-      <fileset basedir="${Common.Directory.Product.Path}\IntegrationTest\" prefix="SelfTest\ValidateServices" failonempty="true">
-        <include name="ValidateServices-soapui-project.*"/>
-      </fileset>
-      <fileset basedir="${Common.Directory.Production.Path}\Common\Properties\Dev" >
-        <include name="mpi.xml" />
-        <include name="reidentification.xml" />
-      </fileset>
-      <fileset basedir="${Common.Directory.DBScripts.Path}\nhincdb" prefix="${Common.Directory.DBScripts.Name}">
+      <fileset basedir="${Common.Directory.Product.Path}\DBScripts\nhincdb" prefix="ValidationSuite" failonempty="true">
         <include name="populateTestData.sql"/>
       </fileset>
     </zip>
@@ -190,6 +152,86 @@
 
   </target>
 
+  <target name="Build.PublishZip.ESCs.FTA">
+    <property name="ESC.Name" value="Generic_File_Transfer_Adapter"/>
+    
+    <property name="FTA.Zip.FileName" value="${ProjectFullName}_${ESC.Name}_${CCNetLabel}.zip"/>
+    <property name="FTA.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${FTA.Zip.FileName}"/>
+
+    <zip zipfile="${FTA.Zip.FilePath}">
+      <fileset basedir="${Common.Directory.Production.Path}\Adapters\GenericFileTransfer\FTATransferAdapterEJB\dist\debug" failonempty="true">
+        <include name="*.jar"/>
+      </fileset>
+    </zip>
+
+    <property name="Publish.Web.File.Name" value="${FTA.Zip.FileName}"/>
+    <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
+
+    <call target="Publish.Link" />
+    
+    <property name="FTAManualTest.Zip.FileName" value="${ProjectFullName}_${ESC.Name}_Test_${CCNetLabel}.zip"/>
+    <property name="FTAManualTest.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${FTAManualTest.Zip.FileName}"/>
+
+    <zip zipfile="${FTAManualTest.Zip.FilePath}">
+      <fileset basedir="${Common.Directory.Product.Path}\SoapUI_Test\ManualSuite\FTAManualTest" prefix="FTAManualTest" failonempty="true">
+        <include name="*.*"/>
+        <exclude name="build.xml"/>
+      </fileset>
+    </zip>
+
+    <property name="Publish.Web.File.Name" value="${FTAManualTest.Zip.FileName}"/>
+    <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
+
+    <call target="Publish.Link" />
+  </target>
+
+  <target name="Build.PublishZip.AdapterPEPWS">
+    <property name="AdapterPEPWS.Zip.FileName" value="${ProjectFullName}_OpenSSO_AdapterPEPWS_Test_${CCNetLabel}.zip"/>
+    <property name="AdapterPEPWS.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${AdapterPEPWS.Zip.FileName}"/>
+
+    <zip zipfile="${AdapterPEPWS.Zip.FilePath}">
+      <fileset basedir="${Common.Directory.Product.Path}\SoapUI_Test\ManualSuite\OpenSSO" prefix="OpenSSOAdapterPEPWSTest" failonempty="true">
+        <include name="*.*"/>
+        <exclude name="build.xml"/>
+      </fileset>
+    </zip>
+
+    <property name="Publish.Web.File.Name" value="${AdapterPEPWS.Zip.FileName}"/>
+    <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
+
+    <call target="Publish.Link" />
+
+  </target>
+
+  <target name="Build.PublishZip.LiFT.ManualTest">
+    <property name="LiFt.Zip.FileName" value="${ProjectFullName}_LiFT_Test_${CCNetLabel}.zip"/>
+    <property name="LiFt.Zip.FilePath" value="${Common.Directory.Artifact.Path}\${LiFt.Zip.FileName}"/>
+
+    <zip zipfile="${LiFt.Zip.FilePath}">
+      <fileset basedir="${Common.Directory.Product.Path}\SoapUI_Test\ManualSuite\" prefix="LiFtWSTest" failonempty="true">
+        <include name="EntityXDRLiFTAsyncRequestTests-soapui-project.xml"/>
+        <include name="EntityXDRLiFTAsyncRequestTests-soapui-project.properties"/>
+        <include name="LiFTEnabled_internalConnectionInfo.xml"/>
+        <include name="LiFTDisabled_internalConnectionInfo.xml"/>
+        <include name="LiftDocument.jpg"/>
+      </fileset>
+      <fileset basedir="${Common.Directory.Product.Path}\IntegrationTest\scripts\" prefix="LiFtWSScripts" failonempty="true">
+        <include name="DBFunctions.groovy"/>
+        <include name="FileUtils.groovy"/>
+        <include name="GlassFishUtils.groovy"/>
+        <include name="PropertyReader.groovy"/>
+      </fileset>
+    </zip>
+
+    <property name="Publish.Web.File.Name" value="${LiFt.Zip.FileName}"/>
+    <property name="Publish.Web.File.Path"	value="${Publish.WebPathRoot}/${Common.Directory.Artifact.Name}/${Publish.Web.File.Name}" />
+
+    
+    <call target="Publish.Link" />
+    
+
+  </target>
+  
   <target name="Common.FindBuild">
     <strings id="builds"/>
 

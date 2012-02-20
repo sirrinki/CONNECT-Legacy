@@ -13,13 +13,16 @@
   <property name="GlassFish.Application.Domain.Path" value="${GlassFish.Install.Path}\domains\domain1\config"/>
   <property name="GlassFish.Config.Domain.FilePath" value="${GlassFish.Application.Domain.Path}\domain.xml"/>
   <property name="GlassFish.Application.Config.Path" value="${GlassFish.Application.Domain.Path}\nhin"/>
-
+  <property name="Netbeans.Ant.Config.Path" value="${environment::get-variable('USERPROFILE')}\.netbeans\6.7\config\Preferences\org\apache\tools\ant"/>
+  
   <target name="Workspace.RequieredSoftware.GlassFish">
     <ifnot test="${directory::exists(GlassFish.Install.Path) and directory::exists(NetBeans.Install.Path)}" >
       <call target="GlassFish.DownloadAndInstall"/>
+
       <call target="GlassFish.Update" />
-      <call target="Personal.GlassFish.Recreate.Domain" />
+      <call target="GlassFish.Recreate.Domain" />
     </ifnot>
+    <call target="NetBeans.Set.Ant.Home.Properties"/>
   </target>
 
   <target name="GlassFish.Update">
@@ -35,8 +38,16 @@
     <call target="GlassFish.Update.log4.properties"/>
     <call target="GlassFish.Update.NHIN.properties"/>
     <call target="GlassFish.Update.Certificates"/>
+    <call target="GlassFish.Update.OpenSSO"/>
   </target>
 
+
+  <target name="NetBeans.Set.Ant.Home.Properties">
+    <property name="Anthome.Tag.FileName" value="1.anthome.properties.tag"/>
+
+    <echo message="properties=calling.anttarget.from.netbeans\=true" file="${Netbeans.Ant.Config.Path}\module.properties"/>
+    <echo message="antHome=${string::replace(Ant.Home, '\', '/')}" file="${Netbeans.Ant.Config.Path}\module.properties" append="True"/>
+  </target>
 
   <target name="GlassFish.Update.log4.properties">
     <property name="Lo4j.properties.Tag.FileName" value="1.lo4j.properties.tag"/>
@@ -118,7 +129,7 @@
       <ant
         target="main"
         buildfile="${Package.Workspace.Directory.Path}\Software\GlassFish\Certificates\build.xml"
-
+		
       >
         <environment refid="${Common.EnvironmentVariables.RefId}" />
         <args/>
@@ -206,6 +217,20 @@
     </ifnot>
   </target>
 
+  <target name="GlassFish.Update.OpenSSO">
+    <property name="OpenSSO.Tag.FileName" value="OpenSSO.09-07-2010.opensso.tag"/>
+    <property name="GlassFish.LibPath" value="${GlassFish.Lib.Directory.Path}"/>
+
+    <ifnot test="${file::exists(GlassFish.LibPath + '\' + OpenSSO.Tag.FileName)}">
+      <copy todir="${GlassFish.Lib.Directory.Path}" overwrite="True">
+        <fileset basedir="${Common.Directory.ThirdParty.Path}\OpenSSO">
+          <include name="openssoclientsdk.jar"/>
+        </fileset>
+      </copy>
+      <echo message="" file="${GlassFish.LibPath}\${OpenSSO.Tag.FileName}"/>
+    </ifnot>
+  </target>
+  
   <target name="GlassFish.DownloadAndInstall">
     <ask answer="Answer"
            question="It looks like ${GlassFish.Install.FriendlyName} is not installed.  This software is required.  Do you wish to install the software?"

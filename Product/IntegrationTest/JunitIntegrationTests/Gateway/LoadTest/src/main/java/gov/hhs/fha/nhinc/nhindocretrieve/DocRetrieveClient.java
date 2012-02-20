@@ -1,3 +1,9 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
+ */
 package gov.hhs.fha.nhinc.nhindocretrieve;
 
 import gov.hhs.fha.nhinc.common.nhinccommon.AssertionType;
@@ -17,7 +23,7 @@ import javax.xml.ws.BindingProvider;
  */
 public class DocRetrieveClient
 {
-    private static final String ENDPOINT_NHIN_PROXY = "http://localhost:8080/CONNECTAdapter/NhincProxyDocRetrieve";
+    private static final String ENDPOINT_NHIN_PROXY = "http://localhost:8080/CONNECTMsgProxyWeb/NhincProxyDocRetrieve";
     private static org.apache.commons.logging.Log log = org.apache.commons.logging.LogFactory.getLog(DocRetrieveClient.class);
     private static NhincProxyDocRetrieve service = null;
 
@@ -33,7 +39,7 @@ public class DocRetrieveClient
     {
         return new NhincProxyDocRetrieve();
     }
-    
+
     public String retrieveDocument(String url, String homeCommunityId, String repositoryId, String documentId)
     {
         log.info("Attempting document retrieve for id (" + documentId + ") using URL: " + url);
@@ -82,8 +88,8 @@ public class DocRetrieveClient
 
     protected NhincProxyDocRetrievePortType getPort(String url)
     {
-        NhincProxyDocRetrievePortType port = service.getNhincProxyDocRetrievePortSoap11();
-		gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().initializePort((javax.xml.ws.BindingProvider) port, url);
+        NhincProxyDocRetrievePortType port = service.getNhincProxyDocRetrievePortSoap();
+        ((BindingProvider) port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, url);
         return port;
     }
 
@@ -94,7 +100,7 @@ public class DocRetrieveClient
         // Assertion
         AssertionType assertion = new AssertionCreator().createAssertion();
         request.setAssertion(assertion);
-        
+
         // Target System
         NhinTargetSystemType targetSystem = new NhinTargetSystemType();
         targetSystem.setUrl(url);
@@ -116,7 +122,7 @@ public class DocRetrieveClient
     {
         try
         {
-            String url = "https://localhost:8181/CONNECTGateway/NhinService/RespondingGateway_Retrieve_Service/DocRetrieve";
+            String url = "https://localhost:8181/CONNECTNhinServicesWeb/NhinService/RespondingGateway_Retrieve_Service/DocRetrieve";
             String homeCommunityId = "2.2";
             String repositoryId = "1";
             String documentId = "19MBFile";

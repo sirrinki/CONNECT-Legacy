@@ -14,7 +14,7 @@
     <target name="wsimport-client-NhincProxyDocRetrieve" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/NhincProxyDocRetrieve"/>
         <property name="wsdl-NhincProxyDocRetrieve" location="xml-resources/web-service-references/NhincProxyDocRetrieve/wsdl/NhincProxyDocRetrieve.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/NhincProxyDocRetrieve" destdir="${build.generated.dir}/jax-wsCache/NhincProxyDocRetrieve" wsdl="${wsdl-NhincProxyDocRetrieve}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/C:/Projects/NHINC/2.4/Product/Production/Common/Interfaces/src/wsdl/NhincProxyDocRetrieve.wsdl" xnocompile="true">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/NhincProxyDocRetrieve" destdir="${build.generated.dir}/jax-wsCache/NhincProxyDocRetrieve" wsdl="${wsdl-NhincProxyDocRetrieve}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/C:/Projects/NHINC/Current/Product/Production/Common/Interfaces/src/wsdl/NhincProxyDocRetrieve.wsdl" xnocompile="true">
             <depends file="${wsdl-NhincProxyDocRetrieve}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/NhincProxyDocRetrieve"/>
         </wsimport>
@@ -26,7 +26,7 @@
     </target>
     <target name="wsimport-client-clean-NhincProxyDocRetrieve" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/NhincProxyDocRetrieve"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/gov:hhs:fha:nhinc:nhincproxydocretrieve"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/gov/hhs/fha/nhinc/nhincproxydocretrieve"/>
     </target>
     <target name="wsimport-client-generate" depends="wsimport-client-NhincProxyDocRetrieve"/>
 </project>

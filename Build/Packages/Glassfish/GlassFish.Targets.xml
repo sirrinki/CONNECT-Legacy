@@ -76,11 +76,6 @@
     <call target="GlassFish.Deploy"/>
   </target>
 
-  <target name="GlassFish.Staging.Redeploy">
-    <call target="GlassFish.Recreate.Domain"/>
-    <call target="GlassFish.Deploy"/>
-  </target>
-
   <target name="GlassFish.Install.Domain.Certificates">
     <ant
       target="glassfish.install.domain.certificates"
@@ -98,20 +93,14 @@
       <property name="GlassFish.Recreate.Domain.Arg1" value="-Ddeployment.domain.template.file.path=${property::value(GlassFish.Domain.Templates.File.Path)}" overwrite="True"/>
     </if>
 
-    <property name="GlassFish.Recreate.Domain.Arg2" value=""/>
-    <if test="${property::exists('GlassFish.Domain1.NHINC.Configuration.Directory.Name')}">
-      <property name="GlassFish.Recreate.Domain.Arg2" value="-Ddeployment.environment.configuration.dir.name=${GlassFish.Domain1.NHINC.Configuration.Directory.Name}" overwrite="True"/>
-    </if>
-
     <ant
-          target="recreate.glassfish.domain"
-          buildfile="${GlassFish.Deploy.Script.File.Path}"
-          logfile="${Ant.Log.Directory.Path}\recreate.glassfish.domain.log.xml"
+       target="recreate.glassfish.domain"
+       buildfile="${GlassFish.Deploy.Script.File.Path}"
+       logfile="${Ant.Log.Directory.Path}\recreate.glassfish.domain.log.xml"
           >
       <environment refid="GlassFish.EnvironmentVariables.RefId"/>
       <args>
         <arg line="${GlassFish.Recreate.Domain.Arg1}"/>
-        <arg line="${GlassFish.Recreate.Domain.Arg2}"/>
       </args>
     </ant>
   </target>
@@ -126,6 +115,17 @@
       <args>
         <arg line="-Ddeployment.environment.configuration.dir.name=${GlassFish.Domain1.NHINC.Configuration.Directory.Name} -Ddeployment.dir=${GlassFish.Deploy.Directory.Path}"/>
       </args>
+    </ant>
+  </target>
+
+  <target name="GlassFish.Enable.Profiler.Configuration">
+    <ant
+      target="add.profiler.domain.config"
+      buildfile="${GlassFish.Deploy.Script.File.Path}"
+      logfile="${Ant.Log.Directory.Path}\deploy.configuration.log.xml"
+    >
+      <environment refid="GlassFish.EnvironmentVariables.RefId"/>
+      <args/>
     </ant>
   </target>
 
@@ -163,7 +163,6 @@
         <string value='GlassFish.Deploy'/>
       </tasknames>
     </waitforexit>
-
   </target>
 
   <target name="GlassFish.SetUp">
@@ -253,35 +252,6 @@
       <catch property="ExceptionMessage">
         <echo message="${ExceptionMessage}"/>
         <property name="Ant.Log.File.Path" value="${Ant.Log.Directory.Path}\deploy.configuration.log.xml"/>
-        <call target="Ant.ShowReport"/>
-        <fail message="Please see the report opened in your browser for more detail.${NewLine}${ExceptionMessage}"/>
-      </catch>
-      <finally>
-        <call target="Ant.TearDown"/>
-      </finally>
-    </trycatch>
-  </target>
-
-  <target name="Personal.GlassFish.Recreate.Domain">
-    <property name="GlassFish.Deploy.Directory.Path" value="${Common.Directory.Production.Path}\Common\Properties"/>
-    <property name="GlassFish.Deploy.Script.File.Path" value="${Common.Directory.Product.Path}\build.xml" />
-    <property name="GlassFish.Deploy.Ant.Home" value="${Ant.Home}"/>
-
-    <trycatch>
-      <try>
-        <call target="Ant.SetUp"/>
-        <ant
-              target="recreate.glassfish.domain"
-              buildfile="${GlassFish.Deploy.Script.File.Path}"
-              logfile="${Ant.Log.Directory.Path}\recreate.glassfish.domain.log.xml"
-              >
-          <environment refid="GlassFish.EnvironmentVariables.RefId"/>
-          <args/>
-        </ant>
-      </try>
-      <catch property="ExceptionMessage">
-        <echo message="${ExceptionMessage}"/>
-        <property name="Ant.Log.File.Path" value="${Ant.Log.Directory.Path}\recreate.glassfish.domain.log.xml"/>
         <call target="Ant.ShowReport"/>
         <fail message="Please see the report opened in your browser for more detail.${NewLine}${ExceptionMessage}"/>
       </catch>

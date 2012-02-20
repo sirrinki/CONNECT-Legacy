@@ -1,19 +1,22 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
  */
-
 package gov.hhs.fha.nhinc.fta;
 
 import gov.hhs.fha.nhinc.adapternotificationconsumer.AdapterNotificationConsumerPortType;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 /**
  *
- * @author dunnek
+ * @author Sai Valluripalli
  */
-@WebService(serviceName = "AdapterNotificationConsumer", portName = "AdapterNotificationConsumerPortSoap11", endpointInterface = "gov.hhs.fha.nhinc.adapternotificationconsumer.AdapterNotificationConsumerPortType", targetNamespace = "urn:gov:hhs:fha:nhinc:adapternotificationconsumer", wsdlLocation = "META-INF/wsdl/AdapterFTAService/AdapterNotificationConsumer.wsdl")
+@WebService(serviceName = "AdapterNotificationConsumer", portName = "AdapterNotificationConsumerPortSoap", endpointInterface = "gov.hhs.fha.nhinc.adapternotificationconsumer.AdapterNotificationConsumerPortType", targetNamespace = "urn:gov:hhs:fha:nhinc:adapternotificationconsumer", wsdlLocation = "META-INF/wsdl/AdapterFTAService/AdapterNotificationConsumer.wsdl")
+@BindingType(value = javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 @Stateless
 public class AdapterFTAService implements AdapterNotificationConsumerPortType {
 

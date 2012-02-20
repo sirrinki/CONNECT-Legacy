@@ -1,95 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <projects>
 	<project>
-		<name>NhincCommonTypesLib</name>
-		<directory>/Production/Common/NhincCommonTypesLib</directory>
+		<name>CONNECTCommonTypesLib</name>
+		<directory>/Production/Common/CONNECTCommonTypesLib</directory>
 		<dist.type>jar</dist.type>
 	</project>
 	<project>
-		<name>NhincCommonDAO</name>
-		<directory>/Production/Common/NhincCommonDAO</directory>
+		<name>CONNECTCoreLib</name>
+		<directory>/Production/Common/CONNECTCoreLib</directory>
 		<dist.type>jar</dist.type>
 	</project>
+    <project>
+        <name>CONNECTCommonWeb</name>
+        <directory>/Production/Common/CONNECTCommonWeb</directory>
+        <dist.type>war</dist.type>
+    </project>
+    <project>
+        <name>CONNECTGatewayWeb</name>
+        <directory>/Production/Gateway/CONNECTGatewayWeb</directory>
+        <dist.type>war</dist.type>
+    </project>    
+    <project>
+        <name>CONNECTNhinServicesWeb</name>
+        <directory>/Production/Gateway/CONNECTNhinServicesWeb</directory>
+        <dist.type>war</dist.type>
+    </project>    
+    <project>
+        <name>CONNECTMsgProxyWeb</name>
+        <directory>/Production/Gateway/CONNECTMsgProxyWeb</directory>
+        <dist.type>war</dist.type>
+    </project>    
+    <project>
+        <name>CONNECTAdapterWeb</name>
+        <directory>/Production/Adapters/General/CONNECTAdapterWeb</directory>
+        <dist.type>war</dist.type>
+    </project>    
+    <project>
+        <name>CONNECTInterfaceTestWeb</name>
+        <directory>/Production/Gateway/CONNECTInterfaceTestWeb</directory>
+        <dist.type>war</dist.type>
+    </project>
+    <project>
+        <name>CONNECTLiFTClientApp</name>
+        <directory>/Production/Gateway/CONNECTLiFTClientApp</directory>
+        <dist.type>jar</dist.type>
+    </project> 
 	<project>
-		<name>NhincCommonLib</name>
-		<directory>/Production/Common/NhincCommonLib</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-		<name>NhincSAMLCallbackLib</name>
-		<directory>/Production/Common/NhincSAMLCallbackLib</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-		<name>GatewayInternalComponentProxy</name>
-		<directory>/Production/Gateway/GatewayInternalComponentProxy</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-		<name>AdapterServiceProxy</name>
-		<directory>/Production/Gateway/AdapterServiceProxy</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-		<name>NhincGatewayDAO</name>
-		<directory>/Production/Gateway/NhincGatewayDAO</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-		<name>NhinServiceProxy</name>
-		<directory>/Production/Gateway/NhinServiceProxy</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-		<name>EntityServiceProxy</name>
-		<directory>/Production/Adapters/General/EntityServiceProxy</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-		<name>DocumentRepository</name>
-		<directory>/Production/Adapters/General/DocumentRepository</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-		<name>NhincGatewayLib</name>
-		<directory>/Production/Gateway/NhincGatewayLib</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-		<name>AdapterInternalComponentProxy</name>
-		<directory>/Production/Adapters/General/AdapterInternalComponentProxy</directory>
-		<dist.type>jar</dist.type>
-	</project>
-	<project>
-        <name>CommonServiceProxy</name>
-        <directory>/Production/Common/CommonServiceProxy</directory>
+        <name>CONNECTLiFTServerApp</name>
+        <directory>/Production/Gateway/CONNECTLiFTServerApp</directory>
         <dist.type>jar</dist.type>
     </project>
-    <project>
-        <name>NhincCommonWeb</name>
-        <directory>/Production/Common/NhincCommonWeb</directory>
-        <dist.type>war</dist.type>
-    </project>
-    <project>
-        <name>GatewayWeb</name>
-        <directory>/Production/Gateway/GatewayWeb</directory>
-        <dist.type>war</dist.type>
-    </project>    
-    <project>
-        <name>AdapterWeb</name>
-        <directory>/Production/Adapters/General/AdapterWeb</directory>
-        <dist.type>war</dist.type>
-    </project>    
-    <project>
-        <name>GatewayInternalWeb</name>
-        <directory>/Production/Gateway/GatewayInternalWeb</directory>
-        <dist.type>war</dist.type>
-    </project>
-    <project>
-        <name>NhinInterfaceTestWeb</name>
-        <directory>/Production/Gateway/NhinInterfaceTestWeb</directory>
-        <dist.type>war</dist.type>
-    </project>    
     <project>
         <name>FTAConfigManager</name>
         <directory>/Production/Adapters/GenericFileTransfer/FTAConfigManager</directory>
@@ -106,28 +66,48 @@
         <dist.type>jar</dist.type>
     </project>
     <project>
-        <name>AdapterPDPOpenSSO</name>
-        <directory>/Production/Adapters/General/AdapterPDPOpenSSO</directory>
+        <name>CONNECTAdapterPDPOpenSSO</name>
+        <directory>/Production/Adapters/General/CONNECTAdapterPDPOpenSSO</directory>
         <dist.type>jar</dist.type>
     </project>
     <project>
-        <name>ConsumerPreferencesProfileGUI</name>
-        <directory>/Production/Adapters/General/ConsumerPreferencesProfileGUI</directory>
+        <name>CONNECTConsumerPreferencesProfileGUI</name>
+        <directory>/Production/Adapters/General/CONNECTConsumerPreferencesProfileGUI</directory>
         <dist.type>war</dist.type>
     </project>
     <project>
-        <name>UniversalClientGUI</name>
-        <directory>/Production/Adapters/General/UniversalClientGUI</directory>
+        <name>CONNECTUniversalClientGUI</name>
+        <directory>/Production/Adapters/General/CONNECTUniversalClientGUI</directory>
         <dist.type>war</dist.type>
     </project>
     <project>
-        <name>UDDIModifierGUI</name>
-        <directory>/Production/Common/UDDIModifierGUI</directory>
+        <name>CONNECTUDDIModifierGUI</name>
+        <directory>/Production/Common/CONNECTUDDIModifierGUI</directory>
         <dist.type>war</dist.type>
     </project>
     <project>
         <name>AdapterDocRepository2Soap12Web</name>
         <directory>/Production/Adapters/General/AdapterDocRepository2Soap12Web</directory>
+        <dist.type>war</dist.type>
+    </project>
+	<project>
+        <name>AdapterDocRegistry2Soap12Web</name>
+        <directory>/Production/Adapters/General/AdapterDocRegistry2Soap12Web</directory>
+        <dist.type>war</dist.type>
+    </project>
+    <project>
+        <name>FileTrasnferTimer</name>
+        <directory>/Production/Adapters/GenericFileTransfer/FileTrasnferTimer</directory>
+        <dist.type>jar</dist.type>
+    </project>
+    <project>
+        <name>FileTransferAdapterEJB</name>
+        <directory>/Production/Adapters/GenericFileTransfer/FileTransferAdapterEJB</directory>
+        <dist.type>jar</dist.type>
+    </project>
+    <project>
+        <name>FileTransferAdapterGUI</name>
+        <directory>/Production/Adapters/GenericFileTransfer/FileTransferAdapterGUI</directory>
         <dist.type>war</dist.type>
     </project>
     
@@ -180,14 +160,34 @@
 
   <!--Integration Test-->
     <project>
-      <name>AdapterCommonDataLayerEJBJunitIntegrationTest</name>
-      <directory>/IntegrationTest/JunitIntegrationTests/Adapters/Framework/AdapterCommonDataLayerEJBJunitIntegrationTest</directory>
+      <name>AdapterFrameworkIntTest</name>
+      <directory>/IntegrationTest/JunitIntegrationTests/Adapters/Framework/AdapterFrameworkIntTest</directory>
       <dist.type>jar</dist.type>
     </project>
     <project>
-      <name>AdapterDocumentAssemblyProxyEJBJunitIntegrationTest</name>
-      <directory>/IntegrationTest/JunitIntegrationTests/Adapters/Framework/AdapterDocumentAssemblyProxyEJBJunitIntegrationTest</directory>
+      <name>AdapterGeneralIntTest</name>
+      <directory>/IntegrationTest/JunitIntegrationTests/Adapters/General/AdapterGeneralIntTest</directory>
       <dist.type>jar</dist.type>
     </project>
+    <project>
+      <name>CommonIntTest</name>
+      <directory>/IntegrationTest/JunitIntegrationTests/Common/CommonIntTest</directory>
+      <dist.type>jar</dist.type>
+    </project>
+    <project>
+      <name>GatewayIntTest</name>
+      <directory>/IntegrationTest/JunitIntegrationTests/Gateway/GatewayIntTest</directory>
+      <dist.type>jar</dist.type>
+    </project>
+    <project>
+      <name>HiemSubscriptionRepositoryIntegrationTest</name>
+      <directory>/IntegrationTest/JunitIntegrationTests/Gateway/HiemSubscriptionRepositoryIntegrationTest</directory>
+      <dist.type>jar</dist.type>
+    </project>	
+    <project>
+      <name>LoadTest</name>
+      <directory>/IntegrationTest/JunitIntegrationTests/Gateway/LoadTest</directory>
+      <dist.type>jar</dist.type>
+    </project>	
 	
 </projects>

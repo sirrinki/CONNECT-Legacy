@@ -1,9 +1,16 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
+ */
 package gov.hhs.fha.nhinc.adapterdocumentrepository.soap12;
 
 import gov.hhs.fha.nhinc.adapterdocrepository.AdapterDocRepository2Soap12Client;
 import ihe.iti.xds_b._2007.DocumentRepositoryPortType;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
  * @author shawc
  */
 @WebService(serviceName = "DocumentRepository_Service", portName = "DocumentRepository_Port_Soap", endpointInterface = "ihe.iti.xds_b._2007.DocumentRepositoryPortType", targetNamespace = "urn:ihe:iti:xds-b:2007", wsdlLocation = "WEB-INF/wsdl/AdapterDocRepository2Soap12Service/AdapterComponentDocRepository.wsdl")
+@BindingType(value = javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 public class AdapterDocRepository2Soap12Service implements DocumentRepositoryPortType
 {
     private static Log log = LogFactory.getLog(AdapterDocRepository2Soap12Service.class);
@@ -73,13 +81,13 @@ public class AdapterDocRepository2Soap12Service implements DocumentRepositoryPor
         log.debug("Entering AdapterDocRepository2Soap12Service.documentRepositoryRetrieveDocumentSet() method");
 
         RetrieveDocumentSetResponseType response = null;
-        
+
         try
         {
             if (retrieveRequest != null)
             {
                 log.debug("retrieveRequest was not null");
-                
+
                 AdapterDocRepository2Soap12Client oClient = new AdapterDocRepository2Soap12Client();
 
                 response = oClient.retrieveDocument(retrieveRequest);

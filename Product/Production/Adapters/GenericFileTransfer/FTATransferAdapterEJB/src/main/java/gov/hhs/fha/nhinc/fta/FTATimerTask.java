@@ -1,8 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
  */
-
 package gov.hhs.fha.nhinc.fta;
 
 import gov.hhs.fha.nhinc.common.ftaconfigmanager.FTAConfiguration;
@@ -37,9 +38,6 @@ import gov.hhs.fha.nhinc.entitynotificationconsumer.EntityNotificationConsumerPo
  *
  * @author dunnek
  */
-
-
-
 public class FTATimerTask  {
     private static Log log = LogFactory.getLog(FTATimerTask.class);
     private FTAConfiguration ftaConfig = null;
@@ -119,12 +117,14 @@ public class FTATimerTask  {
   {
         try { // Call Web Service Operation
             EntityNotificationConsumer service = new EntityNotificationConsumer();
-            EntityNotificationConsumerPortType port = service.getEntityNotificationConsumerPortSoap11();
+            EntityNotificationConsumerPortType port = service.getEntityNotificationConsumerPortSoap();
 
 
            String endpointURL = PropertyAccessor.getProperty("adapter", "EntityNotificationConsumerURL");
            //String endpointURL = "http://localhost:8088/mockEntityNotificationConsumerBindingSoap11";
-		   gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().initializePort((javax.xml.ws.BindingProvider) port, endpointURL);
+           log.info("EntitySubscriptionURL :"+endpointURL);
+           ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointURL);
+
 
             // TODO initialize WS operation arguments here
             gov.hhs.fha.nhinc.common.nhinccommonentity.NotifyRequestType notifyRequest = new gov.hhs.fha.nhinc.common.nhinccommonentity.NotifyRequestType();
@@ -169,12 +169,14 @@ public class FTATimerTask  {
   {
         try { // Call Web Service Operation
             EntityNotificationConsumerSecured service = new EntityNotificationConsumerSecured();
-            EntityNotificationConsumerSecuredPortType port = service.getEntityNotificationConsumerSecuredPortSoap11();
+            EntityNotificationConsumerSecuredPortType port = service.getEntityNotificationConsumerSecuredPortSoap();
 
 
            String endpointURL = PropertyAccessor.getProperty("adapter", "EntityNotificationConsumerURL");
            //String endpointURL = "http://localhost:8088/mockEntityNotificationConsumerBindingSoap11";
-			gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().initializePort((javax.xml.ws.BindingProvider) port, endpointURL);
+           log.info("EntitySubscriptionURL :"+endpointURL);
+           ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointURL);
+
 
             // TODO initialize WS operation arguments here
             NotificationMessageHolderType messageHolder = new NotificationMessageHolderType();

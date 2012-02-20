@@ -21,7 +21,7 @@
     <target name="wsimport-client-DocumentManager" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/DocumentManager"/>
         <property name="wsdl-DocumentManager" location="${meta.inf}/xml-resources/web-service-references/DocumentManager/wsdl/DocumentManager.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/DocumentManager" destdir="${build.generated.dir}/jax-wsCache/DocumentManager" wsdl="${wsdl-DocumentManager}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/C:/projects/NHINC/2.4/Product/Production/Common/Interfaces/src/wsdl/DocumentManager.wsdl" xnocompile="true">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/DocumentManager" destdir="${build.generated.dir}/jax-wsCache/DocumentManager" wsdl="${wsdl-DocumentManager}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/C:/projects/NHINC/3.1/Product/Production/Common/Interfaces/src/wsdl/DocumentManager.wsdl" xnocompile="true">
             <depends file="${wsdl-DocumentManager}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/DocumentManager"/>
         </wsimport>
@@ -33,7 +33,7 @@
     </target>
     <target name="wsimport-client-clean-DocumentManager" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/DocumentManager"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/ihe:iti:xds-b:2007"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/ihe/iti/xds_b/_2007"/>
     </target>
     <target name="wsimport-service-AdapterDocumentAssembly" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/service/AdapterDocumentAssembly"/>

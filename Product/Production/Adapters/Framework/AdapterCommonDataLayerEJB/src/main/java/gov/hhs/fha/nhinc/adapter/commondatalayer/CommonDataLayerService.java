@@ -1,4 +1,9 @@
-
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
+ */
 package gov.hhs.fha.nhinc.adapter.commondatalayer;
 
 import java.net.MalformedURLException;
@@ -17,7 +22,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "CommonDataLayerService", targetNamespace = "urn:gov:hhs:fha:nhinc:adapter:commondatalayer", wsdlLocation = "file:/D:/GlassFishESBV2.1/NetBeansProjects6.5.1/NHINC/Current/Product/Production/Adapters/Framework/AdapterCommonDataLayerEJB/src/conf/xml-resources/web-services/AdapterCommonDataLayer/wsdl/AdapterCommonDataLayer.wsdl")
+@WebServiceClient(name = "CommonDataLayerService", targetNamespace = "urn:gov:hhs:fha:nhinc:adapter:commondatalayer", wsdlLocation = "file:/D:/GlassFishESBV2.1/NetBeansProjects6.5.1/NHINC/3.1/Product/Production/Adapters/Framework/AdapterCommonDataLayerEJB/src/conf/xml-resources/web-services/AdapterCommonDataLayer/wsdl/AdapterCommonDataLayer.wsdl")
 public class CommonDataLayerService
     extends Service
 {
@@ -30,9 +35,9 @@ public class CommonDataLayerService
         try {
             URL baseUrl;
             baseUrl = gov.hhs.fha.nhinc.adapter.commondatalayer.CommonDataLayerService.class.getResource(".");
-            url = new URL(baseUrl, "file:/D:/GlassFishESBV2.1/NetBeansProjects6.5.1/NHINC/Current/Product/Production/Adapters/Framework/AdapterCommonDataLayerEJB/src/conf/xml-resources/web-services/AdapterCommonDataLayer/wsdl/AdapterCommonDataLayer.wsdl");
+            url = new URL(baseUrl, "file:/D:/GlassFishESBV2.1/NetBeansProjects6.5.1/NHINC/3.1/Product/Production/Adapters/Framework/AdapterCommonDataLayerEJB/src/conf/xml-resources/web-services/AdapterCommonDataLayer/wsdl/AdapterCommonDataLayer.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:/D:/GlassFishESBV2.1/NetBeansProjects6.5.1/NHINC/Current/Product/Production/Adapters/Framework/AdapterCommonDataLayerEJB/src/conf/xml-resources/web-services/AdapterCommonDataLayer/wsdl/AdapterCommonDataLayer.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'file:/D:/GlassFishESBV2.1/NetBeansProjects6.5.1/NHINC/3.1/Product/Production/Adapters/Framework/AdapterCommonDataLayerEJB/src/conf/xml-resources/web-services/AdapterCommonDataLayer/wsdl/AdapterCommonDataLayer.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         COMMONDATALAYERSERVICE_WSDL_LOCATION = url;

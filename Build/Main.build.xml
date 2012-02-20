@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://nant.sf.net/schemas/nant.xsd" name="Main Build" default="Triggered">
-  
+
   <include buildfile="Properties.build.xml" />
   <include buildfile="Common.Build.xml" />
   <include buildfile="Custom.Build.xml" />
-  
+
   <description>Begin Package Includes</description>
   <loadpackages>
     <package name="Publish"/>
@@ -25,22 +25,22 @@
     <package name="SoapUI"/>
   </loadpackages>
   <description>End Package Includes</description>
-  
+
   <target name="Triggered" depends="SetUps">
     <trycatch>
       <try>
         <description>Begin Main Build</description>
-        
+
         <description>Begin Pre Build Actions</description>
         <call target="SourceModificationReport.ConsolidateReports" />
         <call target="TargetProcess.CreateReport" />
         <description>End Pre Build Actions</description>
-        
+
         <description>Begin Clean Up Actions</description>
-        <call target="SourceControl.GetOf.Common.Directory.ThirdParty.Path" />
         <call target="SourceControl.GetOf.Common.Directory.Product.Path" />
         <description>End Clean Up Actions</description>
-        
+        <call target="Ant.Dev.Clean"/>
+
         <description>Begin Compile Actions</description>
         <asyncexec taskname="Simian" program="${Tools.NAnt.Exe}" failonerror="False">
           <arg line="-buildfile:${Package.Simian.Directory.Path}\Simian.Runner.xml" />
@@ -57,16 +57,33 @@
           <arg line="-logger:NAnt.Core.XmlLogger"/>
           <arg line='-logfile:"${Common.Project.ReportDirectory}\Checkstyle.xml"'/>
         </asyncexec>
-        
+
         <call target="Ant.CompileSource" />
 
         <description>End Compile Actions</description>
 
         <description>Begin Varification Actions</description>
-        <call target="UnitTest.RunTests" />
-        <!--<call target="Coverage.PublishReports" />-->
+        <property name="UnitTests.HaveFailed" value="False"/>
+        <trycatch>
+          <try>
+            <call target="UnitTest.RunTests"/>
+          </try>
+          <catch property="exception">
+            <property name="UnitTest.Exception.Message" value="${exception}"/>
+            <property name="UnitTests.HaveFailed" value="True"/>
+          </catch>
+        </trycatch>
+        <delete>
+          <fileset>
+            <include name="${Common.Directory.Production.Path}\integrationtest\**\coverage-reports\**\*"/>
+          </fileset>
+        </delete>
+        <call target="Coverage.PublishReports"/>
+        <if test="${UnitTests.HaveFailed}">
+          <fail message="${UnitTest.Exception.Message}"/>
+        </if>
         <description>End Varification Actions</description>
-        
+
         <description>Begin Post Build Actions</description>
         <waitforexit>
           <tasknames>
@@ -75,7 +92,7 @@
           </tasknames>
         </waitforexit>
         <description>End Post Build Actions</description>
-        
+
         <description>End Main Build</description>
       </try>
       <finally>
@@ -83,22 +100,21 @@
       </finally>
     </trycatch>
   </target>
-  
-  <target name="Klocwork">
+
+  <target name="Klocwork" depends="SetUps">
     <trycatch>
       <try>
         <description>Begin Main Build</description>
-        
+
         <description>Begin Pre Build Actions</description>
         <call target="SourceModificationReport.ConsolidateReports" />
         <call target="TargetProcess.CreateReport" />
         <description>End Pre Build Actions</description>
-        
+
         <description>Begin Clean Up Actions</description>
-        <call target="SourceControl.CleanGetOf.Common.Directory.ThirdParty.Path" />
         <call target="SourceControl.CleanGetOf.Common.Directory.Product.Path" />
         <description>End Clean Up Actions</description>
-        
+
         <description>Begin Compile Actions</description>
         <call target="Klocwork.CreateBuildSpecification" />
         <call target="Klocwork.RunAnalysis" />
@@ -107,7 +123,7 @@
 
         <description>Begin Post Build Actions</description>
         <description>End Post Build Actions</description>
-        
+
         <description>End Main Build</description>
       </try>
       <finally>
@@ -115,22 +131,21 @@
       </finally>
     </trycatch>
   </target>
-  
+
   <target name="Heavy" depends="SetUps">
     <trycatch>
       <try>
         <description>Begin Main Build</description>
-        
+
         <description>Begin Pre Build Actions</description>
         <call target="SourceModificationReport.ConsolidateReports" />
         <call target="TargetProcess.CreateReport" />
         <description>End Pre Build Actions</description>
-        
+
         <description>Begin Clean Up Actions</description>
-        <call target="SourceControl.CleanGetOf.Common.Directory.ThirdParty.Path" />
         <call target="SourceControl.CleanGetOf.Common.Directory.Product.Path" />
         <description>End Clean Up Actions</description>
-        
+
         <description>Begin Compile Actions</description>
         <asyncexec taskname="Simian" program="${Tools.NAnt.Exe}" failonerror="False">
           <arg line="-buildfile:${Package.Simian.Directory.Path}\Simian.Runner.xml" />
@@ -151,13 +166,25 @@
         <call target="Ant.CompileSource" />
 
         <description>End Compile Actions</description>
-        
+
         <description>Begin Varification Actions</description>
-        <call target="UnitTest.RunTests" />
-        <!--<call target="IntegrationTest.RunTests" />
-        <call target="Coverage.PublishReports" />-->
+        <property name="UnitTests.HaveFailed" value="False"/>
+        <trycatch>
+          <try>
+            <call target="UnitTest.RunTests"/>
+          </try>
+          <catch property="exception">
+            <property name="UnitTest.Exception.Message" value="${exception}"/>
+            <property name="UnitTests.HaveFailed" value="True"/>
+          </catch>
+        </trycatch>
+
+        <call target="Coverage.PublishReports"/>
+        <if test="${UnitTests.HaveFailed}">
+          <fail message="${UnitTest.Exception.Message}"/>
+        </if>
         <description>End Varification Actions</description>
-        
+
         <description>Begin Post Build Actions</description>
         <!--<call target="Ant.Package" />
         <property name="Compile.Debug" value="False" />
@@ -170,7 +197,7 @@
           </tasknames>
         </waitforexit>
         <description>End Post Build Actions</description>
-        
+
         <description>End Main Build</description>
       </try>
       <finally>
@@ -178,22 +205,21 @@
       </finally>
     </trycatch>
   </target>
-  
+
   <target name="Release" depends="SetUps">
     <trycatch>
       <try>
         <description>Begin Main Build</description>
-        
+
         <description>Begin Pre Build Actions</description>
         <call target="SourceModificationReport.ConsolidateReports" />
         <call target="TargetProcess.CreateReport" />
         <description>End Pre Build Actions</description>
-        
+
         <description>Begin Clean Up Actions</description>
-        <call target="SourceControl.CleanGetOf.Common.Directory.ThirdParty.Path" />
         <call target="SourceControl.CleanGetOf.Common.Directory.Product.Path" />
         <description>End Clean Up Actions</description>
-        
+
         <description>Begin Compile Actions</description>
         <asyncexec taskname="Simian" program="${Tools.NAnt.Exe}" failonerror="False">
           <arg line="-buildfile:${Package.Simian.Directory.Path}\Simian.Runner.xml" />
@@ -210,25 +236,37 @@
           <arg line="-logger:NAnt.Core.XmlLogger"/>
           <arg line='-logfile:"${Common.Project.ReportDirectory}\Checkstyle.xml"'/>
         </asyncexec>
-        
-        <call target="Ant.CompileSource" />
+
+        <call target="Ant.Clean" />
+        <call target="Ant.Package" />
 
         <description>End Compile Actions</description>
-        
+
         <description>Begin Varification Actions</description>
-        <call target="UnitTest.RunTests" />
-        <!--<call target="IntegrationTest.RunTests" />
-        <call target="Coverage.PublishReports" />-->
+        <property name="UnitTests.HaveFailed" value="False"/>
+        <trycatch>
+          <try>
+            <call target="UnitTest.RunTests"/>
+          </try>
+          <catch property="exception">
+            <property name="UnitTest.Exception.Message" value="${exception}"/>
+            <property name="UnitTests.HaveFailed" value="True"/>
+          </catch>
+        </trycatch>
+
+        <call target="Coverage.PublishReports"/>
+        <if test="${UnitTests.HaveFailed}">
+          <fail message="${UnitTest.Exception.Message}"/>
+        </if>
         <description>End Varification Actions</description>
-        
+
         <description>Begin Post Build Actions</description>
-        <!--<call target="Ant.Package" />
-        <property name="Compile.Debug" value="False" />
+        <!--<property name="Compile.Debug" value="False" />
         <call target="Ant.Package" />-->
 
         <call target="Ant.Copy.Deployable.Artifacts"/>
         <call target="Build.PublishZips"/>
-        
+
         <waitforexit>
           <tasknames>
             <string value="Simian"/>
@@ -236,7 +274,7 @@
           </tasknames>
         </waitforexit>
         <description>End Post Build Actions</description>
-        
+
         <description>End Main Build</description>
       </try>
       <finally>
@@ -245,11 +283,116 @@
     </trycatch>
   </target>
 
-  <target name="Integration.Deploy" depends="SetUps">
+  <target name="Validation.Test" depends="SetUps">
     <trycatch>
       <try>
+        <call target="SourceControl.GetOf.Common.Directory.Product.Path" />
+
+        <call target="SourceModificationReport.ConsolidateReports" />
+
+        <call target="TargetProcess.CreateReport" />
         <call target="TargetProcess.Get.Release.Report"/>
+
         <call target="GlassFish.Redeploy.Release.Build.Integration" />
+
+        <property name="IntegrationTest.Tests.HaveFailed" value="False"/>
+        <trycatch>
+          <try>
+            <call target="IntegrationTest.RunTests"/>
+          </try>
+          <catch property="exception">
+            <property name="IntegrationTest.Tests.Exception.Message" value="${exception}"/>
+            <property name="IntegrationTest.Tests.HaveFailed" value="True"/>
+          </catch>
+        </trycatch>
+
+        <property name="SoapUI.Validation.Tests.HaveFailed" value="False"/>
+        <trycatch>
+          <try>
+            <property name="SoapUI.Suite" value="ValidationSuite" />
+            <call target="SoapUI.RunTests"/>
+          </try>
+          <catch property="exception">
+            <property name="SoapUI.Validation.Tests.Exception.Message" value="${exception}"/>
+            <property name="SoapUI.Validation.Tests.HaveFailed" value="True"/>
+          </catch>
+        </trycatch>
+
+        <if test="${IntegrationTest.Tests.HaveFailed}">
+          <fail message="${IntegrationTest.Tests.Exception.Message}"/>
+        </if>
+
+        <if test="${SoapUI.Validation.Tests.HaveFailed}">
+          <fail message="${SoapUI.Validation.Tests.Exception.Message}"/>
+        </if>
+      </try>
+      <finally>
+        <call target="TearDowns" />
+      </finally>
+    </trycatch>
+  </target>
+
+  <target name="Regression.Test" depends="SetUps">
+    <trycatch>
+      <try>
+        <call target="SourceControl.GetOf.Common.Directory.Product.Path" />
+
+        <call target="SourceModificationReport.ConsolidateReports" />
+
+        <call target="TargetProcess.CreateReport" />
+        <call target="TargetProcess.Get.Release.Report"  failonerror="False"/>
+
+        <call target="GlassFish.Redeploy.Release.Build.Integration" />
+
+        <property name="SoapUI.Tests.HaveFailed" value="False"/>
+        <trycatch>
+          <try>
+            <property name="SoapUI.Suite" value="RegressionSuite" />
+            <call target="SoapUI.RunTests"/>
+          </try>
+          <catch property="exception">
+            <property name="SoapUI.Tests.Exception.Message" value="${exception}"/>
+            <property name="SoapUI.Tests.HaveFailed" value="True"/>
+          </catch>
+        </trycatch>
+
+        <if test="${SoapUI.Tests.HaveFailed}">
+          <fail message="${SoapUI.Tests.Exception.Message}"/>
+        </if>
+      </try>
+      <finally>
+        <call target="TearDowns" />
+      </finally>
+    </trycatch>
+  </target>
+
+  <target name="Conformance.Test" depends="SetUps">
+    <trycatch>
+      <try>
+        <call target="SourceControl.GetOf.Common.Directory.Product.Path" />
+
+        <call target="SourceModificationReport.ConsolidateReports" />
+
+        <call target="TargetProcess.CreateReport" />
+        <call target="TargetProcess.Get.Release.Report"  failonerror="False"/>
+
+        <call target="GlassFish.Redeploy.Release.Build.Staging" />
+
+        <property name="SoapUI.Tests.HaveFailed" value="False"/>
+        <trycatch>
+          <try>
+            <property name="SoapUI.Suite" value="ConformanceSuite" />
+            <call target="SoapUI.RunTests"/>
+          </try>
+          <catch property="exception">
+            <property name="SoapUI.Tests.Exception.Message" value="${exception}"/>
+            <property name="SoapUI.Tests.HaveFailed" value="True"/>
+          </catch>
+        </trycatch>
+
+        <if test="${SoapUI.Tests.HaveFailed}">
+          <fail message="${SoapUI.Tests.Exception.Message}"/>
+        </if>
       </try>
       <finally>
         <call target="TearDowns" />
@@ -257,6 +400,40 @@
     </trycatch>
   </target>
   
+  <target name="Performance.Test" depends="SetUps">
+    <trycatch>
+      <try>
+        <call target="SourceControl.GetOf.Common.Directory.Product.Path" />
+
+        <call target="SourceModificationReport.ConsolidateReports" />
+
+        <call target="TargetProcess.CreateReport" />
+        <call target="TargetProcess.Get.Release.Report" failonerror="False"/>
+
+        <call target="GlassFish.Redeploy.Release.Build.Staging" />
+
+        <property name="SoapUI.Tests.HaveFailed" value="False"/>
+        <trycatch>
+          <try>
+            <property name="SoapUI.Suite" value="PerformanceSuite" />
+            <call target="SoapUI.Performance.RunTests"/>
+          </try>
+          <catch property="exception">
+            <property name="SoapUI.Tests.Exception.Message" value="${exception}"/>
+            <property name="SoapUI.Tests.HaveFailed" value="True"/>
+          </catch>
+        </trycatch>
+
+        <if test="${SoapUI.Tests.HaveFailed}">
+          <fail message="${SoapUI.Tests.Exception.Message}"/>
+        </if>
+      </try>
+      <finally>
+        <call target="TearDowns" />
+      </finally>
+    </trycatch>
+  </target>
+
   <target name="Staging.Deploy" depends="SetUps">
     <trycatch>
       <try>
@@ -268,26 +445,27 @@
       </finally>
     </trycatch>
   </target>
-  
-  <target name="Test" depends="SetUps" >
+
+  <target name="SoapUI.Dev" depends="SetUps">
     <trycatch>
       <try>
-        <description>Begin Main Build</description>
-
-        <description>Begin Pre Build Actions</description>
         <call target="SourceModificationReport.ConsolidateReports" />
-        <call target="TargetProcess.Get.Release.Report"/>
-        <description>End Pre Build Actions</description>
 
-        <description>Begin Clean Up Actions</description>
-        <call target="SourceControl.CleanGetOf.Common.Directory.Product.Path" />
-        <description>End Clean Up Actions</description>
+        <call target="TargetProcess.CreateReport" />
+        <call target="TargetProcess.Get.Release.Report" failonerror="False" />
 
-        <description>Begin Varification Actions</description>
-        <call target="SoapUI.RunTests"/>
-        <description>End Varification Actions</description>
+        <property name="SourceControl.GetOf" value="${Common.Directory.Product.Path}\SoapUI_Test"/>
+        <call target="SourceControl.GetOf"/>
 
-        <description>End Main Build</description>
+        <trycatch>
+          <try>
+            <property name="SoapUI.Suite" value="DevelopmentSuite" />
+            <call target="SoapUI.RunTests"/>
+          </try>
+          <catch property="exception">
+            <property name="SoapUI.Tests.Exception.Message" value="${exception}"/>
+          </catch>
+        </trycatch>
       </try>
       <finally>
         <call target="TearDowns" />
@@ -314,7 +492,7 @@
     <call target="SoapUI.SetUp" />
     <description>End SetUps</description>
   </target>
-  
+
   <target name="TearDowns">
     <description>Begin TearDowns</description>
     <call target="Publish.TearDown" />
@@ -333,5 +511,5 @@
     <call target="SoapUI.TearDown" />
     <description>End TearDowns</description>
   </target>
-  
+
 </project>

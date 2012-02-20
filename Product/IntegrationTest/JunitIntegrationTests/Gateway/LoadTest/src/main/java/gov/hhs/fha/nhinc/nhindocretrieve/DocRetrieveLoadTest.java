@@ -1,3 +1,9 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
+ */
 package gov.hhs.fha.nhinc.nhindocretrieve;
 
 /**
@@ -34,7 +40,7 @@ public class DocRetrieveLoadTest
     {
         try
         {
-            String url = "https://localhost:8181/CONNECTGateway/NhinService/RespondingGateway_Retrieve_Service/DocRetrieve";
+            String url = "https://localhost:8181/CONNECTNhinServicesWeb/NhinService/RespondingGateway_Retrieve_Service/DocRetrieve";
             String homeCommunityId = "2.2";
             String repositoryId = "1";
             String[] documentIds = {"5MBFile", "10MBFile", "11MBFile", "12MBFile", "13MBFile", "14MBFile", "15MBFile", "16MBFile", "17MBFile", "18MBFile", "19MBFile", "20MBFile", "30MBFile", "40MBFile", "50MBFile"};

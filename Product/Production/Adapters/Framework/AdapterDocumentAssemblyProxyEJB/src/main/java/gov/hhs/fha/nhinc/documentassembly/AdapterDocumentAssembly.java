@@ -1,4 +1,10 @@
 /*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
+ */
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -9,12 +15,14 @@ import gov.hhs.fha.nhinc.common.nhinccommonadapter.RespondingGatewayCrossGateway
 import gov.hhs.fha.nhinc.common.nhinccommonadapter.RespondingGatewayCrossGatewayQueryRequestType;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 /**
  *
  * @author kim
  */
 @WebService(serviceName = "DocumentAssembly", portName = "DocumentAssemblyPortSoap", endpointInterface = "gov.hhs.fha.nhinc.documentassembly.DocumentAssemblyPortType", targetNamespace = "urn:gov:hhs:fha:nhinc:documentassembly", wsdlLocation = "META-INF/wsdl/AdapterDocumentAssembly/DocumentAssembly.wsdl")
+@BindingType(value = javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 @Stateless
 public class AdapterDocumentAssembly implements DocumentAssemblyPortType {
 

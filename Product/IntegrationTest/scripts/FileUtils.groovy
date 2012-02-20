@@ -19,11 +19,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-class FileUtils
-{
-   FileUtils() {}
+class FileUtils {
+  FileUtils() {}
    
-   static String ReadFile(String FileName,context,log) {
+  static String ReadFile(String FileName,context,log) {
 			log.info("read file: " + FileName);
 			File sourceFile = new File(FileName);  
 			String filecontents = null;
@@ -57,9 +56,8 @@ class FileUtils
 			//log.info("read file contents (" + filecontents.length() + ")");
 			return filecontents;
    }
- 
-   
-   static MoveFile(sourceDirectory, sourceFileName, destinationDirectory, destinationFileName, context, log) {
+
+  static MoveFile(sourceDirectory, sourceFileName, destinationDirectory, destinationFileName, context, log) {
       //entries can either be the actual entry or pointer to config item
       //bad naming convention. Developer should be flogged. :)
       sourceDirectory = context.expand( sourceDirectory )
@@ -72,9 +70,6 @@ class FileUtils
 			
 			// Copy test file
 			log.info("copying property file from " + sourceFile + " to " + destinationFile);
-						
-
-
 
 			if(sourceFile.exists())
 			{
@@ -103,23 +98,22 @@ class FileUtils
 	}
 	
 	static UpdateProperty(String directory, String filename, String propertyKey, String propertyValue,context,log) {
-			  log.info("begin UpdateProperty; directory='" + directory + "';filename='" + filename + "';key='" + propertyKey + "';value='" + propertyValue + "';");
-				File file = new File(directory,filename);
-        Properties properties = new Properties();
-        FileReader frPropFile = new FileReader(file);
-        properties = new Properties();
-        properties.load(frPropFile);
+    log.info("begin UpdateProperty; directory='" + directory + "';filename='" + filename + "';key='" + propertyKey + "';value='" + propertyValue + "';");
+    File file = new File(directory,filename);
+    Properties properties = new Properties();
+    FileReader frPropFile = new FileReader(file);
+    properties = new Properties();
+    properties.load(frPropFile);
 
-        properties.setProperty(propertyKey, propertyValue);
+    properties.setProperty(propertyKey, propertyValue);
 
-        FileWriter fwPropFile = new FileWriter(filename);
-        fwPropFile = new FileWriter(file);
-        properties.store(fwPropFile, "**DO NOT CHECK IN** - written by groovy script FileUtils.groovy->UpdateProperty");
-        properties = null;
+    FileWriter fwPropFile = new FileWriter(filename);
+    fwPropFile = new FileWriter(file);
+    properties.store(fwPropFile, "**DO NOT CHECK IN** - written by groovy script FileUtils.groovy->UpdateProperty");
+    properties = null;
 	}
 
 	static String ReadProperty(String directory, String filename, String propertyKey, context, log) {
-
 		log.info("begin ReadProperty; directory='" + directory + "';filename='" + filename + "';key='" + propertyKey + "';");
 		File file = new File(directory,filename);
 		Properties properties = new Properties();
@@ -136,89 +130,119 @@ class FileUtils
 	
 		String fullPath = directory + "/internalConnectionInfo.xml";
 		log.info("Path to connection info file: " + fullPath);
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        Document doc = null;
-        try
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    Document doc = null;
+    try
+    {
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        doc = builder.parse(fullPath);
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+        return;
+    }
+    NodeList connectionInfos = doc.getElementsByTagName("internalConnectionInfo");
+    for (int i = 0; i < connectionInfos.getLength(); i++) {
+      Element connectionInfo = (Element) connectionInfos.item(i);
+      NodeList homeCommunityIds = connectionInfo.getElementsByTagName("homeCommunityId");
+      Element communityIdElement = (Element)homeCommunityIds.item(0);
+      String communityIdValue = communityIdElement.getTextContent();
+      if(communityId.equals(communityIdValue))
+      {
+        NodeList servicesList = connectionInfo.getElementsByTagName("services");
+        Element servicesElement = (Element)servicesList.item(0);
+        NodeList serviceList = servicesElement.getElementsByTagName("service");
+        boolean serviceNodeFound = false;
+        for(int serviceNodeIndex = 0; serviceNodeIndex < serviceList.getLength(); serviceNodeIndex++)
         {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            doc = builder.parse(fullPath);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        NodeList connectionInfos = doc.getElementsByTagName("internalConnectionInfo");
-        for (int i = 0; i < connectionInfos.getLength(); i++) {
-            Element connectionInfo = (Element) connectionInfos.item(i);
-            NodeList homeCommunityIds = connectionInfo.getElementsByTagName("homeCommunityId");
-            Element communityIdElement = (Element)homeCommunityIds.item(0);
-            String communityIdValue = communityIdElement.getTextContent();
-            if(communityId.equals(communityIdValue))
+            Element serviceElement = (Element)serviceList.item(serviceNodeIndex);
+            Element serviceNameElement = (Element)serviceElement.getElementsByTagName("name").item(0);
+            if(serviceName.equals(serviceNameElement.getTextContent()))
             {
-                NodeList servicesList = connectionInfo.getElementsByTagName("services");
-                Element servicesElement = (Element)servicesList.item(0);
-                NodeList serviceList = servicesElement.getElementsByTagName("service");
-                boolean serviceNodeFound = false;
-                for(int serviceNodeIndex = 0; serviceNodeIndex < serviceList.getLength(); serviceNodeIndex++)
+                serviceNodeFound = true;
+                Element endpointUrlElement = (Element)serviceElement.getElementsByTagName("endpointURL").item(0);
+                if(!serviceUrl.equals(endpointUrlElement.getTextContent()))
                 {
-                    Element serviceElement = (Element)serviceList.item(serviceNodeIndex);
-                    Element serviceNameElement = (Element)serviceElement.getElementsByTagName("name").item(0);
-                    if(serviceName.equals(serviceNameElement.getTextContent()))
-                    {
-                        serviceNodeFound = true;
-                        Element endpointUrlElement = (Element)serviceElement.getElementsByTagName("endpointURL").item(0);
-                        if(!serviceUrl.equals(endpointUrlElement.getTextContent()))
-                        {
-                            endpointUrlElement.setTextContent(serviceUrl);
-                        }
-                        break;
-                    }
-                }
-                if(!serviceNodeFound)
-                {
-                    // Create new service and add it to the services node
-                    Element serviceElement = doc.createElement("service");
-
-                    Element nameElement = doc.createElement("name");
-                    nameElement.setTextContent(serviceName);
-                    serviceElement.appendChild(nameElement);
-
-                    Element descriptionElement = doc.createElement("description");
-                    descriptionElement.setTextContent(serviceName);
-                    serviceElement.appendChild(descriptionElement);
-
-                    Element endpointUrlElement = doc.createElement("endpointURL");
                     endpointUrlElement.setTextContent(serviceUrl);
-                    serviceElement.appendChild(endpointUrlElement);
-
-                    servicesElement.appendChild(serviceElement);
                 }
                 break;
             }
-        }
-        try
-        {
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+          }
+          if(!serviceNodeFound)
+          {
+            // Create new service and add it to the services node
+            Element serviceElement = doc.createElement("service");
 
-            //initialize StreamResult with File object to save to file
-            DOMSource source = new DOMSource(doc);
-            transformer.transform(source, new StreamResult(new FileOutputStream(fullPath)));
+            Element nameElement = doc.createElement("name");
+            nameElement.setTextContent(serviceName);
+            serviceElement.appendChild(nameElement);
+
+            Element descriptionElement = doc.createElement("description");
+            descriptionElement.setTextContent(serviceName);
+            serviceElement.appendChild(descriptionElement);
+
+            Element endpointUrlElement = doc.createElement("endpointURL");
+            endpointUrlElement.setTextContent(serviceUrl);
+            serviceElement.appendChild(endpointUrlElement);
+
+            servicesElement.appendChild(serviceElement);
+          }
+          break;
         }
-        catch(Exception e)
-        {
-            log.error("Exception writing out connection info file: " + e.getMessage(), e);
-        }
+    }
+    try
+    {
+      Transformer transformer = TransformerFactory.newInstance().newTransformer();
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+      //initialize StreamResult with File object to save to file
+      DOMSource source = new DOMSource(doc);
+      transformer.transform(source, new StreamResult(new FileOutputStream(fullPath)));
+    }
+    catch(Exception e)
+    {
+      log.error("Exception writing out connection info file: " + e.getMessage(), e);
+    }
 
 		log.info("end CreateOrUpdateConnection");
 	}
 
-		static InitializeNHINCProperties(context, log) {
-
-			File sourceFile = new File("C:\\projects\\nhinc\\2.4\\Product\\");  
-			def process = "C:\\projects\\nhinc\\2.4\\Product\\Redeploy.Configuration.bat".execute(null, sourceFile);
-			
-			log.info( "Found text ${process.text}");
-		
-		}
-}
+  static InitializeNHINCProperties(context, log) {}
+  
+  static backupConfiguration(context, log) {
+    log.info("Start backupConfiguration(context, log)")
+    try{
+      def backupDir = new File(System.getProperty("java.io.tmpdir"), "nhinc_conf")
+      def confDir = new File(System.env['NHINC_PROPERTIES_DIR'])
+      
+      def files2backup = ["hiemTopicConfiguration.xml","internalConnectionInfo.xml","PCConfiguration.xml","uddiConnectionInfo.xml","XDSUniqueIds.properties","gateway.properties","adapter.properties"]
+      files2backup.each{
+        def file2backup = new File(confDir, it)
+        org.apache.commons.io.FileUtils.copyFileToDirectory(file2backup, backupDir, true)
+      }
+    } catch(Throwable e) {
+      log.error(e.getMessage())
+      context.getTestRunner().fail("Failed to backup NHINC configuration: " + e.getMessage())
+    }
+    log.info("End backupConfiguration(context, log)")
+  }
+  
+  static restoreConfiguration(context, log) {
+    log.info("Start restoreConfiguration(context, log)")
+    try{
+      def backupDir = new File(System.getProperty("java.io.tmpdir"), "nhinc_conf")
+      def confDir = new File(System.env['NHINC_PROPERTIES_DIR'])
+      
+      def files2resore = ["hiemTopicConfiguration.xml","internalConnectionInfo.xml","PCConfiguration.xml","uddiConnectionInfo.xml","XDSUniqueIds.properties","gateway.properties","adapter.properties"]
+      
+      files2resore.each{
+        def file2resore = new File(backupDir, it)
+        org.apache.commons.io.FileUtils.copyFileToDirectory(file2resore, confDir, true)
+      }
+    }catch(Throwable e) {
+      log.error(e.getMessage())
+      context.getTestRunner().fail("Failed to restore NHINC configuration: " + e.getMessage())
+    }
+    log.info("End restoreConfiguration(context, log)")
+  }
+} 

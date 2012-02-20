@@ -1,4 +1,10 @@
 /*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *  
+ * Copyright 2010(Year date of delivery) United States Government, as represented by the Secretary of Health and Human Services.  All rights reserved.
+ *  
+ */
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -88,7 +94,7 @@ public class AdapterDocRetrieveSecuredImpl {
                 if (docMgrEndpoint != null && !docMgrEndpoint.isEmpty())
                 {
                     //Use the BOS Endpoint
-					gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().initializePort((javax.xml.ws.BindingProvider) port, docMgrEndpoint);
+                    ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,docMgrEndpoint);
                 }
                 log.debug("Calling Document Manager to retrieve from the Archive");
                 result = port.documentManagerRetrieveDynamicDocument(respondingGatewayCrossGatewayRetrieveRequest.getRetrieveDocumentSetRequest());
@@ -115,7 +121,7 @@ public class AdapterDocRetrieveSecuredImpl {
                     if (docMgrEndpoint != null && !docMgrEndpoint.isEmpty())
                     {
                         //Use the BOS Endpoint
-						gov.hhs.fha.nhinc.webserviceproxy.WebServiceProxyHelper.getInstance().initializePort((javax.xml.ws.BindingProvider) port, docMgrEndpoint);
+                        ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,docMgrEndpoint);
                     }
                     log.debug("Call to Document Manager to Mark the Documents to be saved");
 

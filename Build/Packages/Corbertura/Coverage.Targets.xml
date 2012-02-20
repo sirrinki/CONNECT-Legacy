@@ -127,12 +127,19 @@
 	</target>
 
   <target name="Coverage.Check.ShowReport">
+
+    <xmlpeek
+      file="${Ant.Log.File.Path}"
+      xpath="boolean(//antbuildresults//target[@name='-coverage.check.project']//message[@level='Error'])"
+      property="Coverage.HasFailures"
+    />
+    
     <property name="Common.ShowReport.XmlFile" value="${Ant.Log.File.Path}"/>
     <property name="Common.ShowReport.HtmlFile" value="${Ant.Log.Directory.Path}\Coverage.Chech.Report.html"/>
     <property name="Common.ShowReport.XslFile" value="${Package.Corbertura.Directory.Path}\CoverageDisplaySummary.xsl"/>
     <property name="Common.ShowReport.DetailsFilePath" value=""/>
 
-    <call target="Common.ShowReport"/>
+    <call target="Common.ShowReport" if="${Coverage.HasFailures}"/>
   </target>
 
 	<target name="Coverage.SetUp">
@@ -148,17 +155,6 @@
     <trycatch>
       <try>
         <call target="UnitTest::Personal.UnitTest"/>
-      </try>
-      <finally>
-        <call target="Personal.Coverage"/>
-      </finally>
-    </trycatch>
-  </target>
-
-  <target name="Personal.IntegrationTest" if="${target::exists('UnitTest::Personal.IntegrationTest')}" override="True">
-    <trycatch>
-      <try>
-        <call target="IntegrationTest::Personal.IntegrationTest"/>
       </try>
       <finally>
         <call target="Personal.Coverage"/>
