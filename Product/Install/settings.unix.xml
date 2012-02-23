@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="nhinc.deployment.settings.unix">
+ 
+  <property name="deployment.dir" value="/nhin/NHINC" />
+
+  <property name="deployment.certificate.home" value="/nhin/certificates" />
+
+</project>
